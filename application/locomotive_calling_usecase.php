@@ -13,7 +13,7 @@ class LocomotiveCallingUsecase
   public readonly ILocomotiveRepository $locomotive;
   public readonly ILocomotiveCallQueue $call_queue;
 
-  private function __construct(ILocomotiveRepository $locomotive, ILocomotiveCallQueue $call_queue)
+  public function __construct(ILocomotiveRepository $locomotive, ILocomotiveCallQueue $call_queue)
   {
     $this->locomotive = $locomotive;
     $this->call_queue = $call_queue;

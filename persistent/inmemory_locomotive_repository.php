@@ -6,7 +6,7 @@ use main\domain\ILocomotiveRepository;
 
 class InMemoryLocomotiveRepository implements ILocomotiveRepository
 {
-	public readonly array $db; // array of locomotive
+	private array $db; // array of locomotive
 
 	public function __construct(array $db)
 	{
@@ -16,5 +16,10 @@ class InMemoryLocomotiveRepository implements ILocomotiveRepository
 	public function get_by_id(string $locomotive_id)
 	{
 		return $this->db[$locomotive_id];
+	}
+
+	public function get_repo(): array
+	{
+		return $this->db;
 	}
 }

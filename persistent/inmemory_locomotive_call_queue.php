@@ -4,7 +4,7 @@ namespace main\persistence;
 
 class InMemoryLocomotiveCallQueue implements ILocomotiveCallQueue
 {
-  public readonly array $queue;
+  private array $queue;
 
   function __construct(array $queue)
   {
@@ -14,5 +14,10 @@ class InMemoryLocomotiveCallQueue implements ILocomotiveCallQueue
   function call(string $locomotive_id)
   {
     array_push($this->queue, $locomotive_id);
+  }
+
+  function get_queue(): array
+  {
+    return $this->queue;
   }
 }
