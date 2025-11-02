@@ -30,6 +30,8 @@ class LocomotiveCallingUsecase
   public function execute(string $locomotive_id)
   {
     $target_loco = $this->locomotive->get_by_id($locomotive_id);
-    $this->call_queue->call($target_loco);
+    if (is_null($target_loco)) return;
+
+    $this->call_queue->call($locomotive_id);
   }
 }
