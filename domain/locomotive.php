@@ -1,4 +1,7 @@
 <?php
+
+namespace main\domain;
+
 class Locomotive
 {
   public string $id;

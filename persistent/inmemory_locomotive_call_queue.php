@@ -1,4 +1,7 @@
 <?php
+
+namespace main\persistence;
+
 class InMemoryLocomotiveCallQueue implements ILocomotiveCallQueue
 {
   public readonly array $queue;

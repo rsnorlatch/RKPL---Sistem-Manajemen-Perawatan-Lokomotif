@@ -1,4 +1,7 @@
 <?php
+
+namespace main\domain;
+
 abstract class User
 {
   public $user_id;

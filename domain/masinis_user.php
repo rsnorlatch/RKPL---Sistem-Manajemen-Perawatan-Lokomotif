@@ -1,5 +1,6 @@
 <?php
-include "./user.php";
+
+namespace main\domain;
 
 class MasinisUser implements User
 {
