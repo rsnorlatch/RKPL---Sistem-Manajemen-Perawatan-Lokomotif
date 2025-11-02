@@ -6,9 +6,9 @@ require_once "./application/locomotive_calling_usecase.php";
 require_once "./domain/i_locomotive_repository.php";
 
 require_once "./domain/locomotive.php";
-require_once "./persistent/i_locomotive_call_queue.php";
-require_once "./persistent/inmemory_locomotive_repository.php";
-require_once "./persistent/inmemory_locomotive_call_queue.php";
+require_once "./persistence/i_locomotive_call_queue.php";
+require_once "./persistence/inmemory_locomotive_repository.php";
+require_once "./persistence/inmemory_locomotive_call_queue.php";
 
 use main\application\LocomotiveCallingUsecase as LocomotiveCallingUsecase;
 use main\persistence\InMemoryLocomotiveRepository as InMemoryLocomotiveRepository;
