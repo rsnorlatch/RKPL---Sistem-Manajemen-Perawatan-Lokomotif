@@ -2,6 +2,10 @@
 
 namespace lms\feature\signup;
 
+require_once __DIR__."../../../../vendor/autoload.php";
+
+use lms\feature\signup\entities\IDriverRepository as IDriverRepository;
+
 class DriverSignUpHandler
 {
     private IDriverRepository $_driver;

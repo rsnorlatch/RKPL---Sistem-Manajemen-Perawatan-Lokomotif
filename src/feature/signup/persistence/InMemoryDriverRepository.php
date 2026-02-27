@@ -1,9 +1,10 @@
 <?php
+namespace lms\feature\signup\persistence;
 
-namespace lms\feature\signup;
+require_once __DIR__."../../../../../vendor/autoload.php";
 
-use lms\domain\IDriverRepository;
-use lms\feature\signup\Driver;
+use lms\feature\signup\entities\IDriverRepository;
+use lms\feature\signup\entities\Driver;
 
 class InMemoryDriverRepository implements IDriverRepository
 {
