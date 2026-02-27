@@ -1,7 +1,7 @@
 <?php
 namespace lms\feature\signup\endpoint;
 
-require __DIR__ . "../../../../../vendor/autoload.php";
+require_once __DIR__ . "../../../../../vendor/autoload.php";
 
 use lms\feature\signup\DriverSignUpHandler as DriverSignUpHandler;
 use lms\feature\signup\persistence\InMemoryDriverRepository as InMemoryDriverRepository;
@@ -9,7 +9,6 @@ use lms\feature\signup\persistence\InMemoryDriverRepository as InMemoryDriverRep
 $username = $_GET['username'];
 $email = $_GET['email'];
 $password = $_GET['password'];
-
 
 $driver = new InMemoryDriverRepository([]);
 $sign_in_handler = new DriverSignUpHandler($driver);
