@@ -1,8 +1,8 @@
 <?php
 
-namespace lms\feature\signup;
+namespace lms\feature\signup\entities;
 
-class Maintainer
+class CentralOffice
 {
     public int $id;
     public string $name;

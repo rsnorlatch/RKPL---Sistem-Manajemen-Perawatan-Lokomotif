@@ -1,8 +1,8 @@
 <?php
 
-namespace lms\feature\signup;
+namespace lms\feature\signup\entities;
 
-interface IDriverRepository
+interface IMaintainerRepository
 {
     /**
      * Get total count of drivers
