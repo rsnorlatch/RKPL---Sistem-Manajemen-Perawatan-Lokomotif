@@ -13,8 +13,6 @@ $username = $_GET['username'];
 $password = $_GET['password'];
 
 $driver = new InMemoryDriverRepository([]);
-$driver->insert(1, "user1", "user1@gmail.com", "pass");
-
 $maintainer = new InMemoryMaintainerRepository([]);
 $central_office = new InMemoryCentralOfficeRepository([]);
 
