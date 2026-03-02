@@ -12,6 +12,8 @@ enum ScheduleResult
 {
     case Success;
     case ScheduleUnavailable;
+    case LocomotiveNotFound;
+    case LocomotiveUnscheduled;
 }
 
 class Scheduler
@@ -37,9 +39,33 @@ class Scheduler
             return ScheduleResult::ScheduleUnavailable;
         }
 
+        if ($this->_locomotives->get($locomotive_id) == null) {
+            return ScheduleResult::LocomotiveNotFound;
+        }
+
         $latest_id = $this->_schedule->count();
 
         $this->_schedule->insert($latest_id, $start, $end, $locomotive_id);
+
+        return ScheduleResult::Success;
+    }
+
+    function edit_schedule(int $locomotive_id, DateTime $start, DateTime $end) {
+        if ($this->is_unavailable($start, $end)) {
+            return ScheduleResult::ScheduleUnavailable;
+        }
+
+        $schedule = array_filter($this->_schedule->getAll(), function (Schedule $s) use ($locomotive_id) {
+            return $s->locomotive_id == $locomotive_id;
+        });
+
+        if (count($schedule) == 0) {
+            return ScheduleResult::LocomotiveUnscheduled;
+        }
+
+        $schedule = array_values($schedule)[0];
+
+        $this->_schedule->update($schedule->id, $start, $end, $locomotive_id);
 
         return ScheduleResult::Success;
     }
