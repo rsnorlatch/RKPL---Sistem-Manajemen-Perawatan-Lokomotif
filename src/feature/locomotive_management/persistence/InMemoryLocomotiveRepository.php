@@ -2,6 +2,8 @@
 
 namespace lms\feature\locomotive_management\persistence;
 
+require_once __DIR__ . "../../../../../vendor/autoload.php";
+
 use lms\feature\locomotive_management\entities\ILocomotiveRepository;
 use lms\feature\locomotive_management\entities\Locomotive;
 
@@ -24,9 +26,9 @@ class InMemoryLocomotiveRepository implements ILocomotiveRepository
         $this->locomotive[$id] = new Locomotive($id, $driver_id, $model);
     }
 
-    public function get(int $id)
+    public function get(int $id): Locomotive | null
     {
-        return $this->locomotive[$id] ?? null;
+        return $this->locomotive[$id - 1] ?? null;
     }
 
     public function getAll(): array

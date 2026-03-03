@@ -8,7 +8,7 @@ interface ILocomotiveRepository
 
     public function insert(int $id, int $driver_id, string $model): void;
 
-    public function get(int $id);
+    public function get(int $id): Locomotive | null;
 
     public function getAll(): array;
 
