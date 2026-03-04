@@ -16,4 +16,4 @@ $central_office = new MySqlCentralOfficeRepository($db);
 $sign_in_handler = new CentralOfficeSignUpHandler($central_office);
 
 $sign_in_handler->handle($username, $email, $password);
-var_dump($central_office->getAll());
+header("Location: ../../../../front-end/login.php");

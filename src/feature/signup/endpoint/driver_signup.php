@@ -16,4 +16,4 @@ $driver = new MySqlDriverRepository($db);
 $sign_in_handler = new DriverSignUpHandler($driver);
 
 $sign_in_handler->handle($username, $email, $password);
-var_dump($driver->getAll());
+header("Location: ../../../../front-end/login.php");
