@@ -8,6 +8,8 @@ use lms\feature\communication\entities\ICallRepository;
 use lms\feature\communication\CallingResult;
 use lms\feature\communication\entities\IConfirmationFinishRepository;
 use lms\feature\communication\entities\IConfirmationProblemRepository;
+use lms\feature\communication\entities\IAcceptedCallRepository;
+use lms\feature\communication\entities\IRejectedCallRepository;
 
 use DateTime;
 
@@ -16,12 +18,21 @@ class DriverCallingController
     private ICallRepository $_calls;
     private IConfirmationFinishRepository $_confirmationFinishes;
     private IConfirmationProblemRepository $_confirmationProblems;
+    private IAcceptedCallRepository $_acceptedCalls;
+    private IRejectedCallRepository $_rejectedCalls;
 
-    function __construct(ICallRepository $calls, IConfirmationFinishRepository $confirmationFinishes, IConfirmationProblemRepository $confirmationProblems)
+    function __construct(
+        ICallRepository $calls, 
+        IConfirmationFinishRepository $confirmationFinishes, 
+        IConfirmationProblemRepository $confirmationProblems, 
+        IAcceptedCallRepository $acceptedCalls, 
+        IRejectedCallRepository $rejectedCalls)
     {
         $this->_calls = $calls;
         $this->_confirmationFinishes = $confirmationFinishes; 
         $this->_confirmationProblems = $confirmationProblems;
+        $this->_acceptedCalls = $acceptedCalls;
+        $this->_rejectedCalls = $rejectedCalls;
     }
 
     public function confirm_finish(int $call_id)
@@ -54,6 +65,37 @@ class DriverCallingController
             $call_id,
             new DateTime(),
             $problem
+        );
+
+        return CallingResult::Success;
+    }
+
+    public function accept_call(int $call_id)
+    {
+        $call = $this->_calls->get($call_id);
+        if ($call == null) {
+            return CallingResult::CallNotFound;
+        }
+
+        $this->_acceptedCalls->insert(
+            $this->_acceptedCalls->count() + 1,
+            $call_id
+        );
+
+        return CallingResult::Success;
+    }
+
+    public function reject_call(int $call_id, string $reason)
+    {
+        $call = $this->_calls->get($call_id);
+        if ($call == null) {
+            return CallingResult::CallNotFound;
+        }
+
+        $this->_rejectedCalls->insert(
+            $this->_rejectedCalls->count() + 1,
+            $call_id,
+            $reason
         );
 
         return CallingResult::Success;
