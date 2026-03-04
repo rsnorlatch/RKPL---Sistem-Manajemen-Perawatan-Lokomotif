@@ -12,9 +12,10 @@ use lms\feature\locomotive_management\persistence\MySqlLocomotiveRepository;
 $driver_id = $_GET['driver'];
 $model = $_GET['model'];
 
+$driver = new MySqlDriverRepository($db);
 $locomotive = new MySqlLocomotiveRepository($db);
 $handler = new AddLocomotiveHandler($locomotive, $driver);
 
-$handler->handle($driver_id, $model);
+$result = $handler->handle($driver_id, $model);
 
-var_dump($locomotive);
+var_dump($locomotive->getAll());

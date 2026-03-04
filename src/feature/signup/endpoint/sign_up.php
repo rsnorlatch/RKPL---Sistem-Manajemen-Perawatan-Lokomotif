@@ -1,9 +1,9 @@
 <?php
 
-$username = $_GET['username'];
-$email = $_GET['email'];
-$password = $_GET['password'];
-$user_type = $_GET['user_type'];
+$username = $_POST['username'];
+$email = $_POST['email'];
+$password = $_POST['password'];
+$user_type = $_POST['user_type'];
 
 switch ($user_type) {
     case 'driver':
