@@ -26,7 +26,7 @@
       echo "<p class='msg success'>Registrasi berhasil! Silakan login.</p>";
     }
   ?>
-
+  
   <form class="form" action="../src/feature/login/endpoint/login.php" method="POST">
     <input type="text"     name="username" placeholder="Username" autocomplete="username" required/>
     <input type="password" name="password" placeholder="Password" autocomplete="current-password" required/>
