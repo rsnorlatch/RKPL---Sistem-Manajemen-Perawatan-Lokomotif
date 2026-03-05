@@ -4,7 +4,7 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Login – LMS PT KAI</title>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" />
   <link rel="stylesheet" href="/styling_feature/login.css"/>
 </head>
 <body>
@@ -25,7 +25,7 @@
     if (isset($_GET['success'])) {
       echo "<p class='msg success'>Registrasi berhasil! Silakan login.</p>";
     }
-  ?>
+  ?> 
   
   <form class="form" action="../src/feature/login/endpoint/login.php" method="POST">
     <input type="text"     name="username" placeholder="Username" autocomplete="username" required/>
