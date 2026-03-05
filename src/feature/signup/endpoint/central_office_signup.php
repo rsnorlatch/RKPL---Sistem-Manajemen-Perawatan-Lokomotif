@@ -2,16 +2,17 @@
 namespace lms\feature\signup\endpoint;
 
 require_once __DIR__ . "../../../../../vendor/autoload.php";
+require_once __DIR__."../../../../../src/db/lms.php";
 
 use lms\feature\signup\CentralOfficeSIgnUpHandler;
-use lms\feature\signup\persistence\InMemoryCentralOfficeRepository;
+use lms\feature\signup\persistence\MySqlCentralOfficeRepository;
 
 $username = $_GET['username'];
 $email = $_GET['email'];
 $password = $_GET['password'];
 
-$maintainer = new InMemoryCentralOfficeRepository([]);
-$sign_in_handler = new CentralOfficeSIgnUpHandler($maintainer);
+$central_office = new MySqlCentralOfficeRepository($db);
+$sign_in_handler = new CentralOfficeSignUpHandler($central_office);
 
 $sign_in_handler->handle($username, $email, $password);
-var_dump($maintainer->getAll());
+header("Location: ../../../../front-end/login.php");

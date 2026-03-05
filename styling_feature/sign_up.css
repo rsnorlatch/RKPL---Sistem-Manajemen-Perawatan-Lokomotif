@@ -51,7 +51,7 @@
 
     .form { width: 100%; display: flex; flex-direction: column; gap: 14px; }
 
-    .form input {
+    .form input, .form select {
       width: 100%;
       padding: 13px 16px;
       border: 1.5px solid var(--border);
