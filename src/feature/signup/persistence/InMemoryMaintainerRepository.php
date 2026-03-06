@@ -30,6 +30,16 @@ class InMemoryMaintainerRepository implements IMaintainerRepository
         return $this->maintainer[$id] ?? null;
     }
 
+    public function getByUsername(string $username)
+    {
+        foreach ($this->maintainer as $maintainer) {
+            if ($maintainer->name === $username) {
+                return $maintainer;
+            }
+        }
+        return null;
+    }
+
     public function getAll(): array
     {
         return array_values($this->maintainer);

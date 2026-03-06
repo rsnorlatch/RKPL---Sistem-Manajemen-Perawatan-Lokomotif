@@ -50,6 +50,21 @@ class MySqlDriverRepository implements IDriverRepository
             return null;
         }
     }
+
+    public function getByUsername(string $username)
+    {
+        $stmt = $this->db->prepare("SELECT * FROM driver WHERE username = ?");
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($row = $result->fetch_assoc()) {
+            return new Driver($row['id'], $row['username'], $row['email'], $row['password']);
+        } else {
+            return null;
+        }
+    }
+
     public function getAll(): array
     {
         $stmt = $this->db->prepare("SELECT * FROM driver");

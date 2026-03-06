@@ -30,6 +30,16 @@ class InMemoryDriverRepository implements IDriverRepository
         return $this->drivers[$id] ?? null;
     }
 
+    public function getByUsername(string $username)
+    {
+        foreach ($this->drivers as $driver) {
+            if ($driver->name === $username) {
+                return $driver;
+            }
+        }
+        return null;
+    }
+
     public function getAll(): array
     {
         return array_values($this->drivers);

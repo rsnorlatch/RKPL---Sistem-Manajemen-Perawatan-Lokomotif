@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Atur Program Perawatan – LMS PT KAI</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="../styling_feature/atur_program.css"/>
+  <link rel="stylesheet" href="../styling_feature/atur_program_perawatan.css"/>
 </head>
 <body>
 
@@ -32,7 +32,7 @@
 
     <!-- Form Tambah Unit — kirim ke backend add_unit.php -->
     <div class="card">
-      <form action="../src/feature/maintenance_program/endpoint/add_unit.php" method="GET">
+      <form action="../src/feature/maintenance_program/endpoint/add_unit.php" method="POST">
         <input type="text" name="unit" placeholder="Nama Unit Perawatan" required/>
         <div class="btn-row" style="margin-top:4px">
           <button type="submit" class="btn btn-orange2">Tambah</button>
