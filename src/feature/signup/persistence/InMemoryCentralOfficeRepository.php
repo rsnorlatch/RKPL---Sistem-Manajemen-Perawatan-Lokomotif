@@ -30,6 +30,16 @@ class InMemoryCentralOfficeRepository implements ICentralOfficeRepository
         return $this->central_office[$id] ?? null;
     }
 
+    public function getByUsername(string $username)
+    {
+        foreach ($this->central_office as $central_office) {
+            if ($central_office->name === $username) {
+                return $central_office;
+            }
+        }
+        return null;
+    }
+
     public function getAll(): array
     {
         return array_values($this->central_office);

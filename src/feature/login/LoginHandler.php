@@ -4,15 +4,19 @@ namespace lms\feature\login;
 require_once __DIR__."../../../../vendor/autoload.php";
 
 use lms\feature\signup\entities\Driver;
+use lms\feature\signup\entities\Maintainer;
+use lms\feature\signup\entities\CentralOffice;
 use lms\feature\signup\entities\ICentralOfficeRepository;
 use lms\feature\signup\entities\IDriverRepository;
 use lms\feature\signup\entities\IMaintainerRepository;
 
 enum LoginResult
 {
-   case Success;
-   case UsernameOrPasswordIncorrect;
-   case UserNotFound; 
+    case DriverLoginSuccess;
+    case MaintainerLoginSuccess;
+    case CentralOfficeLoginSuccess;
+    case UsernameOrPasswordIncorrect;
+    case UserNotFound; 
 }
 
 class LoginHandler
@@ -30,7 +34,7 @@ class LoginHandler
     function handle(string $username, string $password): LoginResult {
         $users = array_merge($this->_driver->getAll(), $this->_maintainer->getAll(), $this->_central_office->getAll());
 
-        $target_user = array_filter($users, function (Driver $u) use ($username, $password) { 
+        $target_user = array_filter($users, function (Driver|Maintainer|CentralOffice $u) use ($username, $password) { 
             return $u->name == $username && $u->password == $password; 
         });
 
@@ -39,7 +43,16 @@ class LoginHandler
 
         session_start();
         $_SESSION['user'] = $username;
+        $_SESSION['is_logged_in'] = true;
 
-        return LoginResult::Success;
+        if ($this->_driver->getByUsername($username) != null) {
+            return LoginResult::DriverLoginSuccess;
+        } else if ($this->_maintainer->getByUsername($username) != null) {
+            return LoginResult::MaintainerLoginSuccess;
+        } else if ($this->_central_office->getByUsername($username) != null) {
+            return LoginResult::CentralOfficeLoginSuccess;
+        } else {
+            return LoginResult::UserNotFound;
+        }
     }
 }

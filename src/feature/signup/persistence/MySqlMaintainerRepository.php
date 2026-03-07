@@ -50,6 +50,21 @@ class MySqlMaintainerRepository implements IMaintainerRepository
             return null;
         }
     }
+
+    public function getByUsername(string $username): Maintainer | null
+    {
+        $stmt = $this->db->prepare("SELECT * FROM maintainer WHERE username = ?");
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($row = $result->fetch_assoc()) {
+            return new Maintainer($row['id'], $row['username'], $row['email'], $row['password']);
+        } else {
+            return null;
+        }
+    }
+
     public function getAll(): array
     {
         $stmt = $this->db->prepare("SELECT * FROM maintainer");

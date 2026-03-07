@@ -1,19 +1,20 @@
 <?php
 
-namespace lms\feature\locomotive_management\persistence;
+namespace lms\feature\maintenance_program\persistence;
 
 use lms\feature\maintenance_program\entities\MaintenanceUnit;
 use lms\feature\maintenance_program\entities\IMaintenanceUnitRepository;
 
 require_once __DIR__ . "../../../../../vendor/autoload.php";
-require_once __DIR__."../../../../../src/db/lms.php";
+require_once __DIR__ . "../../../../../src/db/lms.php";
 
 
-class MySqlMaintenanceUnitRepository implements IMaintenanceUnitRepository 
+class MySqlMaintenanceUnitRepository implements IMaintenanceUnitRepository
 {
     private \mysqli $db;
 
-    public function __construct(\mysqli $db) {
+    public function __construct(\mysqli $db)
+    {
         $this->db = $db;
     }
 
@@ -47,7 +48,7 @@ class MySqlMaintenanceUnitRepository implements IMaintenanceUnitRepository
             $units[] = new MaintenanceUnit($row['id'], $row['sequence_number'], $row['unit']);
         }
         return $units;
-    }       
+    }
 
     public function count(): int
     {
@@ -59,7 +60,7 @@ class MySqlMaintenanceUnitRepository implements IMaintenanceUnitRepository
         } else {
             return 0;
         }
-    }   
+    }
 
     public function update(int $id, int $sequence_number, string $unit): void
     {
@@ -74,4 +75,5 @@ class MySqlMaintenanceUnitRepository implements IMaintenanceUnitRepository
         $stmt->bind_param("i", $id);
         $stmt->execute();
     }
-} 
+}
+

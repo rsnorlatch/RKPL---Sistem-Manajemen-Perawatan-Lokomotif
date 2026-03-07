@@ -9,7 +9,8 @@ class InMemoryMaintenanceUnitRepository implements IMaintenanceUnitRepository
 {
     private array $_units;
 
-    function __construct(array $_units) {
+    function __construct(array $_units)
+    {
         $this->_units = $_units;
     }
 
@@ -34,6 +35,9 @@ class InMemoryMaintenanceUnitRepository implements IMaintenanceUnitRepository
         return null;
     }
 
+    /**
+     * @return MaintenanceUnit[]
+     **/
     public function getAll(): array
     {
         return $this->_units;
@@ -60,3 +64,4 @@ class InMemoryMaintenanceUnitRepository implements IMaintenanceUnitRepository
         }
     }
 }
+

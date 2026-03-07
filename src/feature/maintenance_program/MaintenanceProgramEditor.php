@@ -18,18 +18,26 @@ class MaintenanceProgramEditor
         $this->_repository = $repository;
     }
 
+    private function normalize()
+    {
+        $units = $this->_repository->getAll();
+        usort($units, function ($a, $b) {
+            return $a->sequence_number <=> $b->sequence_number;
+        });
+
+        foreach ($units as $index => $unit) {
+            $this->_repository->update($unit->id, $index + 1, $unit->unit);
+        }
+    }
+
     public function add_unit(string $unit)
     {
         $id = $this->_repository->count() + 1;
         $latest_sequence = 0;
 
-        foreach ($this->_repository->getAll() as $u) {
-            if ($u->sequence_number > $latest_sequence) {
-                $latest_sequence = $u->sequence_number;
-            }
-        }
-
         $this->_repository->insert($id, $latest_sequence + 1, $unit);
+
+        $this->normalize();
 
         return MaintenanceProgramEditorResult::Success;
     }
@@ -41,6 +49,8 @@ class MaintenanceProgramEditor
         }
 
         $this->_repository->update($id, $sequence_number, $unit);
+        $this->normalize();
+
         return MaintenanceProgramEditorResult::Success;
     }
 

@@ -19,6 +19,8 @@ interface IDriverRepository
      */
     public function get(int $id);
 
+    public function getByUsername(string $username);
+
     /**
      * Get all drivers
      */
