@@ -6,26 +6,24 @@ use lms\feature\maintenance_program\entities\MaintenanceUnit;
 use lms\feature\maintenance_program\MaintenanceProgramEditor;
 use lms\feature\maintenance_program\persistence\InMemoryMaintenanceUnitRepository;
 use lms\feature\maintenance_program\MaintenanceProgramEditorResult;
+use lms\feature\maintenance_program\persistence\MySqlMaintenanceUnitRepository;
 
 require_once __DIR__ . "../../../../../vendor/autoload.php";
+require_once __DIR__ . "../../../../db/lms.php";
 
-$id = 1;
-$sequence_number = 2;
-$unit = "Penggantian Filter";
+$id = $_POST['id'];
+$sequence_number = $_POST['sequence_number'];
+$unit = $_POST['unit'];
 
-$maintenance_unit = new InMemoryMaintenanceUnitRepository([
-    new MaintenanceUnit(1, 1, "Pengecekan Rutin"),
-    new MaintenanceUnit(2, 2, "Pembersihan Komponen"),
-    new MaintenanceUnit(3, 3, "Penggantian Oli"),
-]);
+$maintenance_unit = new MySqlMaintenanceUnitRepository($db);
 $editor = new MaintenanceProgramEditor($maintenance_unit);
 
 $result = $editor->edit_unit($id, $sequence_number, $unit);
-$editor->edit_unit(3, 1, "Penggantian Filter"); 
+$editor->edit_unit($id, $sequence_number, $unit);
 
 switch ($result) {
     case MaintenanceProgramEditorResult::Success:
-        echo "Maintenance unit edited successfully.";
+        header("Location: ../../../../front-end/atur_program_perawatan.php?edit=$id");
         break;
     case MaintenanceProgramEditorResult::UnitNotFound:
         echo "Failed to edit maintenance unit. Unit not found.";
@@ -33,3 +31,4 @@ switch ($result) {
 }
 
 var_dump($maintenance_unit->getAll());
+
