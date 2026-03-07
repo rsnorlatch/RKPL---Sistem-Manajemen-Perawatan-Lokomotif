@@ -2,9 +2,8 @@
 require_once __DIR__ . "/../vendor/autoload.php";
 require_once __DIR__ . "/../src/db/lms.php";
 
+use lms\feature\maintenance_program\persistence\MySqlMaintenanceUnitRepository;
 use lms\feature\maintenance_program\MaintenanceProgramShowUnitHandler;
-use lms\feature\maintenance_program\persistence\InMemoryMaintenanceUnitRepository;
-use lms\feature\maintenance_program\entities\MaintenanceUnit;
 ?>
 
 <!DOCTYPE html>
@@ -59,11 +58,7 @@ use lms\feature\maintenance_program\entities\MaintenanceUnit;
       <div class="list-area">
         <?php
 
-        $units = new InMemoryMaintenanceUnitRepository([
-          new MaintenanceUnit(1, 1, "unit pertama"),
-          new MaintenanceUnit(2, 2, "unit2"),
-          new MaintenanceUnit(3, 3, "unit3"),
-        ]);
+        $units = new MySqlMaintenanceUnitRepository($db);
         $handler  = new MaintenanceProgramShowUnitHandler($units);
         $result = $handler->handle();
 
