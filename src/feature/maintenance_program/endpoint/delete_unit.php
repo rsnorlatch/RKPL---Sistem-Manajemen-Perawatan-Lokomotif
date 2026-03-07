@@ -2,24 +2,26 @@
 
 namespace lms\feature\maintenance_program\endpoint;
 
-use lms\feature\maintenance_program\entities\MaintenanceUnit;
 use lms\feature\maintenance_program\MaintenanceProgramEditor;
-use lms\feature\maintenance_program\persistence\InMemoryMaintenanceUnitRepository;
+use lms\feature\maintenance_program\MaintenanceProgramEditorResult;
+use lms\feature\maintenance_program\persistence\MySqlMaintenanceUnitRepository;
 
-require_once __DIR__ . "../../../../../vendor/autoload.php";
+require_once __DIR__ . "/../../../../vendor/autoload.php";
+require_once __DIR__ . "/../../../db/lms.php";
 
 
-$id = $_GET["id"];
+$id = $_POST["id"];
 
-$maintenance_unit = new InMemoryMaintenanceUnitRepository([]);
+$maintenance_unit = new MySqlMaintenanceUnitRepository($db);
 $editor = new MaintenanceProgramEditor($maintenance_unit);
 
 $result = $editor->delete_unit($id);
 switch ($result) {
-    case true:
-        echo "Maintenance unit deleted successfully.";
+    case MaintenanceProgramEditorResult::Success:
+        header("Location: ../../../../front-end/atur_program_perawatan.php?status=success");
         break;
-    case false:
+    case MaintenanceProgramEditorResult::UnitNotFound:
         echo "Failed to delete maintenance unit. Unit not found.";
         break;
 }
+

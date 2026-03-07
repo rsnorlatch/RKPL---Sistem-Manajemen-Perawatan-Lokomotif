@@ -11,9 +11,9 @@ use lms\feature\maintenance_program\persistence\MySqlMaintenanceUnitRepository;
 require_once __DIR__ . "../../../../../vendor/autoload.php";
 require_once __DIR__ . "../../../../db/lms.php";
 
-$id = $_POST['id'];
-$sequence_number = $_POST['sequence_number'];
-$unit = $_POST['unit'];
+$id = $_GET['id'];
+$sequence_number = $_GET['sequence_number'];
+$unit = $_GET['unit'];
 
 $maintenance_unit = new MySqlMaintenanceUnitRepository($db);
 $editor = new MaintenanceProgramEditor($maintenance_unit);

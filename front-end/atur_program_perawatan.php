@@ -82,7 +82,7 @@ use lms\feature\maintenance_program\MaintenanceProgramShowUnitHandler;
                 <a href="atur_program_perawatan.php?edit=<?= $unit->id ?>" class="link-action">Update</a>
                 <!-- Delete: langsung kirim ke backend delete_unit.php -->
                 <!-- Hapus: kirim ke backend delete_unit.php via link form POST agar tidak via URL langsung -->
-                <form action="../src/feature/maintenance_program/endpoint/delete_unit.php" method="GET" style="display:inline">
+                <form action="../src/feature/maintenance_program/endpoint/delete_unit.php" method="POST" style="display:inline">
                   <input type="hidden" name="id" value="<?= $unit->id ?>" />
                   <button type="submit" class="link-action del">Hapus</button>
                 </form>
@@ -103,7 +103,7 @@ use lms\feature\maintenance_program\MaintenanceProgramShowUnitHandler;
           <div class="card" style="border: 2px solid #2196F3;">
             <p style="font-weight:700; font-size:14px; color:#1565C0">Edit Unit</p>
             <!-- Kirim ke backend edit_unit.php -->
-            <form action="../src/feature/maintenance_program/endpoint/edit_unit.php" method="POST">
+            <form action="../src/feature/maintenance_program/endpoint/edit_unit.php" method="GET">
               <input type="hidden" name="id" value="<?= $row['id'] ?>" />
               <input type="hidden" name="sequence_number" value="<?= $row['sequence_number'] ?>" />
               <input type="text" name="unit" value="<?= htmlspecialchars($row['unit']) ?>" required />
