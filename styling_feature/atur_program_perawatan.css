@@ -1,5 +1,4 @@
-/* atur_program.css — dipakai oleh: front-end/atur_program.php */
-
+/* css reset setting default tampilan atur program perawatan */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
@@ -10,10 +9,10 @@
   --dark:    #1a1a1a;
   --gray:    #757575;
   --lgray:   #bdbdbd;
-  --border:  #d8d8d8;
+  --border:  #e0e0e0;
   --bg:      #f5f5f5;
   --card:    #ffffff;
-  --list-bg: #eeeeee;
+  --list-bg: #e8e8e8;
 }
 
 body {
@@ -47,7 +46,7 @@ body {
   display: flex;
   align-items: center;
   padding: 16px 14px;
-  gap: 8px;
+  gap: 10px;
 }
 
 .back-btn {
@@ -59,35 +58,46 @@ body {
 }
 
 .back-btn svg { width: 22px; height: 22px; fill: #fff; }
-.topbar h1    { font-size: 17px; font-weight: 600; color: #fff; }
+
+.topbar h1 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+}
 
 /* ── Page body ── */
 .page-body {
-  padding: 18px 16px 28px;
+  padding: 16px 14px 24px;
   display: flex;
   flex-direction: column;
   gap: 14px;
 }
 
 /* ── Messages ── */
-.msg { padding: 10px 14px; border-radius: 9px; font-size: 13.5px; font-weight: 500; }
+.msg { padding: 10px 14px; border-radius: 9px; font-size: 13px; font-weight: 500; }
 .msg.success { background: #e8f5e9; color: #2e7d32; }
 .msg.error   { background: #fdecea; color: #c62828; }
 
-/* ── Card (form wrapper) ── */
+/* ── Form card ── */
 .card {
   background: var(--card);
-  border-radius: 14px;
-  padding: 16px;
-  box-shadow: 0 2px 8px rgba(0,0,0,.06);
+  border-radius: 12px;
+  padding: 14px 14px 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.07);
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
+}
+
+.card form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .card input {
   width: 100%;
-  padding: 11px 14px;
+  padding: 12px 14px;
   border: 1.5px solid var(--border);
   border-radius: 9px;
   background: #fafafa;
@@ -107,7 +117,7 @@ body {
 }
 
 /* ── Button row ── */
-.btn-row { display: flex; gap: 10px; }
+.btn-row { display: flex; gap: 10px; margin-top: 2px; }
 
 .btn {
   flex: 1;
@@ -130,8 +140,6 @@ body {
 
 .btn-orange2 { background: var(--orange2); }
 .btn-red     { background: var(--red); }
-.btn-orange  { background: var(--orange); }
-.full-width  { width: 100%; flex: none; }
 
 /* ── Section title ── */
 .section-title {
@@ -139,76 +147,149 @@ body {
   font-weight: 700;
   color: var(--dark);
   text-align: center;
-  letter-spacing: .4px;
+  letter-spacing: .3px;
 }
 
 /* ── List area ── */
 .list-area {
   background: var(--list-bg);
-  border-radius: 14px;
-  min-height: 80px;
-  padding: 10px;
+  border-radius: 12px;
+  min-height: 100px;
+  padding: 8px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 
+/* Placeholder row (kosong) */
 .list-placeholder {
+  background: var(--card);
+  border-radius: 9px;
+  padding: 11px 12px;
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 12px;
 }
 
-.list-placeholder .dots { color: var(--lgray); font-size: 18px; }
-.list-placeholder span  { font-size: 13.5px; color: var(--lgray); }
+.list-placeholder span { font-size: 13.5px; color: var(--gray); }
+.list-placeholder .dots-right { margin-left: auto; font-size: 18px; color: var(--lgray); }
 
 /* ── List item ── */
 .list-item {
   background: var(--card);
-  border-radius: 10px;
-  padding: 10px 12px;
+  border-radius: 9px;
+  padding: 11px 12px;
   display: flex;
   align-items: center;
   gap: 8px;
-  box-shadow: 0 1px 4px rgba(0,0,0,.06);
-  animation: itemIn .25s ease both;
+  animation: itemIn .2s ease both;
 }
 
 @keyframes itemIn {
-  from { opacity: 0; transform: translateY(5px); }
+  from { opacity: 0; transform: translateY(4px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
 .drag-icon { color: #bbb; font-size: 16px; flex-shrink: 0; }
-.item-info  { flex: 1; min-width: 0; }
-.item-name  { font-size: 13.5px; font-weight: 600; color: var(--dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.item-sub   { font-size: 12px; color: var(--gray); margin-top: 1px; }
 
-/* ── Action links (Update / Hapus) ── */
-.action-links {
+.item-info { flex: 1; min-width: 0; }
+.item-name {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--dark);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Three-dot menu (CSS-only, checkbox hack) ── */
+.menu-wrap { position: relative; flex-shrink: 0; }
+
+/* Sembunyikan checkbox asli */
+.menu-toggle {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+/* Label titik tiga */
+.menu-btn {
   display: flex;
-  gap: 8px;
-  flex-shrink: 0;
-}
-
-.link-action {
-  font-size: 12.5px;
-  font-weight: 600;
-  font-family: inherit;
-  background: none;
-  border: none;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  font-size: 18px;
+  color: #888;
   cursor: pointer;
-  padding: 4px 8px;
   border-radius: 6px;
-  text-decoration: none;
-  color: var(--blue);
   transition: background .15s;
+  user-select: none;
+  line-height: 1;
 }
 
-.link-action:hover { background: #e3f2fd; }
-.link-action.del   { color: var(--red); }
-.link-action.del:hover { background: #fdecea; }
+.menu-btn:hover { background: #f0f0f0; }
+
+/* Dropdown — tersembunyi by default */
+.dropdown {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: calc(100% + 4px);
+  background: var(--card);
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(0,0,0,.14);
+  overflow: hidden;
+  z-index: 50;
+  min-width: 110px;
+}
+
+/* Tampil saat checkbox dicentang */
+.menu-toggle:checked ~ .dropdown { display: block; }
+
+/* Item dropdown */
+.dropdown-item {
+  display: block;
+  width: 100%;
+  padding: 10px 16px;
+  border: none;
+  background: none;
+  font-family: inherit;
+  font-size: 13.5px;
+  text-align: left;
+  cursor: pointer;
+  color: var(--dark);
+  text-decoration: none;
+  transition: background .12s;
+}
+
+.dropdown-item:hover     { background: #f5f5f5; }
+.dropdown-item.del       { color: var(--red); }
+.dropdown-item.del:hover { background: #fdecea; }
+
+/* ── Tombol Update orange bawah ── */
+.btn-update {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  background: var(--orange);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  letter-spacing: .3px;
+  transition: opacity .15s, transform .1s;
+}
+
+.btn-update:hover  { opacity: .88; }
+.btn-update:active { transform: scale(.98); }
 
 /* ── Responsive ── */
 @media (max-width: 400px) {
