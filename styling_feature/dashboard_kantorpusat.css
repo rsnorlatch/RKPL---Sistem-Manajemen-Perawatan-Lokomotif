@@ -1,0 +1,117 @@
+/* dashboard.css — dipakai oleh: front-end/dashboard.php */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --blue:   #2196F3;
+  --orange: #FF7043;
+  --red:    #E53935;
+  --dark:   #1a1a1a;
+  --gray:   #757575;
+  --bg:     #ffffff;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: #e8edf2;
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 24px 12px;
+}
+
+/* ── Shell ── */
+.shell {
+  width: min(340px, 100%);
+  background: var(--bg);
+  border-radius: clamp(0px, 3.5vw, 24px);
+  box-shadow: 0 20px 56px rgba(0,0,0,.13);
+  overflow: hidden;
+  animation: fadeUp .4s ease both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Header biru ── */
+.header {
+  background: var(--blue);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 20px;
+}
+
+.avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #1565C0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.avatar svg { width: 32px; height: 32px; fill: #fff; }
+
+.header h1 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: .2px;
+}
+
+/* ── Menu grid ── */
+.menu-grid {
+  padding: 40px 28px 48px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px 28px;
+}
+
+/* ── Menu item ── */
+.menu-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  width: calc(50% - 14px); /* 2 kolom */
+}
+
+.menu-item span {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--dark);
+  text-align: center;
+  line-height: 1.4;
+}
+
+/* ── Icon box ── */
+.menu-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity .15s, transform .1s;
+}
+
+.menu-icon svg { width: 36px; height: 36px; fill: #fff; }
+
+.menu-icon.orange { background: var(--orange); }
+.menu-icon.red    { background: var(--red); }
+
+.menu-item:hover  .menu-icon { opacity: .88; }
+.menu-item:active .menu-icon { transform: scale(.95); }
+
+/* ── Responsive ── */
+@media (max-width: 400px) {
+  body { background: var(--bg); align-items: flex-start; padding: 0; }
+  .shell { width: 100%; min-height: 100svh; border-radius: 0 !important; box-shadow: none; }
+}
