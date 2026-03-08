@@ -1,4 +1,5 @@
 <?php
+
 namespace lms\feature\login\endpoint;
 
 require_once __DIR__ . "../../../../../vendor/autoload.php";
@@ -23,18 +24,19 @@ $result = $handler->handle($username, $password);
 
 switch ($result) {
     case LoginResult::DriverLoginSuccess:
-        echo "Driver login successful!";
+        header("Location: ../../../../front-end/dashboard_masinis.php");
         break;
     case LoginResult::MaintainerLoginSuccess:
-        echo "Maintainer login successful!";
+        header("Location: ../../../../front-end/dashboard_timbalaiyasa.php");
         break;
     case LoginResult::CentralOfficeLoginSuccess:
-        echo "Central office login successful!";
+        header("Location: ../../../../front-end/dashboard_kantorpusat.php");
         break;
     case LoginResult::UsernameOrPasswordIncorrect:
-        echo "Username or password is incorrect.";
+        header("Location: ../../../../front-end/login.php?status=incorrect_credential");
         break;
     case LoginResult::UserNotFound:
-        echo "User not found.";
+        header("Location: ../../../../front-end/login.php?status=user_not_found");
         break;
 }
+
