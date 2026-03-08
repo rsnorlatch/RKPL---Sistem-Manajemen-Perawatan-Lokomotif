@@ -1,0 +1,262 @@
+/* pengaturan.css — dipakai oleh:
+   front-end/pengaturan.php
+   front-end/pengaturan_profil.php
+   front-end/pengaturan_kredensial.php
+   front-end/pengaturan_tampilan.php
+   front-end/pengaturan_bahasa.php
+*/
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --blue:   #2196F3;
+  --dark:   #1a1a1a;
+  --gray:   #757575;
+  --lgray:  #bdbdbd;
+  --border: #e0e0e0;
+  --bg:     #ffffff;
+  --bg2:    #f5f5f5;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: #e8edf2;
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 24px 12px;
+}
+
+/* ── Shell ── */
+.shell {
+  width: min(340px, 100%);
+  background: var(--bg);
+  border-radius: clamp(0px, 3.5vw, 24px);
+  box-shadow: 0 20px 56px rgba(0,0,0,.13);
+  overflow: hidden;
+  animation: fadeUp .4s ease both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Top Bar ── */
+.topbar {
+  background: var(--blue);
+  display: flex;
+  align-items: center;
+  padding: 16px 16px;
+  gap: 12px;
+}
+
+/* Ikon gear di topbar (pengaturan.php utama) */
+.topbar-icon {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.topbar-icon svg { width: 28px; height: 28px; fill: #fff; }
+
+/* Back button (sub halaman) */
+.back-btn {
+  display: flex;
+  align-items: center;
+  color: #fff;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.back-btn svg { width: 22px; height: 22px; fill: #fff; }
+
+.topbar h1 { font-size: 17px; font-weight: 600; color: #fff; }
+
+/* ── Page body ── */
+.page-body {
+  padding: 20px 16px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ── Messages ── */
+.msg { padding: 10px 14px; border-radius: 9px; font-size: 13px; font-weight: 500; }
+.msg.success { background: #e8f5e9; color: #2e7d32; }
+.msg.error   { background: #fdecea; color: #c62828; }
+
+/* ── Menu list (pengaturan.php utama) ── */
+.menu-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.menu-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  text-decoration: none;
+  color: var(--dark);
+  background: var(--bg);
+  transition: background .15s, border-color .15s;
+}
+
+.menu-row:hover { background: #f5f5f5; border-color: var(--blue); }
+
+.row-icon {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.row-icon svg { width: 20px; height: 20px; fill: var(--dark); }
+
+.menu-row span {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.row-arrow { display: flex; align-items: center; }
+.row-arrow svg { width: 18px; height: 18px; fill: var(--lgray); }
+
+/* ── Section hint ── */
+.section-hint {
+  font-size: 13px;
+  color: var(--gray);
+  margin-bottom: 4px;
+}
+
+/* ── Radio list (tampilan & bahasa) ── */
+.radio-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.radio-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: border-color .15s, background .15s;
+  position: relative;
+}
+
+.radio-row:hover  { background: #f5f5f5; }
+.radio-row.active { border-color: var(--blue); background: #e3f2fd; }
+
+/* Sembunyikan radio asli */
+.radio-row input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.radio-row span {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--dark);
+}
+
+.flag { font-size: 20px; flex-shrink: 0; }
+
+/* Custom radio dot */
+.radio-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid var(--lgray);
+  flex-shrink: 0;
+  transition: border-color .15s;
+}
+
+.radio-row.active .radio-dot {
+  border-color: var(--blue);
+  background: var(--blue);
+  box-shadow: inset 0 0 0 3px #fff;
+}
+
+/* ── Form card (profil & kredensial) ── */
+.form-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field-group label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gray);
+}
+
+.field-group input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg2);
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--dark);
+  outline: none;
+  transition: border-color .2s, box-shadow .2s;
+}
+
+.field-group input::placeholder { color: var(--lgray); }
+
+.field-group input:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(33,150,243,.11);
+  background: #fff;
+}
+
+/* ── Tombol Simpan ── */
+.btn-save {
+  width: 100%;
+  padding: 13px;
+  background: var(--blue);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: .3px;
+  transition: opacity .15s, transform .1s;
+  margin-top: 4px;
+}
+
+.btn-save:hover  { opacity: .88; }
+.btn-save:active { transform: scale(.98); }
+
+/* ── Responsive ── */
+@media (max-width: 400px) {
+  body { background: var(--bg); align-items: flex-start; padding: 0; }
+  .shell { width: 100%; min-height: 100svh; border-radius: 0 !important; box-shadow: none; }
+}
