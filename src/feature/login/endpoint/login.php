@@ -39,4 +39,3 @@ switch ($result) {
         header("Location: ../../../../front-end/login.php?status=user_not_found");
         break;
 }
-
