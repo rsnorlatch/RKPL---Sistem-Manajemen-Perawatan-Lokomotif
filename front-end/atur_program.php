@@ -44,6 +44,8 @@ use lms\feature\maintenance_program\MaintenanceProgramShowUnitHandler;
     <div class="card">
       <form action="../src/feature/maintenance_program/endpoint/add_unit.php" method="GET">
         <input type="text" name="unit" placeholder="Nama Unit Perawatan" required/>
+        <input type="text" name="unit" placeholder="Deskripsi Program" required/>
+        <input type="text" name="unit" placeholder="Jenis Perawatan" required/>
         <div class="btn-row" style="margin-top:4px">
           <button type="submit" class="btn btn-orange2">Tambah</button>
           <a href="atur_program.php" class="btn btn-red" style="text-align:center">Cancel</a>
