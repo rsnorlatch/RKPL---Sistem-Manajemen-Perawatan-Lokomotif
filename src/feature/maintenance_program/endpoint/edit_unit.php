@@ -2,9 +2,7 @@
 
 namespace lms\feature\maintenance_program\endpoint;
 
-use lms\feature\maintenance_program\entities\MaintenanceUnit;
 use lms\feature\maintenance_program\MaintenanceProgramEditor;
-use lms\feature\maintenance_program\persistence\InMemoryMaintenanceUnitRepository;
 use lms\feature\maintenance_program\MaintenanceProgramEditorResult;
 use lms\feature\maintenance_program\persistence\MySqlMaintenanceUnitRepository;
 
@@ -13,7 +11,7 @@ require_once __DIR__ . "../../../../db/lms.php";
 
 $id = $_POST['id'];
 $sequence_number = $_POST['sequence_number'];
-$unit_name = $_POST['unit'];
+$unit_name = $_POST['unit_name'];
 $description = $_POST["description"] ?? "";
 $unit_type = $_POST['unit_type'] ?? "";
 
