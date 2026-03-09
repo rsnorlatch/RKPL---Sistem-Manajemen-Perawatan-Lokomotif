@@ -11,19 +11,21 @@ use lms\feature\maintenance_program\persistence\MySqlMaintenanceUnitRepository;
 require_once __DIR__ . "../../../../../vendor/autoload.php";
 require_once __DIR__ . "../../../../db/lms.php";
 
-$id = $_GET['id'];
-$sequence_number = $_GET['sequence_number'];
-$unit = $_GET['unit'];
+$id = $_POST['id'];
+$sequence_number = $_POST['sequence_number'];
+$unit_name = $_POST['unit'];
+$description = $_POST["description"] ?? "";
+$unit_type = $_POST['unit_type'] ?? "";
+
 
 $maintenance_unit = new MySqlMaintenanceUnitRepository($db);
 $editor = new MaintenanceProgramEditor($maintenance_unit);
 
-$result = $editor->edit_unit($id, $sequence_number, $unit);
-$editor->edit_unit($id, $sequence_number, $unit);
+$result = $editor->edit_unit($id, $sequence_number, $unit_name, $description, $unit_type);
 
 switch ($result) {
     case MaintenanceProgramEditorResult::Success:
-        header("Location: ../../../../front-end/atur_program_perawatan.php?edit=$id");
+        header("Location: ../../../../front-end/atur_program.php?status=$id");
         break;
     case MaintenanceProgramEditorResult::UnitNotFound:
         echo "Failed to edit maintenance unit. Unit not found.";
@@ -31,4 +33,3 @@ switch ($result) {
 }
 
 var_dump($maintenance_unit->getAll());
-

@@ -18,10 +18,13 @@ class MySqlMaintenanceUnitRepository implements IMaintenanceUnitRepository
         $this->db = $db;
     }
 
-    public function insert(int $id, int $sequence_number, string $unit): void
+    public function insert(int $id, int $sequence_number, string $unit_name, string $description, string $unit_type): void
     {
-        $stmt = $this->db->prepare("INSERT INTO maintenance_unit (id, sequence_number, unit) VALUES (?, ?, ?)");
-        $stmt->bind_param("iis", $id, $sequence_number, $unit);
+        $stmt = $this->db->prepare("
+            INSERT INTO maintenance_unit (id, sequence_number, unit_name, unit_description, unit_type) 
+            VALUES (?, ?, ?, ?, ?)");
+
+        $stmt->bind_param("iisss", $id, $sequence_number, $unit_name, $description, $unit_type);
         $stmt->execute();
     }
 
@@ -32,7 +35,7 @@ class MySqlMaintenanceUnitRepository implements IMaintenanceUnitRepository
         $stmt->execute();
         $result = $stmt->get_result();
         if ($row = $result->fetch_assoc()) {
-            return new MaintenanceUnit($row['id'], $row['sequence_number'], $row['unit']);
+            return new MaintenanceUnit($row['id'], $row['sequence_number'], $row['unit_name'], $row['unit_description'], $row['unit_type']);
         } else {
             return null;
         }
@@ -45,7 +48,7 @@ class MySqlMaintenanceUnitRepository implements IMaintenanceUnitRepository
         $result = $stmt->get_result();
         $units = [];
         while ($row = $result->fetch_assoc()) {
-            $units[] = new MaintenanceUnit($row['id'], $row['sequence_number'], $row['unit']);
+            $units[] = new MaintenanceUnit($row['id'], $row['sequence_number'], $row['unit_name'], $row['unit_description'], $row['unit_type']);
         }
         return $units;
     }
@@ -62,10 +65,18 @@ class MySqlMaintenanceUnitRepository implements IMaintenanceUnitRepository
         }
     }
 
-    public function update(int $id, int $sequence_number, string $unit): void
+    public function update(int $id, int $sequence_number, string $unit_name, string $description, string $unit_type): void
     {
-        $stmt = $this->db->prepare("UPDATE maintenance_unit SET sequence_number = ?, unit = ? WHERE id = ?");
-        $stmt->bind_param("isi", $sequence_number, $unit, $id);
+        $stmt = $this->db->prepare("UPDATE maintenance_unit 
+            SET 
+            sequence_number = ?, 
+            unit_name = ?,
+            unit_description = ?, 
+            unit_type = ?
+
+            WHERE id = ?");
+
+        $stmt->bind_param("isssi", $sequence_number, $unit_name, $description, $unit_type, $id);
         $stmt->execute();
     }
 
@@ -76,4 +87,3 @@ class MySqlMaintenanceUnitRepository implements IMaintenanceUnitRepository
         $stmt->execute();
     }
 }
-

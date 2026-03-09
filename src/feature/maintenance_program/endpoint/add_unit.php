@@ -10,16 +10,20 @@ use lms\feature\maintenance_program\persistence\MySqlMaintenanceUnitRepository;
 require_once __DIR__ . "../../../../../vendor/autoload.php";
 require_once __DIR__ . "../../../../db/lms.php";
 
-$new_unit = $_POST["unit"];
+$unit_name = $_POST['unit_name'];
+$description = $_POST["description"];
+$unit_type = $_POST['unit_type'];
+
 
 $unit = new MySqlMaintenanceUnitRepository($db);
 $editor = new MaintenanceProgramEditor($unit);
 
-$result = $editor->add_unit($new_unit);
+$result = $editor->add_unit($unit_name, $description, $unit_type);
 
 switch ($result) {
     case MaintenanceProgramEditorResult::Success:
-        header("Location: ../../../../front-end/atur_program_perawatan.php?status=success");
+        header("Location: ../../../../front-end/atur_program.php");
+        /* echo "Maintenance unit added successfully."; */
         break;
 
     case MaintenanceProgramEditorResult::UnitNotFound:

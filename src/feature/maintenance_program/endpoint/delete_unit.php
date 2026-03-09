@@ -18,10 +18,9 @@ $editor = new MaintenanceProgramEditor($maintenance_unit);
 $result = $editor->delete_unit($id);
 switch ($result) {
     case MaintenanceProgramEditorResult::Success:
-        header("Location: ../../../../front-end/atur_program_perawatan.php?status=success");
+        header("Location: ../../../../front-end/atur_program.php?status=deleted");
         break;
     case MaintenanceProgramEditorResult::UnitNotFound:
         echo "Failed to delete maintenance unit. Unit not found.";
         break;
 }
-
