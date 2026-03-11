@@ -50,14 +50,6 @@ class DriverCallingController
             $this->_confirmationFinishes->count() + 1,
             $call->driver_id,
             $call_id,
-            new DateTime()
-        );
-
-        $this->_onSiteLocomotives->insert(
-            $this->_onSiteLocomotives->count() + 1,
-            $call->driver_id,
-            $call->id,
-            new DateTime()
         );
 
         return CallingResult::Success;
@@ -112,4 +104,3 @@ class DriverCallingController
         return CallingResult::Success;
     }
 }
-

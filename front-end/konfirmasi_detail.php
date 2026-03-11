@@ -32,9 +32,9 @@
       $result = $db->query("
         SELECT
           l.model AS loco_model,
-          p.problem AS message
-        FROM confirmation_problem p
-        JOIN locomotive l ON l.driver_id = p.driver_id;
+          c.id AS call_id
+        FROM calling c
+        JOIN locomotive l ON l.driver_id = c.driver_id;
       ");
       if ($result) $call = $result->fetch_assoc();
       ?>
@@ -51,7 +51,7 @@
           </div>
           <div class="detail-row">
             <span class="detail-key">Pesan</span>
-            <span class="detail-val"><?= htmlspecialchars($call['message'] ?? '-') ?></span>
+            <span class="detail-val"><?= htmlspecialchars($call['call_id'] ?? '-') ?></span>
           </div>
         </div>
 
@@ -63,7 +63,7 @@
         Param POST: call_id
       -->
         <form action="../src/feature/communication/endpoint/confirm_finish.php" method="POST">
-          <input type="hidden" name="call_id" value="<?= $call_id ?>" />
+          <input type="hidden" name="id" value="<?= $call['call_id'] ?>" />
           <button type="submit" class="btn-confirm green-full">
             ✓ &nbsp; Selesai
           </button>

@@ -9,6 +9,7 @@ use lms\feature\communication\persistence\MySqlConfirmationFinishRepository;
 use lms\feature\communication\persistence\MySqlConfirmationProblemRepository;
 use lms\feature\communication\persistence\MySqlAcceptedCallRepository;
 use lms\feature\communication\persistence\MySqlRejectedCallRepository;
+use lms\feature\locomotive_management\persistence\MySqlOnSiteLocomotiveRepository;
 
 require_once __DIR__ . "../../../../../vendor/autoload.php";
 require_once __DIR__ . "../../../../db/lms.php";
@@ -20,8 +21,9 @@ $confirmationFinishes = new MySqlConfirmationFinishRepository($db);
 $confirmationProblems = new MySqlConfirmationProblemRepository($db);
 $acceptedCalls = new MySqlAcceptedCallRepository($db);
 $rejectedCalls = new MySqlRejectedCallRepository($db);
+$onsiteLocomoive = new MySqlOnSiteLocomotiveRepository($db);
 
-$controller = new DriverCallingController($calls, $confirmationFinishes, $confirmationProblems, $acceptedCalls, $rejectedCalls);
+$controller = new DriverCallingController($calls, $confirmationFinishes, $confirmationProblems, $acceptedCalls, $rejectedCalls, $onsiteLocomoive);
 
 $result = $controller->confirm_finish($id);
 

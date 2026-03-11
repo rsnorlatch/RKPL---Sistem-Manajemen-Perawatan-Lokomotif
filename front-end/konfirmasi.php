@@ -47,14 +47,15 @@
       $result = $db->query("
         SELECT
           l.model AS loco_model,
-            a.call_id
+          a.call_id AS id
            
         FROM accepted_call a
         JOIN calling c ON a.call_id = c.id
         JOIN locomotive l ON c.driver_id = l.driver_id
-        WHERE l.driver_id = {$_SESSION['user_id']}
+        WHERE l.driver_id = 1
         ORDER BY c.call_time DESC;
       ");
+
       if ($result) {
         while ($row = $result->fetch_assoc()) $calls[] = $row;
       }
