@@ -39,6 +39,7 @@
       // status: pending | accepted | rejected
       $calls = [];
 
+
       require_once __DIR__ . "/../src/db/lms.php";
       if (isset($_SESSION['user_id'])) {
         $stmt = $db->prepare("
@@ -48,7 +49,11 @@
           l.model
         FROM calling c
         JOIN locomotive l ON l.driver_id = c.driver_id
+        LEFT JOIN confirmation_finish cf ON cf.calling_id = c.id
+        LEFT JOIN confirmation_problem cp ON cp.calling_id = c.id
         WHERE c.driver_id = ?
+        AND cf.calling_id IS NULL
+        AND cp.calling_id IS NULL;
       ");
 
         $stmt->bind_param("i", $_SESSION['user_id']);

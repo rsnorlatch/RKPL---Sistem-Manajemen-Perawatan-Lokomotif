@@ -33,7 +33,7 @@ var_dump($result);
 
 switch ($result) {
     case CallingResult::CallNotFound:
-        /* header("Location: ../../../../front-end/panggilan.php?status=notfound"); */
+        header("Location: ../../../../front-end/panggilan.php?status=notfound");
         break;
     case CallingResult::Success:
         header("Location: ../../../../front-end/panggilan.php?status=success");
