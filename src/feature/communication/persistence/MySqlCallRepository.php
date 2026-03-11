@@ -18,14 +18,15 @@ class MySqlCallRepository implements ICallRepository
 
     public function count(): int
     {
-        $stmt = $this->db->query("SELECT COUNT(*) FROM accepted_call");
+        $stmt = $this->db->query("SELECT COUNT(*) FROM calling");
         return (int)$stmt->fetch_assoc();
     }
 
     public function insert(int $id, int $driver_id, DateTime $timestamp): void
     {
-        $stmt = $this->db->prepare("INSERT INTO accepted_call (id, call_id) VALUES (:id, :call_id)");
-        $stmt->execute(['id' => $id, 'call_id' => $driver_id]);
+        $stmt = $this->db->prepare("INSERT INTO calling (id, driver_id, timestamp) VALUES (?, ?, ?)");
+        $stmt->bind_param("iis", $id, $driver_id, $timestamp);
+        $stmt->execute();
         $stmt->close();
     }
 
@@ -37,9 +38,8 @@ class MySqlCallRepository implements ICallRepository
                 c.driver_id AS driver_id,
                 c.call_time AS timestamp
 
-            FROM accepted_call a
-            JOIN calling c ON c.id = a.call_id
-            WHERE a.id = ?;");
+            FROM calling c
+            WHERE c.id = ?;");
 
         $stmt->bind_param("i", $id);
         $stmt->execute();
@@ -60,7 +60,7 @@ class MySqlCallRepository implements ICallRepository
 
     public function getAll(): array
     {
-        $stmt = $this->db->query("SELECT * FROM accepted_call");
+        $stmt = $this->db->query("SELECT * FROM calling");
         $calls = [];
         while ($row = $stmt->fetch_assoc()) {
             $calls[] = new Call($row['id'], $row['driver_id'], $row['timestamp']);
@@ -70,15 +70,21 @@ class MySqlCallRepository implements ICallRepository
 
     public function update(int $id, int $driver_id, DateTime $timestamp): void
     {
-        $stmt = $this->db->prepare("UPDATE accepted_call SET call_id = :call_id WHERE id = :id");
-        $stmt->execute(['id' => $id, 'call_id' => $driver_id]);
+        $stmt = $this->db->prepare("
+            UPDATE calling 
+            SET 
+                driver_id = ? 
+                timestamp = ?
+            WHERE id = ?");
+        $stmt->bind_param("isi", $id, $driver_id, $timestamp);
+        $stmt->execute();
         $stmt->close();
     }
 
     public function delete(int $id): void
     {
-        $stmt = $this->db->prepare("DELETE FROM accepted_call WHERE id = :id");
-        $stmt->execute(['id' => $id]);
-        $stmt->close();
+        $stmt = $this->db->prepare("DELETE FROM calling WHERE id = ?");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
     }
 }

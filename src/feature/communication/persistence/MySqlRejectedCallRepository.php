@@ -17,14 +17,14 @@ class MySqlRejectedCallRepository implements IRejectedCallRepository
 
     public function count(): int
     {
-        $result = $this->db->query("SELECT COUNT(*) as count FROM rejected_calls");
+        $result = $this->db->query("SELECT COUNT(*) as count FROM rejected_call");
         $row = $result->fetch_assoc();
         return (int)$row['count'];
     }
 
     public function insert(int $id, int $call_id, string $reason): void
     {
-        $stmt = $this->db->prepare("INSERT INTO rejected_calls (id, call_id, reason) VALUES (?, ?, ?)");
+        $stmt = $this->db->prepare("INSERT INTO rejected_call (id, call_id, reason) VALUES (?, ?, ?)");
         $stmt->bind_param("iis", $id, $call_id, $reason);
         $stmt->execute();
         $stmt->close();
@@ -32,7 +32,7 @@ class MySqlRejectedCallRepository implements IRejectedCallRepository
 
     public function get(int $id): RejectedCall | null
     {
-        $stmt = $this->db->prepare("SELECT call_id, reason FROM rejected_calls WHERE id = ?");
+        $stmt = $this->db->prepare("SELECT call_id, reason FROM rejected_call WHERE id = ?");
         $stmt->bind_param("i", $id);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -45,7 +45,7 @@ class MySqlRejectedCallRepository implements IRejectedCallRepository
 
     public function getAll(): array
     {
-        $stmt = $this->db->query("SELECT id, call_id, reason FROM rejected_calls");
+        $stmt = $this->db->query("SELECT id, call_id, reason FROM rejected_call");
         $calls = [];
         while ($row = $stmt->fetch_assoc()) {
             $calls[] = new RejectedCall($row['id'], $row['call_id'], $row['reason']);
@@ -55,7 +55,7 @@ class MySqlRejectedCallRepository implements IRejectedCallRepository
 
     public function update(int $id, int $call_id, string $reason): void
     {
-        $stmt = $this->db->prepare("UPDATE rejected_calls SET call_id = ?, reason = ? WHERE id = ?");
+        $stmt = $this->db->prepare("UPDATE rejected_call SET call_id = ?, reason = ? WHERE id = ?");
         $stmt->bind_param("isi", $call_id, $reason, $id);
         $stmt->execute();
         $stmt->close();
@@ -63,7 +63,7 @@ class MySqlRejectedCallRepository implements IRejectedCallRepository
 
     public function delete(int $id): void
     {
-        $stmt = $this->db->prepare("DELETE FROM rejected_calls WHERE id = ?");
+        $stmt = $this->db->prepare("DELETE FROM rejected_call WHERE id = ?");
         $stmt->bind_param("i", $id);
         $stmt->execute();
         $stmt->close();
