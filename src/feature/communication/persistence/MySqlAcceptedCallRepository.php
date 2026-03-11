@@ -16,7 +16,7 @@ class MySqlAcceptedCallRepository implements IAcceptedCallRepository
 
     public function insert(int $id, int $call_id): void
     {
-        $stmt = $this->db->prepare("INSERT INTO accepted_calls (id, call_id) VALUES (?, ?)");
+        $stmt = $this->db->prepare("INSERT INTO accepted_call (id, call_id) VALUES (?, ?)");
         $stmt->bind_param("ii", $id, $call_id);
         $stmt->execute();
         $stmt->close();
@@ -24,7 +24,7 @@ class MySqlAcceptedCallRepository implements IAcceptedCallRepository
 
     public function get(int $id): AcceptedCall | null
     {
-        $stmt = $this->db->prepare("SELECT call_id, user_id FROM accepted_calls WHERE id = ?");
+        $stmt = $this->db->prepare("SELECT call_id, user_id FROM accepted_call WHERE id = ?");
         $stmt->bind_param("i", $id);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -35,21 +35,9 @@ class MySqlAcceptedCallRepository implements IAcceptedCallRepository
         return new AcceptedCall($id, $row['call_id']);
     }
 
-    public function get_by_driver_id(int $driver_id)
-    {
-        $stmt = $this->db->prepare("
-        SELECT 
-            a.id, 
-            a.call_id 
-        FROM accepted_calls a
-        JOIN calls c ON a.call_id = c.id
-        JOIN loco
-        WHERE c.driver_id = ?");
-    }
-
     public function getAll(): array
     {
-        $stmt = $this->db->prepare("SELECT id, call_id, user_id FROM accepted_calls");
+        $stmt = $this->db->prepare("SELECT id, call_id FROM accepted_call");
         $stmt->execute();
         $result = $stmt->get_result();
         $calls = [];
@@ -61,7 +49,7 @@ class MySqlAcceptedCallRepository implements IAcceptedCallRepository
 
     public function update(int $id, int $call_id): void
     {
-        $stmt = $this->db->prepare("UPDATE accepted_calls SET call_id = ? WHERE id = ?");
+        $stmt = $this->db->prepare("UPDATE accepted_call SET call_id = ? WHERE id = ?");
         $stmt->bind_param("ii", $call_id, $id);
         $stmt->execute();
         $stmt->close();
@@ -69,7 +57,7 @@ class MySqlAcceptedCallRepository implements IAcceptedCallRepository
 
     public function count(): int
     {
-        $stmt = $this->db->prepare("SELECT COUNT(*) as count FROM accepted_calls");
+        $stmt = $this->db->prepare("SELECT COUNT(*) as count FROM accepted_call");
         $stmt->execute();
         $result = $stmt->get_result();
         $row = $result->fetch_assoc();
@@ -78,7 +66,7 @@ class MySqlAcceptedCallRepository implements IAcceptedCallRepository
 
     public function delete(int $id): void
     {
-        $stmt = $this->db->prepare("DELETE FROM accepted_calls WHERE id = ?");
+        $stmt = $this->db->prepare("DELETE FROM accepted_call WHERE id = ?");
         $stmt->bind_param("i", $id);
         $stmt->execute();
         $stmt->close();

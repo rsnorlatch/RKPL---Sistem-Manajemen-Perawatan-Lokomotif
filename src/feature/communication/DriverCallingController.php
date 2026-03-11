@@ -12,6 +12,7 @@ use lms\feature\communication\entities\IAcceptedCallRepository;
 use lms\feature\communication\entities\IRejectedCallRepository;
 
 use DateTime;
+use lms\feature\communication\entities\AcceptedCall;
 use lms\feature\locomotive_management\entities\IOnSiteLocomotiveRepository;
 
 class DriverCallingController
@@ -51,6 +52,12 @@ class DriverCallingController
             $call->driver_id,
             $call_id,
         );
+
+        $tobedeleted_call = array_filter($this->_acceptedCalls->getAll(), function (AcceptedCall $a) use ($call_id) {
+            return $a->call_id == $call_id;
+        });
+
+        $this->_acceptedCalls->delete($tobedeleted_call[0]->id);
 
         return CallingResult::Success;
     }
