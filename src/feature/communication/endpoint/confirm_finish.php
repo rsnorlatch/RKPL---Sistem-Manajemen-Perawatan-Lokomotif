@@ -2,18 +2,38 @@
 
 namespace lms\feature\communication\endpoint;
 
+use lms\feature\communication\CallingResult;
 use lms\feature\communication\DriverCallingController;
-use lms\feature\communication\persistence\InMemoryCallRepository;
-use lms\feature\communication\persistence\InMemoryConfirmationFinishRepository;
-use lms\feature\communication\persistence\InMemoryConfirmationProblemRepository;
+use lms\feature\communication\persistence\MySqlCallRepository;
+use lms\feature\communication\persistence\MySqlConfirmationFinishRepository;
+use lms\feature\communication\persistence\MySqlConfirmationProblemRepository;
+use lms\feature\communication\persistence\MySqlAcceptedCallRepository;
+use lms\feature\communication\persistence\MySqlRejectedCallRepository;
 
-require_once __DIR__."../../../../../vendor/autoload.php";
+require_once __DIR__ . "../../../../../vendor/autoload.php";
+require_once __DIR__ . "../../../../db/lms.php";
 
-$calls = new InMemoryCallRepository([]);
-$confirmationFinishes = new InMemoryConfirmationFinishRepository([]);
-$confirmationProblems = new InMemoryConfirmationProblemRepository([]);
-$controller = new DriverCallingController($calls, $confirmationFinishes, $confirmationProblems);
+$id = $_POST['id'];
 
-$result = $controller->confirm_finish(1);
+$calls = new MySqlCallRepository($db);
+$confirmationFinishes = new MySqlConfirmationFinishRepository($db);
+$confirmationProblems = new MySqlConfirmationProblemRepository($db);
+$acceptedCalls = new MySqlAcceptedCallRepository($db);
+$rejectedCalls = new MySqlRejectedCallRepository($db);
 
-var_dump($result);  
+$controller = new DriverCallingController($calls, $confirmationFinishes, $confirmationProblems, $acceptedCalls, $rejectedCalls);
+
+$result = $controller->confirm_finish($id);
+
+
+switch ($result) {
+    case CallingResult::Success:
+        header("Location: ../../../../front-end/dashboard_masinis.php?status=finish_confirmed");
+        break;
+    case CallingResult::CallNotFound:
+        echo "Failed to confirm finish. Call not found.";
+        break;
+    case CallingResult::LocomotiveNotFound:
+        echo "Failed to confirm finish. Locomotive not found.";
+        break;
+}

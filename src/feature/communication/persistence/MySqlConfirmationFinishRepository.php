@@ -1,67 +1,70 @@
 <?php
 
-use lms\feature\communication\entities\ICallRepository;
-use lms\feature\communication\entities\Call;
+namespace lms\feature\communication\persistence;
+
+use lms\feature\communication\entities\IConfirmationFinishRepository;
+use lms\feature\communication\entities\ConfirmationFinish;
 use DateTime;
+use MySqli;
 
-class MySqlCallRepository implements ICallRepository
+class MySqlConfirmationFinishRepository implements IConfirmationFinishRepository
 {
-    private mysqli $db;
+    private MySqli $db;
 
-    function __construct(mysqli $db)
+    public function __construct(MySqli $db)
     {
         $this->db = $db;
     }
 
-    function count(): int
+    public function count(): int
     {
-        $stmt = $this->db->query("SELECT COUNT(*) as count FROM calls");
-        $result = $stmt->fetch_assoc();
-        return (int)$result['count'];
+        $result = $this->db->query("SELECT COUNT(*) as count FROM confirmation_finish");
+        $row = $result->fetch_assoc();
+        return (int)$row['count'];
     }
 
-    function insert(int $id, int $driver_id, DateTime $timestamp): void
+    public function insert(int $id, int $driver_id, int $call_id, DateTime $timestamp): void
     {
-        $stmt = $this->db->prepare("INSERT INTO calls (id, driver_id, timestamp) VALUES (?, ?, ?)");
-        $stmt->bind_param("iis", $id, $driver_id, $timestamp->format('Y-m-d H:i:s'));
+        $stmt = $this->db->prepare("INSERT INTO confirmation_finish (id, driver_id, call_id, timestamp) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("iiis", $id, $driver_id, $call_id, $timestamp->format('Y-m-d H:i:s'));
         $stmt->execute();
         $stmt->close();
     }
 
-    function get(int $id): Call | null
+    public function get(int $id)
     {
-        $stmt = $this->db->prepare("SELECT * FROM calls WHERE id = ?");
+        $stmt = $this->db->prepare("SELECT * FROM confirmation_finish WHERE id = ?");
         $stmt->bind_param("i", $id);
         $stmt->execute();
         $result = $stmt->get_result();
         if ($row = $result->fetch_assoc()) {
-            return new Call($row['id'], $row['driver_id'], new DateTime($row['timestamp']));
+            return new ConfirmationFinish($row['id'], $row['driver_id'], $row['call_id'], new DateTime($row['timestamp']));
         } else {
             return null;
         }
     }
 
-    function getAll(): array
+    public function getAll(): array
     {
-        $stmt = $this->db->query("SELECT * FROM calls");
-        $calls = [];
-        while ($row = $stmt->fetch_assoc()) {
-            $calls[] = new Call($row['id'], $row['driver_id'], new DateTime($row['timestamp']));
+        $result = $this->db->query("SELECT * FROM confirmation_finish");
+        $finishes = [];
+        while ($row = $result->fetch_assoc()) {
+            $finishes[] = new ConfirmationFinish($row['id'], $row['driver_id'], $row['call_id'], new DateTime($row['timestamp']));
         }
-        return $calls;
+        return $finishes;
     }
 
-    function update(int $id, int $driver_id, DateTime $timestamp): void
+    public function update(int $id, int $driver_id, int $call_id, DateTime $timestamp): void
     {
-        $stmt = $this->db->prepare("UPDATE calls SET driver_id = ?, timestamp = ? WHERE id = ?");
-        $stmt->bind_param("isi", $driver_id, $timestamp->format('Y-m-d H:i:s'), $id);
+        $stmt = $this->db->prepare("UPDATE confirmation_finish SET driver_id = ?, call_id = ?, timestamp = ? WHERE id = ?");
+        $stmt->bind_param("iisi", $driver_id, $call_id, $timestamp->format('Y-m-d H:i:s'), $id);
         $stmt->execute();
         $stmt->close();
     }
 
-    function delete(int $id): void
+    public function delete(int $id): void
     {
-        $stmt = $this->db->prepare("DELETE FROM calls WHERE id = ?");
+        $stmt = $this->db->prepare("DELETE FROM confirmation_finish WHERE id = ?");
         $stmt->bind_param("i", $id);
         $stmt->execute();
         $stmt->close();

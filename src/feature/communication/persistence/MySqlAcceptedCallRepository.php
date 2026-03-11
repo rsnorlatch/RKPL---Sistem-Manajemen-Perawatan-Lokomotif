@@ -1,6 +1,6 @@
 <?php
 
-namespace lms\feature\maintenance_program\persistence;
+namespace lms\feature\communication\persistence;
 
 use lms\feature\communication\entities\AcceptedCall;
 use lms\feature\communication\entities\IAcceptedCallRepository;
@@ -33,6 +33,18 @@ class MySqlAcceptedCallRepository implements IAcceptedCallRepository
         }
         $row = $result->fetch_assoc();
         return new AcceptedCall($id, $row['call_id']);
+    }
+
+    public function get_by_driver_id(int $driver_id)
+    {
+        $stmt = $this->db->prepare("
+        SELECT 
+            a.id, 
+            a.call_id 
+        FROM accepted_calls a
+        JOIN calls c ON a.call_id = c.id
+        JOIN loco
+        WHERE c.driver_id = ?");
     }
 
     public function getAll(): array

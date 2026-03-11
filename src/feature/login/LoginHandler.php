@@ -1,7 +1,8 @@
 <?php
+
 namespace lms\feature\login;
 
-require_once __DIR__."../../../../vendor/autoload.php";
+require_once __DIR__ . "../../../../vendor/autoload.php";
 
 use lms\feature\signup\entities\Driver;
 use lms\feature\signup\entities\Maintainer;
@@ -16,7 +17,7 @@ enum LoginResult
     case MaintainerLoginSuccess;
     case CentralOfficeLoginSuccess;
     case UsernameOrPasswordIncorrect;
-    case UserNotFound; 
+    case UserNotFound;
 }
 
 class LoginHandler
@@ -25,23 +26,26 @@ class LoginHandler
     private IMaintainerRepository $_maintainer;
     private ICentralOfficeRepository $_central_office;
 
-    function __construct(IDriverRepository $_driver, IMaintainerRepository $_maintainer, ICentralOfficeRepository $_central_office) {
+    function __construct(IDriverRepository $_driver, IMaintainerRepository $_maintainer, ICentralOfficeRepository $_central_office)
+    {
         $this->_driver = $_driver;
         $this->_maintainer = $_maintainer;
         $this->_central_office = $_central_office;
     }
 
-    function handle(string $username, string $password): LoginResult {
+    function handle(string $username, string $password): LoginResult
+    {
         $users = array_merge($this->_driver->getAll(), $this->_maintainer->getAll(), $this->_central_office->getAll());
 
-        $target_user = array_filter($users, function (Driver|Maintainer|CentralOffice $u) use ($username, $password) { 
-            return $u->name == $username && $u->password == $password; 
+        $target_user = array_filter($users, function (Driver|Maintainer|CentralOffice $u) use ($username, $password) {
+            return $u->name == $username && $u->password == $password;
         });
 
-        if ($target_user == null) 
+        if ($target_user == null)
             return LoginResult::UsernameOrPasswordIncorrect;
 
         session_start();
+        $_SESSION['user_id'] = $target_user[1]->id;
         $_SESSION['user'] = $username;
         $_SESSION['is_logged_in'] = true;
 
@@ -56,3 +60,4 @@ class LoginHandler
         }
     }
 }
+

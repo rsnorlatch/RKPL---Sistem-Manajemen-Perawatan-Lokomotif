@@ -22,6 +22,8 @@ $handler = new LoginHandler($driver, $maintainer, $central_office);
 
 $result = $handler->handle($username, $password);
 
+session_start();
+
 switch ($result) {
     case LoginResult::DriverLoginSuccess:
         header("Location: ../../../../front-end/dashboard_masinis.php");

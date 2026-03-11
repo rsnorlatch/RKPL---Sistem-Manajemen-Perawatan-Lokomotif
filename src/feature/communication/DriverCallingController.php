@@ -2,7 +2,7 @@
 
 namespace lms\feature\communication;
 
-require_once __DIR__."../../../../vendor/autoload.php";
+require_once __DIR__ . "../../../../vendor/autoload.php";
 
 use lms\feature\communication\entities\ICallRepository;
 use lms\feature\communication\CallingResult;
@@ -12,6 +12,7 @@ use lms\feature\communication\entities\IAcceptedCallRepository;
 use lms\feature\communication\entities\IRejectedCallRepository;
 
 use DateTime;
+use lms\feature\locomotive_management\entities\IOnSiteLocomotiveRepository;
 
 class DriverCallingController
 {
@@ -20,19 +21,22 @@ class DriverCallingController
     private IConfirmationProblemRepository $_confirmationProblems;
     private IAcceptedCallRepository $_acceptedCalls;
     private IRejectedCallRepository $_rejectedCalls;
+    private IOnSiteLocomotiveRepository $_onSiteLocomotives;
 
     function __construct(
-        ICallRepository $calls, 
-        IConfirmationFinishRepository $confirmationFinishes, 
-        IConfirmationProblemRepository $confirmationProblems, 
-        IAcceptedCallRepository $acceptedCalls, 
-        IRejectedCallRepository $rejectedCalls)
-    {
+        ICallRepository $calls,
+        IConfirmationFinishRepository $confirmationFinishes,
+        IConfirmationProblemRepository $confirmationProblems,
+        IAcceptedCallRepository $acceptedCalls,
+        IRejectedCallRepository $rejectedCalls,
+        IOnSiteLocomotiveRepository $onSiteLocomotives
+    ) {
         $this->_calls = $calls;
-        $this->_confirmationFinishes = $confirmationFinishes; 
+        $this->_confirmationFinishes = $confirmationFinishes;
         $this->_confirmationProblems = $confirmationProblems;
         $this->_acceptedCalls = $acceptedCalls;
         $this->_rejectedCalls = $rejectedCalls;
+        $this->_onSiteLocomotives = $onSiteLocomotives;
     }
 
     public function confirm_finish(int $call_id)
@@ -46,6 +50,13 @@ class DriverCallingController
             $this->_confirmationFinishes->count() + 1,
             $call->driver_id,
             $call_id,
+            new DateTime()
+        );
+
+        $this->_onSiteLocomotives->insert(
+            $this->_onSiteLocomotives->count() + 1,
+            $call->driver_id,
+            $call->id,
             new DateTime()
         );
 
@@ -101,3 +112,4 @@ class DriverCallingController
         return CallingResult::Success;
     }
 }
+

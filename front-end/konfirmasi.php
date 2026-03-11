@@ -1,7 +1,6 @@
 <?php
 
-require_once __DIR__ . "../../vendor/autoload.php";
-require_once __DIR__ . "/../src/db/lms.php";
+
 
 ?>
 
@@ -44,6 +43,18 @@ require_once __DIR__ . "/../src/db/lms.php";
       <?php
       // Ambil panggilan yang sudah diterima (accepted) oleh masinis ini
       $calls = [];
+      require_once __DIR__ . "/../src/db/lms.php";
+      $result = $db->query("
+        SELECT
+          l.model AS loco_model,
+            a.call_id
+           
+        FROM accepted_call a
+        JOIN calling c ON a.call_id = c.id
+        JOIN locomotive l ON c.driver_id = l.driver_id
+        WHERE l.driver_id = {$_SESSION['user_id']}
+        ORDER BY c.call_time DESC;
+      ");
       if ($result) {
         while ($row = $result->fetch_assoc()) $calls[] = $row;
       }

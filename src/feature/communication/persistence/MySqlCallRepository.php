@@ -1,10 +1,13 @@
 <?php
 
-use lms\feature\communication\entities\AcceptedCall;
-use lms\feature\communication\entities\IAcceptedCallRepository;
+namespace lms\feature\communication\persistence;
 
+use lms\feature\communication\entities\Call;
+use lms\feature\communication\entities\ICallRepository;
+use mysqli;
+use DateTime;
 
-class MySqlCallRepository implements IAcceptedCallRepository
+class MySqlCallRepository implements ICallRepository
 {
     private mysqli $db;
 
@@ -19,14 +22,14 @@ class MySqlCallRepository implements IAcceptedCallRepository
         return (int)$stmt->fetch_assoc();
     }
 
-    public function insert(int $id, int $call_id): void
+    public function insert(int $id, int $driver_id, DateTime $timestamp): void
     {
         $stmt = $this->db->prepare("INSERT INTO accepted_calls (id, call_id) VALUES (:id, :call_id)");
-        $stmt->execute(['id' => $id, 'call_id' => $call_id]);
+        $stmt->execute(['id' => $id, 'call_id' => $driver_id]);
         $stmt->close();
     }
 
-    public function get(int $id): AcceptedCall | null
+    public function get(int $id): Call | null
     {
         $stmt = $this->db->prepare("SELECT * FROM accepted_calls WHERE id = ?");
         $stmt->bind_param("i", $id);
@@ -39,7 +42,7 @@ class MySqlCallRepository implements IAcceptedCallRepository
         }
 
         $row = $result->fetch_assoc();
-        return new AcceptedCall($row['id'], $row['call_id']);
+        return new Call($row['id'], $row['driver_id'], $row['timestamp']);
     }
 
     public function getAll(): array
@@ -47,15 +50,15 @@ class MySqlCallRepository implements IAcceptedCallRepository
         $stmt = $this->db->query("SELECT * FROM accepted_calls");
         $calls = [];
         while ($row = $stmt->fetch_assoc()) {
-            $calls[] = new AcceptedCall($row['id'], $row['call_id']);
+            $calls[] = new Call($row['id'], $row['driver_id'], $row['timestamp']);
         }
         return $calls;
     }
 
-    public function update(int $id, int $call_id): void
+    public function update(int $id, int $driver_id, DateTime $timestamp): void
     {
         $stmt = $this->db->prepare("UPDATE accepted_calls SET call_id = :call_id WHERE id = :id");
-        $stmt->execute(['id' => $id, 'call_id' => $call_id]);
+        $stmt->execute(['id' => $id, 'call_id' => $driver_id]);
         $stmt->close();
     }
 

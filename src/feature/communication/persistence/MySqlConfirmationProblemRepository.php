@@ -1,7 +1,11 @@
 <?php
 
+namespace lms\feature\communication\persistence;
+
 use lms\feature\communication\entities\IConfirmationProblemRepository;
 use lms\feature\communication\entities\ConfirmationProblem;
+use MySqli;
+use DateTime;
 
 class MySqlConfirmationProblemRepository implements IConfirmationProblemRepository
 {
