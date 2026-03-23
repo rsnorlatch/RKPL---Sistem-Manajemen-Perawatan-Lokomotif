@@ -1,0 +1,134 @@
+/* jadwal.css — dipakai oleh: front-end/jadwal.php */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --blue:   #2196F3;
+  --orange: #FF7043;
+  --dark:   #1a1a1a;
+  --gray:   #757575;
+  --lgray:  #bdbdbd;
+  --border: #e8e8e8;
+  --bg:     #f0f2f5;
+  --card:   #ffffff;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: #e8edf2;
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 24px 12px;
+}
+
+/* ── Shell ── */
+.shell {
+  width: min(340px, 100%);
+  background: var(--bg);
+  border-radius: clamp(0px, 3.5vw, 24px);
+  box-shadow: 0 20px 56px rgba(0,0,0,.13);
+  overflow: hidden;
+  animation: fadeUp .4s ease both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Top Bar ── */
+.topbar {
+  background: var(--blue);
+  display: flex;
+  align-items: center;
+  padding: 16px 14px;
+  gap: 10px;
+}
+
+.back-btn { display: flex; align-items: center; color: #fff; text-decoration: none; flex-shrink: 0; }
+.back-btn svg { width: 22px; height: 22px; fill: #fff; }
+.topbar h1 { font-size: 17px; font-weight: 600; color: #fff; }
+
+/* ── Page body ── */
+.page-body {
+  padding: 16px 14px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ── Locomotive list ── */
+.loco-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.loco-card {
+  background: var(--card);
+  border-radius: 12px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 1px 6px rgba(0,0,0,.07);
+  animation: itemIn .3s ease both;
+}
+
+@keyframes itemIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.loco-info { flex: 1; }
+
+.loco-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--dark);
+}
+
+.loco-code {
+  font-size: 13px;
+  color: var(--gray);
+  margin-top: 2px;
+}
+
+/* ── Tombol Atur ── */
+.btn-atur {
+  padding: 9px 22px;
+  background: var(--orange);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: opacity .15s, transform .1s;
+  flex-shrink: 0;
+}
+
+.btn-atur:hover  { opacity: .88; }
+.btn-atur:active { transform: scale(.96); }
+
+/* ── Empty state ── */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 40px 0;
+  color: var(--lgray);
+}
+
+.empty-state svg { width: 40px; height: 40px; fill: var(--lgray); }
+.empty-state p   { font-size: 14px; }
+
+/* ── Responsive ── */
+@media (max-width: 400px) {
+  body { background: var(--bg); align-items: flex-start; padding: 0; }
+  .shell { width: 100%; min-height: 100svh; border-radius: 0 !important; box-shadow: none; }
+}

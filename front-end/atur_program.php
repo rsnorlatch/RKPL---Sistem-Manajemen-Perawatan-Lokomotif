@@ -74,24 +74,24 @@ use lms\feature\maintenance_program\MaintenanceProgramShowUnitHandler;
           </div>
 
           <?php else: foreach ($result as $unit): ?>
-
-            <div class="list-item">
-              <span class="drag-icon">⠿</span>
+          <div class="list-item">
+            <span class="drag-icon">⠿</span>
               <div class="item-info">
                 <div class="item-name"><?= htmlspecialchars($unit['unit_name']) ?></div>
-                <div class="item-sub">Urutan: <?= $unit['sequence_number'] ?></div>
-              </div>
-              <div class="action-links">
-                <!-- Update: buka form edit inline via GET parameter -->
-                <a href="atur_program.php?edit=<?= $unit['id'] ?>" class="link-action">Update</a>
-                <!-- Delete: langsung kirim ke backend delete_unit.php -->
-                <!-- Hapus: kirim ke backend delete_unit.php via link form POST agar tidak via URL langsung -->
-                <form action="../src/feature/maintenance_program/endpoint/delete_unit.php" method="POST" style="display:inline">
-                  <input type="hidden" name="id" value="<?= $unit['id'] ?>" />
-                  <button type="submit" class="link-action del">Hapus</button>
-                </form>
-              </div>
-            </div>
+              <div class="item-sub">Urutan: <?= $unit['sequence_number'] ?></div>
+          </div>
+          
+          <div class="action-links">
+            <!-- Tombol Update — biru pill -->
+            <a href="atur_program.php?edit=<?= $unit['id'] ?>" class="link-action">Update</a>
+            <!-- Tombol Hapus — merah pill -->
+            <form action="../src/feature/maintenance_program/endpoint/delete_unit.php"
+                  method="POST" style="display:inline">
+              <input type="hidden" name="id" value="<?= $unit['id'] ?>"/>
+              <button type="submit" class="link-action del">Hapus</button>
+            </form>
+          </div>
+        </div>
 
         <?php endforeach;
         endif; ?>
@@ -126,7 +126,5 @@ use lms\feature\maintenance_program\MaintenanceProgramShowUnitHandler;
 
     </div>
   </div>
-
 </body>
-
 </html>

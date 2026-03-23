@@ -1,10 +1,11 @@
-/* css reset setting default tampilan atur program perawatan */
+/* atur_program.css — dipakai oleh: front-end/atur_program.php */
+
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
   --blue:    #2196F3;
   --orange:  #FF7043;
-  --orange2: #ff8843;
+  --orange2: #FF7043;
   --red:     #D32F2F;
   --dark:    #1a1a1a;
   --gray:    #757575;
@@ -84,15 +85,12 @@ body {
   border-radius: 12px;
   padding: 14px 14px 16px;
   box-shadow: 0 2px 8px rgba(0,0,0,.07);
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
 }
 
 .card form {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
 .card input {
@@ -110,6 +108,14 @@ body {
 
 .card input::placeholder { color: var(--lgray); }
 
+.edit-label {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #1565C0;
+  padding-bottom: 4px;
+  border-bottom: 1.5px solid #e3f2fd;
+}
+
 .card input:focus {
   border-color: var(--blue);
   box-shadow: 0 0 0 3px rgba(33,150,243,.11);
@@ -117,7 +123,7 @@ body {
 }
 
 /* ── Button row ── */
-.btn-row { display: flex; gap: 10px; margin-top: 2px; }
+.btn-row { display: flex; gap: 16px; margin-top: 6px; }
 
 .btn {
   flex: 1;
@@ -202,6 +208,38 @@ body {
   text-overflow: ellipsis;
 }
 
+/* ── Action links (Update / Hapus) — pill button ── */
+.action-links {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.link-action {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 12px;
+  border: none;
+  border-radius: 20px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  letter-spacing: .2px;
+  transition: opacity .15s, transform .1s;
+  background: var(--blue);
+  color: #fff;
+}
+
+.link-action.del {
+  background: var(--red);
+  color: #fff;
+}
+
+.link-action:hover  { opacity: .85; }
+.link-action:active { transform: scale(.95); }
+
 /* ── Three-dot menu (CSS-only, checkbox hack) ── */
 .menu-wrap { position: relative; flex-shrink: 0; }
 
@@ -249,8 +287,10 @@ body {
 /* Tampil saat checkbox dicentang */
 .menu-toggle:checked ~ .dropdown { display: block; }
 
-/* Item dropdown */
-.dropdown-item {
+/* Item dropdown — berlaku untuk <a>, <button>, dan <button> di dalam <form> */
+.dropdown-item,
+.dropdown form,
+.dropdown form button {
   display: block;
   width: 100%;
   padding: 10px 16px;
@@ -263,11 +303,20 @@ body {
   color: var(--dark);
   text-decoration: none;
   transition: background .12s;
+  box-sizing: border-box;
 }
 
-.dropdown-item:hover     { background: #f5f5f5; }
-.dropdown-item.del       { color: var(--red); }
-.dropdown-item.del:hover { background: #fdecea; }
+/* Form wrapper tidak boleh punya padding sendiri — padding ada di button */
+.dropdown form { padding: 0; }
+
+.dropdown-item:hover,
+.dropdown form button:hover { background: #f5f5f5; }
+
+.dropdown-item.del,
+.dropdown form:last-child button { color: var(--red); }
+
+.dropdown-item.del:hover,
+.dropdown form:last-child button:hover { background: #fdecea; }
 
 /* ── Tombol Update orange bawah ── */
 .btn-update {
