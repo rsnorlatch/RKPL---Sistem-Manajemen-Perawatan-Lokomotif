@@ -7,7 +7,7 @@ use lms\feature\maintenance_schedule\entities\Schedule;
 use DateTime;
 use MySqli;
 
-require_once __DIR__."../../../../../vendor/autoload.php";
+require_once __DIR__ . "../../../../../vendor/autoload.php";
 
 
 class MySqlScheduleRepository implements IScheduleRepository
@@ -57,10 +57,9 @@ class MySqlScheduleRepository implements IScheduleRepository
         $result = $stmt->get_result();
         $maintenance_schedule = [];
         while ($row = $result->fetch_assoc()) {
-            $maintenance_schedule[] = new Schedule($row['id'], $row['start'], $row['end'], $row['locomotive_id']);
+            $maintenance_schedule[] = new Schedule($row['id'], new DateTIme($row['start']), new DateTime($row['end']), $row['locomotive_id']);
         }
         return $maintenance_schedule;
-        
     }
     public function update(int $id, DateTime $start, DateTime $end, int $locomotive_id): void
     {

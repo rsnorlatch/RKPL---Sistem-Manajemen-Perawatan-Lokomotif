@@ -2,6 +2,8 @@
 
 namespace lms\feature\maintenance_schedule\persistence;
 
+require_once "../../../../vendor/autoload.php";
+
 use lms\feature\maintenance_schedule\entities\IScheduleRepository;
 use lms\feature\maintenance_schedule\entities\Schedule;
 
@@ -50,3 +52,4 @@ class InMemoryScheduleRepository implements IScheduleRepository
         unset($this->schedules[$id]);
     }
 }
+

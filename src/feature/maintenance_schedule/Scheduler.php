@@ -21,12 +21,14 @@ class Scheduler
     private ILocomotiveRepository $_locomotives;
     private IScheduleRepository $_schedule;
 
-    function __construct(ILocomotiveRepository $_locomotives, IScheduleRepository $_schedule) {
+    function __construct(ILocomotiveRepository $_locomotives, IScheduleRepository $_schedule)
+    {
         $this->_locomotives = $_locomotives;
         $this->_schedule = $_schedule;
     }
 
-    private function is_unavailable(DateTime $start, DateTime $end) {
+    private function is_unavailable(DateTime $start, DateTime $end)
+    {
         return count(array_filter($this->_schedule->getAll(), function (Schedule $s) use ($start, $end) {
             return $start >= $s->start && $start <= $s->end ||
                 $end >= $s->start && $end <= $s->end ||
@@ -34,7 +36,8 @@ class Scheduler
         })) > 0;
     }
 
-    function add_schedule(int $locomotive_id, DateTime $start, DateTime $end) {
+    function add_schedule(int $locomotive_id, DateTime $start, DateTime $end)
+    {
         if ($this->is_unavailable($start, $end)) {
             return ScheduleResult::ScheduleUnavailable;
         }
@@ -45,12 +48,13 @@ class Scheduler
 
         $latest_id = $this->_schedule->count();
 
-        $this->_schedule->insert($latest_id, $start, $end, $locomotive_id);
+        $this->_schedule->insert($latest_id, clone $start, clone $end, $locomotive_id);
 
         return ScheduleResult::Success;
     }
 
-    function edit_schedule(int $locomotive_id, DateTime $start, DateTime $end) {
+    function edit_schedule(int $locomotive_id, DateTime $start, DateTime $end)
+    {
         if ($this->is_unavailable($start, $end)) {
             return ScheduleResult::ScheduleUnavailable;
         }

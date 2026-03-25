@@ -50,10 +50,13 @@ class LoginHandler
         $_SESSION['is_logged_in'] = true;
 
         if ($this->_driver->getByUsername($username) != null) {
+            $_SESSION['user_is_driver'] = true;
             return LoginResult::DriverLoginSuccess;
         } else if ($this->_maintainer->getByUsername($username) != null) {
+            $_SESSION['user_is_maintainer'] = true;
             return LoginResult::MaintainerLoginSuccess;
         } else if ($this->_central_office->getByUsername($username) != null) {
+            $_SESSION['user_is_central_office'] = true;
             return LoginResult::CentralOfficeLoginSuccess;
         } else {
             return LoginResult::UserNotFound;
