@@ -20,4 +20,3 @@ $scheduler = new Scheduler($locomotive, $schedule);
 $result = $scheduler->edit_schedule($locomotive_id, $date_start, $date_end);
 
 var_dump($result);
-

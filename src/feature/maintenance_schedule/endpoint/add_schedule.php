@@ -17,13 +17,20 @@ $start = $_POST['start'];
 $end = $_POST['end'];
 
 
-
 $locomotive = new MySqlLocomotiveRepository($db);
 $schedule = new MySqlScheduleRepository($db);
 
 $scheduler = new Scheduler($locomotive, $schedule);
 
 $result = $scheduler->add_schedule($locomotive_id, new DateTime($start), new DateTime($end));
+
+
+if ($result == ScheduleResult::IsScheduled) {
+    $start_ref = new DateTime($start);
+    $end_ref = new DateTime($end);
+    $result = $scheduler->edit_schedule($locomotive_id, $start_ref, $end_ref);
+}
+
 
 switch ($result) {
     case ScheduleResult::LocomotiveNotFound:
