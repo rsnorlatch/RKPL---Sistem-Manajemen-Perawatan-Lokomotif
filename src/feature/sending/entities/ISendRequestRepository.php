@@ -3,7 +3,6 @@
 namespace lms\feature\sending\entities;
 
 use DateTime;
-use lms\feature\locomotive_management\entities\Locomotive;
 
 interface ISendRequestRepository
 {

@@ -2,7 +2,7 @@
 
 namespace lms\feature\sending\persistence;
 
-require_once __DIR__ . "../../../../vendor/autoload.php";
+require_once __DIR__ . "/../../../../vendor/autoload.php";
 
 use lms\feature\sending\entities\IStopRepository;
 use lms\feature\sending\entities\Stop;

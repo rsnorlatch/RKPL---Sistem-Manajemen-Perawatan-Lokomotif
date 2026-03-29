@@ -2,8 +2,11 @@
 
 namespace lms\feature\sending\persistence;
 
+require_once __DIR__ . "../../../../../vendor/autoload.php";
+
 use lms\feature\sending\entities\ISendRequestRepository;
 use lms\feature\sending\entities\SendRequest;
+use DateTime;
 
 class InMemorySendRequestRepository implements ISendRequestRepository
 {
@@ -19,9 +22,9 @@ class InMemorySendRequestRepository implements ISendRequestRepository
         return count($this->_send_requests);
     }
 
-    public function insert(): void
+    public function insert(int $id, int $locomotive_id, int $destination_id, DateTime $request_time): void
     {
-        array_push($this->_send_requests, new SendRequest());
+        array_push($this->_send_requests, new SendRequest($id, $locomotive_id, $destination_id, $request_time));
     }
 
     public function get(int $id): SendRequest
@@ -36,13 +39,13 @@ class InMemorySendRequestRepository implements ISendRequestRepository
         return $this->_send_requests;
     }
 
-    public function update(int $id, string $name, int $x, int $y): void
+    public function update(int $id, int $locomotive_id, int $destination_id, DateTime $request_time): void
     {
         foreach ($this->_send_requests as $s) {
             if ($s->id == $id) {
-                $s->name = $name;
-                $s->x = $x;
-                $s->y = $y;
+                $s->locomotive_id = $locomotive_id;
+                $s->destination_id = $destination_id;
+                $s->request_time = $request_time;
             }
         }
     }
