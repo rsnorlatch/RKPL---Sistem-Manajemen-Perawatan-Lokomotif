@@ -37,13 +37,6 @@ class Scheduler
         })) > 0;
     }
 
-    private function is_scheduled(int $locomotive_id)
-    {
-        return count(array_filter($this->_schedule->getAll(), function (Schedule $schedule) use ($locomotive_id) {
-            return $schedule->locomotive_id == $locomotive_id;
-        })) > 0;
-    }
-
     function add_schedule(int $locomotive_id, DateTime $start, DateTime $end)
     {
         if ($this->is_unavailable($start, $end)) {
@@ -54,13 +47,9 @@ class Scheduler
             return ScheduleResult::LocomotiveNotFound;
         }
 
-        if ($this->is_scheduled($locomotive_id)) {
-            return ScheduleResult::IsScheduled;
-        }
-
         $latest_id = $this->_schedule->count();
 
-        $this->_schedule->insert($latest_id, clone $start, clone $end, $locomotive_id);
+        $this->_schedule->insert($latest_id + 1, clone $start, clone $end, $locomotive_id);
 
         return ScheduleResult::Success;
     }
