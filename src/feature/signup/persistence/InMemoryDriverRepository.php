@@ -1,8 +1,10 @@
 <?php
+
 namespace lms\feature\signup\persistence;
 
-require_once __DIR__."../../../../../vendor/autoload.php";
+require_once __DIR__ . "../../../../../vendor/autoload.php";
 
+use Error;
 use lms\feature\signup\entities\IDriverRepository;
 use lms\feature\signup\entities\Driver;
 
@@ -45,12 +47,15 @@ class InMemoryDriverRepository implements IDriverRepository
         return array_values($this->drivers);
     }
 
+    // TODO: replace every update function in every repository with the new implementation below
     public function update(int $id, string $username, string $email, string $password): void
     {
-        if (isset($this->drivers[$id])) {
-            $this->drivers[$id]->name = $username;
-            $this->drivers[$id]->email = $email;
-            $this->drivers[$id]->password = $password;
+        if (isset($this->drivers[$id - 1])) {
+            $this->drivers[$id - 1]->name = $username;
+            $this->drivers[$id - 1]->email = $email;
+            $this->drivers[$id - 1]->password = $password;
+        } else {
+            throw new Error("cannot find user with the id of $id");
         }
     }
 
