@@ -1,80 +1,90 @@
 <?php
+// src/feature/login/endpoint/reset_password.php
+// Step 1: cek username ada di DB → redirect ke step 2
+// Step 2: update password baru
 
-namespace lms\feature\login\endpoint;
+require_once __DIR__ . '/../../../../src/db/lms.php';
 
-require_once __DIR__ . "/../../../../vendor/autoload.php";
-require_once __DIR__ . "/../..//../db/lms.php";
-
-use lms\feature\login\reset_password\CentralOfficeResetPasswordHandler;
-use lms\feature\login\reset_password\DriverResetPasswordHandler;
-use lms\feature\login\reset_password\MaintainerResetPasswordHandler;
-use lms\feature\login\reset_password\PasswordResetResult;
-use lms\feature\signup\entities\CentralOffice;
-use lms\feature\signup\entities\Driver;
-use lms\feature\signup\entities\Maintainer;
-use lms\feature\signup\persistence\MySqlCentralOfficeRepository;
-use lms\feature\signup\persistence\MySqlDriverRepository;
-use lms\feature\signup\persistence\MySqlMaintainerRepository;
-
-$step = $_POST['step'];
-
-$driver = new MySqlDriverRepository($db);
-$maintainer = new MySqlMaintainerRepository($db);
-$central_office = new MySqlCentralOfficeRepository($db);
-
-
-$username = $_POST['username'];
-
-$users = array_merge($driver->getAll(), $maintainer->getAll(), $central_office->getAll());
-$target_users = array_filter($users, function (Driver|Maintainer|CentralOffice $user) use ($username) {
-    return $user->name == $username;
-});
-
-// I have no idea why but for some reason the first element of this array is at index number 4 and not 0
-$target_user = $target_users[4];
-
-if ($step == 1) {
-    if ($target_user == null) {
-        header("Location: ../../../../front-end/reset_password.php?step=1&error=username_not_found");
-        return;
-    }
-
-    header("Location: ../../../../front-end/reset_password.php?step=2&username=" . $target_user->name);
-} else if ($step == 2) {
-    $new_password = $_POST['new_password'];
-    $confirm = $_POST['confirm_password'];
-
-    if ($new_password != $confirm) {
-        header("Location: ../../../../front-end/reset_password.php?step=2&error=password_not_match&username=$username");
-        return;
-    }
-
-    $result;
-
-    switch (get_class($target_user)) {
-        case "lms\\feature\\signup\\entities\\Driver":
-            $handler = new DriverResetPasswordHandler($driver);
-            $result = $handler->handle($username, $new_password);
-            break;
-
-        case "lms\\feature\\signup\\entities\\Maintainer":
-            $handler = new MaintainerResetPasswordHandler($maintainer);
-            $result = $handler->handle($username, $new_password);
-            break;
-
-        case "lms\\feature\\signup\\entities\\CentralOffice":
-            $handler = new CentralOfficeResetPasswordHandler($central_office);
-            $result = $handler->handle($username, $new_password);
-            break;
-    }
-
-    switch ($result) {
-        case PasswordResetResult::Success:
-            header("Location: ../../../../front-end/login.php");
-            break;
-
-        case PasswordResetResult::UsernameNotFound:
-            header("Location: ../../../../front-end/reset_password.php?step=2&error=cannot_reset_password");
-            break;
-    }
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    header('Location: ../../../../front-end/reset_password.php');
+    exit;
 }
+
+$step = (int)($_POST['step'] ?? 1);
+$back = '../../../../front-end/reset_password.php';
+
+// ── STEP 1: cek username ──────────────────────────────────
+if ($step === 1) {
+    $username = trim($_POST['username'] ?? '');
+
+    if ($username === '') {
+        header("Location: $back?step=1&error=Username+tidak+boleh+kosong");
+        exit;
+    }
+
+    $u = $db->real_escape_string($username);
+
+    // Cari di ketiga tabel (driver, maintainer, central_office)
+    $tables = ['driver', 'maintainer', 'central_office'];
+    $found  = false;
+
+    foreach ($tables as $table) {
+        $res = $db->query("SELECT id FROM `$table` WHERE username='$u' LIMIT 1");
+        if ($res && $res->num_rows > 0) {
+            $found = true;
+            break;
+        }
+    }
+
+    if (!$found) {
+        header("Location: $back?step=1&error=Username+tidak+ditemukan");
+        exit;
+    }
+
+    // Username ada → lanjut ke step 2
+    header("Location: $back?step=2&username=" . urlencode($username));
+    exit;
+}
+
+// ── STEP 2: update password ───────────────────────────────
+if ($step === 2) {
+    $username        = trim($_POST['username']         ?? '');
+    $new_password    = $_POST['new_password']          ?? '';
+    $confirm_password = $_POST['confirm_password']     ?? '';
+
+    if ($new_password !== $confirm_password) {
+        header("Location: $back?step=2&username=" . urlencode($username) . "&error=Password+tidak+cocok");
+        exit;
+    }
+
+    if (strlen($new_password) < 6) {
+        header("Location: $back?step=2&username=" . urlencode($username) . "&error=Password+minimal+6+karakter");
+        exit;
+    }
+
+    $u      = $db->real_escape_string($username);
+    $hashed = $db->real_escape_string(password_hash($new_password, PASSWORD_BCRYPT));
+    $tables = ['driver', 'maintainer', 'central_office'];
+    $updated = false;
+
+    foreach ($tables as $table) {
+        // Cek dulu apakah username ada di tabel ini
+        $res = $db->query("SELECT id FROM `$table` WHERE username='$u' LIMIT 1");
+        if ($res && $res->num_rows > 0) {
+            $db->query("UPDATE `$table` SET password='$hashed' WHERE username='$u'");
+            $updated = true;
+            break;
+        }
+    }
+
+    if ($updated) {
+        header("Location: $back?success=1");
+    } else {
+        header("Location: $back?step=1&error=Username+tidak+ditemukan");
+    }
+    exit;
+}
+
+// Fallback
+header("Location: $back");
+exit;
