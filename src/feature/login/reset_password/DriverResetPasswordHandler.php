@@ -24,7 +24,7 @@ class DriverResetPasswordHandler
 
         $target_user = array_filter($drivers, function (Driver $u) use ($username) {
             return $u->name == $username;
-        })[0];
+        })[2];
 
         if ($target_user == null) {
             return PasswordResetResult::UsernameNotFound;

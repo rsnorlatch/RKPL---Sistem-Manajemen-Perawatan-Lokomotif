@@ -19,11 +19,14 @@ class MaintainerResetPasswordHandler
 
     function handle(string $username, string $new_password)
     {
-        $drivers = $this->_maintainer->getAll();
+        $maintainers = $this->_maintainer->getAll();
 
-        $target_user = array_filter($drivers, function (Maintainer $u) use ($username) {
+        $target_users = array_filter($maintainers, function (Maintainer $u) use ($username) {
             return $u->name == $username;
-        })[0];
+        });
+
+        // this array that contains a single element starts at index number 2. why is php array this weird??
+        $target_user = $target_users[2];
 
         if ($target_user == null) {
             return PasswordResetResult::UsernameNotFound;

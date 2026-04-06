@@ -19,11 +19,11 @@ class CentralOfficeResetPasswordHandler
 
     function handle(string $username, string $new_password)
     {
-        $drivers = $this->_central_office->getAll();
+        $central_offices = $this->_central_office->getAll();
 
-        $target_user = array_filter($drivers, function (CentralOffice $u) use ($username) {
+        $target_user = array_filter($central_offices, function (CentralOffice $u) use ($username) {
             return $u->name == $username;
-        })[0];
+        })[2];
 
         if ($target_user == null) {
             return PasswordResetResult::UsernameNotFound;
