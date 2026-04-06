@@ -32,7 +32,7 @@
 
       <!-- Step 1: masukkan username -->
       <p class="form-hint">Masukkan username akunmu untuk mereset password.</p>
-      <form class="form" action="../src/feature/login/endpoint/reset_password.php" method="POST">
+      <form class="form" action="../src/feature/login/endpoint/reset_password.php?step=1" method="POST">
         <input type="hidden" name="step" value="1" />
         <input type="text" name="username" placeholder="Username" autocomplete="username" required />
         <button type="submit" class="btn-action">Lanjut</button>
@@ -42,7 +42,7 @@
 
       <!-- Step 2: isi password baru -->
       <p class="form-hint">Password baru untuk akun <strong><?= htmlspecialchars($_GET['username'] ?? '') ?></strong>.</p>
-      <form class="form" action="../src/feature/login/endpoint/reset_password.php" method="POST">
+      <form class="form" action="../src/feature/login/endpoint/reset_password.php?username=<?= htmlspecialchars($_GET['username'] ?? '') ?>" method="POST">
         <input type="hidden" name="step" value="2" />
         <input type="hidden" name="username" value="<?= htmlspecialchars($_GET['username'] ?? '') ?>" />
         <input type="password" name="new_password" placeholder="Password Baru" required minlength="6" />

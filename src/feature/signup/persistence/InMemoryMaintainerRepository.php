@@ -1,10 +1,12 @@
 <?php
+
 namespace lms\feature\signup\persistence;
 
-require_once __DIR__."../../../../../vendor/autoload.php";
+require_once __DIR__ . "../../../../../vendor/autoload.php";
 
 use lms\feature\signup\entities\IMaintainerRepository;
 use lms\feature\signup\entities\Maintainer;
+use Error;
 
 class InMemoryMaintainerRepository implements IMaintainerRepository
 {
@@ -47,10 +49,12 @@ class InMemoryMaintainerRepository implements IMaintainerRepository
 
     public function update(int $id, string $username, string $email, string $password): void
     {
-        if (isset($this->maintainer[$id])) {
-            $this->maintainer[$id]->name = $username;
-            $this->maintainer[$id]->email = $email;
-            $this->maintainer[$id]->password = $password;
+        if (isset($this->maintainer[$id - 1])) {
+            $this->maintainer[$id - 1]->name = $username;
+            $this->maintainer[$id - 1]->email = $email;
+            $this->maintainer[$id - 1]->password = $password;
+        } else {
+            throw new Error("cannot find user with the id of $id");
         }
     }
 

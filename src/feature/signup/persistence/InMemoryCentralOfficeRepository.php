@@ -1,10 +1,12 @@
 <?php
+
 namespace lms\feature\signup\persistence;
 
-require_once __DIR__."../../../../../vendor/autoload.php";
+require_once __DIR__ . "../../../../../vendor/autoload.php";
 
 use lms\feature\signup\entities\ICentralOfficeRepository;
 use lms\feature\signup\entities\CentralOffice;
+use Error;
 
 class InMemoryCentralOfficeRepository implements ICentralOfficeRepository
 {
@@ -47,10 +49,12 @@ class InMemoryCentralOfficeRepository implements ICentralOfficeRepository
 
     public function update(int $id, string $username, string $email, string $password): void
     {
-        if (isset($this->central_office[$id])) {
-            $this->central_office[$id]->name = $username;
-            $this->central_office[$id]->email = $email;
-            $this->central_office[$id]->password = $password;
+        if (isset($this->central_office[$id - 1])) {
+            $this->central_office[$id - 1]->name = $username;
+            $this->central_office[$id - 1]->email = $email;
+            $this->central_office[$id - 1]->password = $password;
+        } else {
+            throw new Error("cannot find user with the id of $id");
         }
     }
 
