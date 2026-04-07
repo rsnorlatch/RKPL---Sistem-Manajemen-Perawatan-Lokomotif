@@ -25,3 +25,9 @@ $stops = new InMemoryStopRepository([
 $handler = new SendLocomotiveHandler($locomotive, $send_request, $stops);
 
 $result = $handler->handle($locomotive_id, $destination_id);
+
+var_dump($result);
+
+echo "\n";
+
+var_dump($send_request->getAll());
