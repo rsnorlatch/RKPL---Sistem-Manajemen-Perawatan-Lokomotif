@@ -3,7 +3,7 @@ const CONFIG = {
   initialZoom: 13,
   markerRadius: 10,
   tileLayer: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-  apiEndpoint: 'http://localhost/lms/lms/src/feature/sending/endpoint/get_points.php'
+  apiEndpoint: 'http://localhost/lms/src/feature/sending/endpoint/get_points.php'
 };
 
 const stopDisplay = document.querySelector(".id-display--stop");
@@ -55,7 +55,7 @@ async function loadAndDisplayStops() {
     }
 
     const stops = await response.json();
-    updateStopDisplay(0);
+    updateStopDisplay(1);
     addStopMarkers(map, stops);
   } catch (error) {
     console.error('Failed to load stops:', error);

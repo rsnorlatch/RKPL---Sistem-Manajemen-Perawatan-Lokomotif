@@ -11,13 +11,17 @@
 </head>
 
 <body>
-  <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; gap: 1rem;">
-    <form action="../src/feature/sending/endpoint/send_locomotive.php" method="GET" style="display: flex; flex-direction: column; align-items: center; gap: .75rem;">
-      <p class="id-display--stop"></p>
-      <input type="hidden" name="destination_id" class="current-stop-input" value="0" />
-      <button type="submit">Send focused stop</button>
-    </form>
+  <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; width: 25vw; gap: 1rem;">
+    <p class="id-display--stop"></p>
     <div id="map"></div>
+
+    <div style="width: 100%; height: 50%; display: flex; flex-direction: column; gap: 5em;">
+      <h1>Lokomotif A</h1>
+      <form action="../src/feature/sending/endpoint/send_locomotive.php" method="GET" style="display: flex; flex-direction: column; align-items: center; gap: .75rem; width: 100%;">
+        <input type="hidden" name="destination_id" class="current-stop-input" value="0" />
+        <button type="submit" class="btn-primary">Kirim</button>
+      </form>
+    </div>
   </div>
 </body>
 

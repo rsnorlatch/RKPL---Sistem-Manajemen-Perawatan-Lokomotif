@@ -3,37 +3,35 @@
 namespace lms\feature\sending\endpoint;
 
 require_once __DIR__ . "../../../../../vendor/autoload.php";
+require_once __DIR__ . "../../../../db/lms.php";
 
-use lms\feature\locomotive_management\entities\Locomotive;
-use lms\feature\locomotive_management\persistence\InMemoryOnSiteLocomotiveRepository;
-use lms\feature\sending\entities\Stop;
-use lms\feature\sending\persistence\InMemorySendRequestRepository;
-use lms\feature\sending\persistence\InMemoryStopRepository;
+use lms\feature\locomotive_management\persistence\MySqlOnSiteLocomotiveRepository;
+use lms\feature\sending\persistence\MySqlSendRequestRepository;
+use lms\feature\sending\persistence\MySqlStopRepository;
 use lms\feature\sending\SendLocomotiveHandler;
+use lms\feature\sending\SendResult;
 
 $locomotive_id = 1;
 $destination_id = $_GET['destination_id'] ?? 0;
 
-$locomotive = new InMemoryOnSiteLocomotiveRepository([
-    new Locomotive(1, 1, "Locomotive 1")
-]);
-$send_request = new InMemorySendRequestRepository([]);
-$stops = new InMemoryStopRepository([
-    new Stop(1, "Stop 1", -7.801389, 110.364444),
-    new Stop(2, "Stop 2", -7.802500, 110.365000),
-    new Stop(3, "Stop 3", -7.803200, 110.366100),
-    new Stop(4, "Stop 4", -7.804000, 110.367200),
-    new Stop(5, "Stop 5", -7.805100, 110.368300)
-]);
+$locomotive = new MySqlOnSiteLocomotiveRepository($db);
+$send_request = new MySqlSendRequestRepository($db);
+$stops = new MySqlStopRepository($db);
 
 $handler = new SendLocomotiveHandler($locomotive, $send_request, $stops);
 
 $result = $handler->handle($locomotive_id, $destination_id);
 
-var_dump($result);
+switch ($result) {
+    case SendResult::DestinationNotFound:
+        header("Location: ../../../../front-end/kirim_lokomotif.php?status=destination_not_found");
+        break;
 
-var_dump($destination_id);
+    case SendResult::LocomotiveNotFound:
+        header("Location: ../../../../front-end/kirim_lokomotif.php?status=locomotive_not_found");
+        break;
 
-echo "\n";
-
-var_dump($send_request->getAll());
+    case SendResult::Success:
+        header("Location: ../../../../front-end/dashboard_timbalaiyasa.php?status=locomotive_send_success");
+        break;
+}
