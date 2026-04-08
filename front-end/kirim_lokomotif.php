@@ -11,32 +11,16 @@
 </head>
 
 <body>
-  <div id="map"></div>
+  <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; gap: 1rem;">
+    <form action="../src/feature/sending/endpoint/send_locomotive.php" method="GET" style="display: flex; flex-direction: column; align-items: center; gap: .75rem;">
+      <p class="id-display--stop"></p>
+      <input type="hidden" name="destination_id" class="current-stop-input" value="0" />
+      <button type="submit">Send focused stop</button>
+    </form>
+    <div id="map"></div>
+  </div>
 </body>
-<script>
-  const map = new L
-    .map('map', {
-      zoomControl: false
-    })
-    .setView([-7.801389, 110.364444], 13);
 
-  const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-  }).addTo(map);
-
-  (async () => {
-    try {
-      const coordinates = await fetch("http://localhost/lms/lms/src/feature/sending/endpoint/get_points.php");
-      const coordinates_json = await coordinates.json();
-
-
-      coordinates_json.forEach((coord) => L.circleMarker(coord, {
-        radius: 10
-      }).addTo(map));
-    } catch (e) {
-      throw new Error(e);
-    }
-  })()
-</script>
+<script src="../js/kirim_lokomotif.js"></script>
 
 </html>

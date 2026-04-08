@@ -6,10 +6,10 @@ class Stop
 {
 	public int $id;
 	public string $name;
-	public $x;
-	public $y;
+	public float $x;
+	public float $y;
 
-	function __construct(int $id, string $name, int $x, int $y)
+	function __construct(int $id, string $name, float $x, float $y)
 	{
 		$this->id = $id;
 		$this->name = $name;
