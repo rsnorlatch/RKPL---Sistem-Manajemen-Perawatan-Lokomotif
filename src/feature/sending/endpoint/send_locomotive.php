@@ -11,7 +11,7 @@ use lms\feature\sending\persistence\MySqlStopRepository;
 use lms\feature\sending\SendLocomotiveHandler;
 use lms\feature\sending\SendResult;
 
-$locomotive_id = 1;
+$locomotive_id = $_GET['locomotive_id'];
 $destination_id = $_GET['destination_id'] ?? 0;
 
 $locomotive = new MySqlOnSiteLocomotiveRepository($db);
@@ -22,13 +22,14 @@ $handler = new SendLocomotiveHandler($locomotive, $send_request, $stops);
 
 $result = $handler->handle($locomotive_id, $destination_id);
 
+
 switch ($result) {
     case SendResult::DestinationNotFound:
-        header("Location: ../../../../front-end/kirim_lokomotif.php?status=destination_not_found");
+        header("Location: ../../../../front-end/dashboard_timbalaiyasa.php?status=destination_not_found");
         break;
 
     case SendResult::LocomotiveNotFound:
-        header("Location: ../../../../front-end/kirim_lokomotif.php?status=locomotive_not_found");
+        header("Location: ../../../../front-end/dashboard_timbalaiyasa.php?status=locomotive_not_found");
         break;
 
     case SendResult::Success:

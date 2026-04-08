@@ -59,7 +59,7 @@ class MySqlOnSiteLocomotiveRepository implements IOnSiteLocomotiveRepository
                 l.driver_id, 
                 l.model 
             FROM onsite_locomotive o
-            JOIN locomotive l ON o.id = l.id
+            JOIN locomotive l ON o.locomotive_id = l.id
         ");
         $locomotives = [];
         if ($result) {
