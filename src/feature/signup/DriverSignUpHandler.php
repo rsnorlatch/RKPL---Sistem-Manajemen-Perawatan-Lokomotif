@@ -31,4 +31,3 @@ class DriverSignUpHandler
         $this->_driver->insert($new_id, $username, $email, $password);
     }
 }
-

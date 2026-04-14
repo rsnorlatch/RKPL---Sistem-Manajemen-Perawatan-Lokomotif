@@ -24,12 +24,12 @@ class InMemoryDriverRepository implements IDriverRepository
 
     public function insert(int $id, string $username, string $email, string $password): void
     {
-        $this->drivers[$id] = new Driver($id, $username, $email, $password);
+        $this->drivers[$id - 1] = new Driver($id, $username, $email, $password);
     }
 
     public function get(int $id)
     {
-        return $this->drivers[$id] ?? null;
+        return $this->drivers[$id - 1] ?? null;
     }
 
     public function getByUsername(string $username)
