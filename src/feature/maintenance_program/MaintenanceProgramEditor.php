@@ -22,12 +22,15 @@ class MaintenanceProgramEditor
     private function normalize()
     {
         $units = $this->_repository->getAll();
-        usort($units, function ($a, $b) {
-            return $a->sequence_number <=> $b->sequence_number;
-        });
-
-        foreach ($units as $index => $unit) {
-            $this->_repository->update($unit->id, $index + 1, $unit->unit_name, $unit->description, $unit->unit_type);
+        foreach (array_reverse($units) as $index => $unit) {
+            $newSequence = count($units) - $index;
+            $this->_repository->update(
+                $unit->id,
+                $newSequence,
+                $unit->unit_name,
+                $unit->description,
+                $unit->unit_type
+            );
         }
     }
 
@@ -50,7 +53,7 @@ class MaintenanceProgramEditor
         }
 
         $this->_repository->update($id, $sequence_number, $unit_name, $description, $unit_type);
-        $this->normalize();
+        /* $this->normalize(); */
 
         return MaintenanceProgramEditorResult::Success;
     }

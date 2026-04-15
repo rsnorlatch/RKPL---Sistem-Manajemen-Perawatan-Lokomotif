@@ -19,9 +19,9 @@ class InMemoryMaintenanceUnitRepository implements IMaintenanceUnitRepository
         return count($this->_units);
     }
 
-    public function insert(int $id, int $sequence_number, string $unit): void
+    public function insert(int $id, int $sequence_number, string $unit_name, string $description, string $unit_type): void
     {
-        $this->_units[] = new MaintenanceUnit($id, $sequence_number, $unit);
+        $this->_units[] = new MaintenanceUnit($id, $sequence_number, $unit_name, $description, $unit_type);
     }
 
     public function get(int $id)
@@ -43,12 +43,14 @@ class InMemoryMaintenanceUnitRepository implements IMaintenanceUnitRepository
         return $this->_units;
     }
 
-    public function update(int $id, int $sequence_number, string $unit): void
+    public function update(int $id, int $sequence_number, string $unit_name, string $description, string $unit_type): void
     {
         foreach ($this->_units as &$u) {
             if ($u->id == $id) {
                 $u->sequence_number = $sequence_number;
-                $u->unit = $unit;
+                $u->unit_name = $unit_name;
+                $u->description = $description;
+                $u->unit_type = $unit_type;
                 break;
             }
         }
@@ -64,4 +66,3 @@ class InMemoryMaintenanceUnitRepository implements IMaintenanceUnitRepository
         }
     }
 }
-
