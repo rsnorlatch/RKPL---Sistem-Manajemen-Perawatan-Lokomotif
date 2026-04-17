@@ -19,3 +19,4 @@ class ConfirmationFinish
         $this->timestamp = $timestamp;
     }
 }
+

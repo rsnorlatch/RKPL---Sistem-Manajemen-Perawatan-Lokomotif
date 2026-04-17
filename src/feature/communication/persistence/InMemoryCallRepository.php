@@ -22,12 +22,12 @@ class InMemoryCallRepository implements ICallRepository
 
     public function insert(int $id, int $driver_id, DateTime $timestamp): void
     {
-        $this->calls[$id] = new Call($id, $driver_id, $timestamp);
+        $this->calls[$id - 1] = new Call($id, $driver_id, $timestamp);
     }
 
     public function get(int $id): Call | null
     {
-        return $this->calls[$id] ?? null;
+        return $this->calls[$id - 1] ?? null;
     }
 
     public function getAll(): array
@@ -37,14 +37,14 @@ class InMemoryCallRepository implements ICallRepository
 
     public function update(int $id, int $driver_id, DateTime $timestamp): void
     {
-        if (isset($this->calls[$id])) {
-            $this->calls[$id]->driver_Id = $driver_id;
-            $this->calls[$id]->timestamp = $timestamp;
+        if (isset($this->calls[$id - 1])) {
+            $this->calls[$id - 1]->driver_Id = $driver_id;
+            $this->calls[$id - 1]->timestamp = $timestamp;
         }
     }
 
     public function delete(int $id): void
     {
-        unset($this->calls[$id]);
+        unset($this->calls[$id - 1]);
     }
 }
