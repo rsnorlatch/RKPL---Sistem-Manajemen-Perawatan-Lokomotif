@@ -51,13 +51,16 @@ class DriverCallingController
             $this->_confirmationFinishes->count() + 1,
             $call->driver_id,
             $call_id,
+            new DateTime()
         );
 
         $tobedeleted_call = array_filter($this->_acceptedCalls->getAll(), function (AcceptedCall $a) use ($call_id) {
             return $a->call_id == $call_id;
         });
 
+
         $this->_acceptedCalls->delete($tobedeleted_call[0]->id);
+        $this->_calls->delete($call_id);
 
         return CallingResult::Success;
     }

@@ -23,12 +23,12 @@ class InMemoryAcceptedCallRepository implements IAcceptedCallRepository
 
     public function insert(int $id, int $call_id): void
     {
-        $this->acceptedCalls[$id] = new AcceptedCall($id, $call_id);
+        $this->acceptedCalls[$id - 1] = new AcceptedCall($id, $call_id);
     }
 
     public function get(int $id): AcceptedCall | null
     {
-        return $this->acceptedCalls[$id] ?? null;
+        return $this->acceptedCalls[$id - 1] ?? null;
     }
 
     public function getAll(): array
@@ -38,13 +38,13 @@ class InMemoryAcceptedCallRepository implements IAcceptedCallRepository
 
     public function update(int $id, int $call_id): void
     {
-        if (isset($this->acceptedCalls[$id])) {
-            $this->acceptedCalls[$id]->call_id = $call_id;
+        if (isset($this->acceptedCalls[$id - 1])) {
+            $this->acceptedCalls[$id - 1]->call_id = $call_id;
         }
     }
 
     public function delete(int $id): void
     {
-        unset($this->acceptedCalls[$id]);
+        unset($this->acceptedCalls[$id - 1]);
     }
 }
