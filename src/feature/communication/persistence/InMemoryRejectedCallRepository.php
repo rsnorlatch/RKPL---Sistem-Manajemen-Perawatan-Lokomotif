@@ -10,7 +10,7 @@ require_once __DIR__ . "../../../../../vendor/autoload.php";
 
 class InMemoryRejectedCallRepository implements IRejectedCallRepository
 {
-    private array $rejectedCalls = [];
+    public array $rejectedCalls = [];
 
     public function __construct(array $rejectedCalls = [])
     {

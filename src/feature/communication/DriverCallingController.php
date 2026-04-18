@@ -17,12 +17,12 @@ use lms\feature\locomotive_management\entities\IOnSiteLocomotiveRepository;
 
 class DriverCallingController
 {
-    private ICallRepository $_calls;
-    private IConfirmationFinishRepository $_confirmationFinishes;
-    private IConfirmationProblemRepository $_confirmationProblems;
-    private IAcceptedCallRepository $_acceptedCalls;
-    private IRejectedCallRepository $_rejectedCalls;
-    private IOnSiteLocomotiveRepository $_onSiteLocomotives;
+    public ICallRepository $_calls;
+    public IConfirmationFinishRepository $_confirmationFinishes;
+    public IConfirmationProblemRepository $_confirmationProblems;
+    public IAcceptedCallRepository $_acceptedCalls;
+    public IRejectedCallRepository $_rejectedCalls;
+    public IOnSiteLocomotiveRepository $_onSiteLocomotives;
 
     function __construct(
         ICallRepository $calls,

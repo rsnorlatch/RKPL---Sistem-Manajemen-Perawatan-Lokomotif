@@ -18,8 +18,8 @@ enum CallingResult
 
 class MaintainerCallingController
 {
-    private ICallRepository $_call;
-    private ILocomotiveRepository $_locomotive;
+    public ICallRepository $_call;
+    public ILocomotiveRepository $_locomotive;
 
     public function __construct(ICallRepository $callRepository, ILocomotiveRepository $_locomotive)
     {

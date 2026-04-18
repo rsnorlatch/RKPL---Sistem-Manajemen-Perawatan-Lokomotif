@@ -7,7 +7,7 @@ use lms\feature\locomotive_management\entities\Locomotive;
 
 class InMemoryOnSiteLocomotiveRepository implements IOnSiteLocomotiveRepository
 {
-    private array $locomotives;
+    public array $locomotives;
 
     function __construct(array $locomotives)
     {

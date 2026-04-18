@@ -8,7 +8,7 @@ use DateTime;
 
 class InMemoryCallRepository implements ICallRepository
 {
-    private array $calls = [];
+    public array $calls = [];
 
     public function __construct(array $calls = [])
     {

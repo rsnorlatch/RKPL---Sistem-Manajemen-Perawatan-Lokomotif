@@ -9,7 +9,7 @@ require_once __DIR__ . "../../../../../vendor/autoload.php";
 
 class InMemoryAcceptedCallRepository implements IAcceptedCallRepository
 {
-    private array $acceptedCalls;
+    public array $acceptedCalls;
 
     public function __construct(array $acceptedCalls)
     {

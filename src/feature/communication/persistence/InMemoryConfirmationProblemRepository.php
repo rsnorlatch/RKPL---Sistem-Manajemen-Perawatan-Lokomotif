@@ -8,7 +8,7 @@ use DateTime;
 
 class InMemoryConfirmationProblemRepository implements IConfirmationProblemRepository
 {
-    private array $confirmations = [];
+    public array $confirmations = [];
 
     public function __construct(array $confirmations = [])
     {
