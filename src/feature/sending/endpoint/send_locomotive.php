@@ -5,20 +5,14 @@ namespace lms\feature\sending\endpoint;
 require_once __DIR__ . "../../../../../vendor/autoload.php";
 require_once __DIR__ . "../../../../db/lms.php";
 
-use lms\feature\locomotive_management\persistence\MySqlOnSiteLocomotiveRepository;
-use lms\feature\sending\persistence\MySqlSendRequestRepository;
-use lms\feature\sending\persistence\MySqlStopRepository;
 use lms\feature\sending\SendLocomotiveHandler;
 use lms\feature\sending\SendResult;
 
 $locomotive_id = $_GET['locomotive_id'];
 $destination_id = $_GET['destination_id'] ?? 0;
 
-$locomotive = new MySqlOnSiteLocomotiveRepository($db);
-$send_request = new MySqlSendRequestRepository($db);
-$stops = new MySqlStopRepository($db);
 
-$handler = new SendLocomotiveHandler($locomotive, $send_request, $stops);
+$handler = SendLocomotiveHandler::create_mysql($db);
 
 $result = $handler->handle($locomotive_id, $destination_id);
 
