@@ -15,12 +15,6 @@ use lms\feature\sending\persistence\MySqlSendRequestRepository;
 use lms\feature\sending\persistence\MySqlStopRepository;
 use mysqli;
 
-enum SendResult
-{
-    case LocomotiveNotFound;
-    case DestinationNotFound;
-    case Success;
-}
 
 class SendLocomotiveHandler
 {
@@ -69,6 +63,10 @@ class SendLocomotiveHandler
                 }
             )
         ) > 0;
+
+        if (!$locomotive_exists && !$destination_exists) {
+            return SendResult::DestinationAndLocomotiveNotFound;
+        }
 
         if (!$locomotive_exists) {
             return SendResult::LocomotiveNotFound;

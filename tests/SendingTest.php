@@ -17,4 +17,35 @@ final class SendingTest extends TestCase
 
         $this->assertEquals(SendResult::Success, $result);
     }
+
+    public function testSendingToAnUndefinedLocationShouldGiveNotFoundStatus()
+    {
+        $handler = SendLocomotiveHandler::create_inmemory()
+            ->with_onsite_locomotive(1, 1, "Model")
+            ->build();
+
+        $result = $handler->handle(1, 1);
+
+        $this->assertEquals(SendResult::DestinationNotFound, $result);
+    }
+
+    public function testSendingAnUndefinedLocomotiveShouldGiveNotFoundStatus()
+    {
+        $handler = SendLocomotiveHandler::create_inmemory()
+            ->with_stop(1, "stop1", 1, 1)
+            ->build();
+
+        $result = $handler->handle(1, 1);
+
+        $this->assertEquals(SendResult::LocomotiveNotFound, $result);
+    }
+
+    public function testWhenBothStopAndLocomotiveNotFoundShouldGiveNotFoundStatus()
+    {
+        $handler = SendLocomotiveHandler::create_inmemory()->build();
+
+        $result = $handler->handle(1, 1);
+
+        $this->assertEquals(SendResult::DestinationAndLocomotiveNotFound, $result);
+    }
 }
