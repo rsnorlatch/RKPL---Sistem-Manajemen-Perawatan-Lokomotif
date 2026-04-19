@@ -8,18 +8,12 @@ use lms\feature\communication\entities\ICallRepository;
 use lms\feature\locomotive_management\entities\ILocomotiveRepository;
 
 use DateTime;
+use lms\feature\communication\builder\InMemoryMaintainerCallingControllerBuilder;
 use lms\feature\communication\persistence\MySqlCallRepository;
 use lms\feature\locomotive_management\persistence\MySqlLocomotiveRepository;
 use lms\feature\maintenance_program\InMemoryMaintenanceProgramEditorBuilder;
 
 use mysqli;
-
-enum CallingResult
-{
-    case Success;
-    case LocomotiveNotFound;
-    case CallNotFound;
-}
 
 class MaintainerCallingController
 {
@@ -34,7 +28,7 @@ class MaintainerCallingController
 
     public static function create_inmemory()
     {
-        return new InMemoryMaintenanceProgramEditorBuilder();
+        return new InMemoryMaintainerCallingControllerBuilder();
     }
 
     public static function create_mysql(mysqli $db)
