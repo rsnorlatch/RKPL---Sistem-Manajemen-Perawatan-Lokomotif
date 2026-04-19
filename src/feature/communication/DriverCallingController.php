@@ -11,16 +11,17 @@ use lms\feature\communication\entities\IConfirmationProblemRepository;
 use lms\feature\communication\entities\IAcceptedCallRepository;
 use lms\feature\communication\entities\IRejectedCallRepository;
 
+use DateTime;
+use lms\feature\communication\builder\InMemoryDriverCallingControllerBuilder;
+use lms\feature\communication\entities\AcceptedCall;
+use lms\feature\communication\persistence\MySqlAcceptedCallRepository;
 use lms\feature\communication\persistence\MySqlCallRepository;
 use lms\feature\communication\persistence\MySqlConfirmationFinishRepository;
 use lms\feature\communication\persistence\MySqlConfirmationProblemRepository;
-use lms\feature\communication\persistence\MySqlAcceptedCallRepository;
 use lms\feature\communication\persistence\MySqlRejectedCallRepository;
-use lms\feature\locomotive_management\persistence\MySqlOnSiteLocomotiveRepository;
-
-use DateTime;
-use lms\feature\communication\entities\AcceptedCall;
 use lms\feature\locomotive_management\entities\IOnSiteLocomotiveRepository;
+use lms\feature\locomotive_management\persistence\MySqlOnSiteLocomotiveRepository;
+use mysqli;
 
 class DriverCallingController
 {
@@ -47,7 +48,12 @@ class DriverCallingController
         $this->_onSiteLocomotives = $onSiteLocomotives;
     }
 
-    public static function create_mysql($db)
+    public static function create_inmemory()
+    {
+        return new InMemoryDriverCallingControllerBuilder();
+    }
+
+    public static function create_mysql(mysqli $db)
     {
         return new DriverCallingController(
             new MySqlCallRepository($db),
@@ -59,10 +65,6 @@ class DriverCallingController
         );
     }
 
-    public static function create_inmemory()
-    {
-        return new InMemoryDriverCallingControllerBuilder();
-    }
 
     public function confirm_finish(int $call_id)
     {

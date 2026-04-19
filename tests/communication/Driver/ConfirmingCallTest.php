@@ -2,6 +2,7 @@
 
 use lms\feature\communication\CallingResult;
 use lms\feature\communication\DriverCallingController;
+
 use PHPUnit\Framework\TestCase;
 
 final class ConfirmingCallTest extends TestCase
@@ -10,7 +11,7 @@ final class ConfirmingCallTest extends TestCase
     {
         $controller = DriverCallingController::create_inmemory()
             ->with_call(1, 1, new DateTime())
-            ->with_accepted_call(1, 1)
+            ->with_accepted_calls(1, 1)
             ->build();
 
         $result = $controller->confirm_finish(1);
@@ -21,7 +22,7 @@ final class ConfirmingCallTest extends TestCase
     public function testCallShouldBeDeletedAfterConfirming()
     {
         $controller = DriverCallingController::create_inmemory()
-            ->with_accepted_call(1, 1)
+            ->with_accepted_calls(1, 1)
             ->with_call(1, 1, new DateTime())
             ->build();
 
@@ -34,7 +35,7 @@ final class ConfirmingCallTest extends TestCase
     {
         $controller = DriverCallingController::create_inmemory()
             ->with_call(1, 1, new DateTime())
-            ->with_accepted_call(1, 1)
+            ->with_accepted_calls(1, 1)
             ->build();
 
         $controller->confirm_finish(1);
@@ -49,7 +50,7 @@ final class ConfirmingCallTest extends TestCase
 
         $controller = DriverCallingController::create_inmemory()
             ->with_call(1, 1, new DateTime())
-            ->with_accepted_call(1, 1)
+            ->with_accepted_calls(1, 1)
             ->build();
 
         $controller->confirm_finish(1);

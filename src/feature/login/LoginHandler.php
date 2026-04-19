@@ -4,12 +4,19 @@ namespace lms\feature\login;
 
 require_once __DIR__ . "../../../../vendor/autoload.php";
 
+use lms\feature\login\InMemoryLoginHandlerBuilder;
 use lms\feature\signup\entities\Driver;
 use lms\feature\signup\entities\Maintainer;
 use lms\feature\signup\entities\CentralOffice;
 use lms\feature\signup\entities\ICentralOfficeRepository;
 use lms\feature\signup\entities\IDriverRepository;
 use lms\feature\signup\entities\IMaintainerRepository;
+
+use lms\feature\signup\persistence\MySqlCentralOfficeRepository;
+use lms\feature\signup\persistence\MySqlDriverRepository;
+use lms\feature\signup\persistence\MySqlMaintainerRepository;
+
+use mysqli;
 
 enum LoginResult
 {
@@ -31,6 +38,20 @@ class LoginHandler
         $this->_driver = $_driver;
         $this->_maintainer = $_maintainer;
         $this->_central_office = $_central_office;
+    }
+
+    public static function create_inmemory()
+    {
+        return new InMemoryLoginHandlerBuilder();
+    }
+
+    public static function create_mysql(mysqli $db)
+    {
+        return new LoginHandler(
+            new MySqlDriverRepository($db),
+            new MySqlMaintainerRepository($db),
+            new MySqlCentralOfficeRepository($db)
+        );
     }
 
     function handle(string $username, string $password): LoginResult
