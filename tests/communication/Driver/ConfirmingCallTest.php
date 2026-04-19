@@ -46,7 +46,6 @@ final class ConfirmingCallTest extends TestCase
         $this->assertEquals([], $controller->_acceptedCalls->getAll());
     }
 
-    // TODO: implement a new behavior that adds locomotive belonged to a particular driver to OnSiteLocomotive storage
     public function testOnSiteLocomotiveShouldNotBeEmptyAfterConfirmingFinish()
     {
         $controller = DriverCallingController::create_inmemory()

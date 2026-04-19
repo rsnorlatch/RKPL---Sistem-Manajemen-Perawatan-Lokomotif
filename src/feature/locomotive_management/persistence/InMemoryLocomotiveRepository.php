@@ -33,17 +33,16 @@ class InMemoryLocomotiveRepository implements ILocomotiveRepository
 
     public function getByDriverId(int $driver_id): Locomotive | null
     {
-        return
-            array_shift(
-                array_values(
-                    array_filter(
-                        $this->locomotive,
-                        function (Locomotive $l) use ($driver_id) {
-                            return $l->driver_id == $driver_id;
-                        }
-                    )
+        return array_shift(
+            array_values(
+                array_filter(
+                    $this->locomotive,
+                    function (Locomotive $l) use ($driver_id) {
+                        return $l->driver_id == $driver_id;
+                    }
                 )
-            );
+            )
+        );
     }
 
     public function getAll(): array

@@ -48,6 +48,21 @@ class MySqlLocomotiveRepository implements ILocomotiveRepository
             return null;
         }
     }
+    public function getByDriverId(int $driver_id): ?Locomotive
+    {
+        $stmt = $this->db->prepare("SELECT * FROM locomotive WHERE driver_id = ?");
+        $stmt->bind_param("i", $driver_id);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        if ($row = $result->fetch_assoc()) {
+            return new Locomotive($row['id'], $row['driver_id'], $row['model']);
+        } else {
+            return null;
+        }
+    }
+
     public function getAll(): array
     {
         $stmt = $this->db->prepare("SELECT * FROM locomotive");

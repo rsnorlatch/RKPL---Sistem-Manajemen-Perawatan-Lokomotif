@@ -22,9 +22,14 @@ class DriverResetPasswordHandler
     {
         $drivers = $this->_driver->getAll();
 
-        $target_user = array_filter($drivers, function (Driver $u) use ($username) {
-            return $u->name == $username;
-        })[2];
+        $target_user =
+            array_shift(
+                array_values(
+                    array_filter($drivers, function (Driver $u) use ($username) {
+                        return $u->name == $username;
+                    })
+                )
+            );
 
         if ($target_user == null) {
             return PasswordResetResult::UsernameNotFound;
