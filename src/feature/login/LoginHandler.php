@@ -4,6 +4,8 @@ namespace lms\feature\login;
 
 require_once __DIR__ . "../../../../vendor/autoload.php";
 
+use InMemoryLoginHandlerBuilder;
+use lms\feature\login\InMemoryLoginHandlerBuilder as LoginInMemoryLoginHandlerBuilder;
 use lms\feature\signup\entities\Driver;
 use lms\feature\signup\entities\Maintainer;
 use lms\feature\signup\entities\CentralOffice;
@@ -31,6 +33,11 @@ class LoginHandler
         $this->_driver = $_driver;
         $this->_maintainer = $_maintainer;
         $this->_central_office = $_central_office;
+    }
+
+    public static function create_inmemory()
+    {
+        return new LoginInMemoryLoginHandlerBuilder();
     }
 
     function handle(string $username, string $password): LoginResult
