@@ -14,9 +14,7 @@ $unit_name = $_POST['unit_name'];
 $description = $_POST["description"];
 $unit_type = $_POST['unit_type'];
 
-
-$unit = new MySqlMaintenanceUnitRepository($db);
-$editor = new MaintenanceProgramEditor($unit);
+$editor = MaintenanceProgramEditor::create_mysql($db);
 
 $result = $editor->add_unit($unit_name, $description, $unit_type);
 

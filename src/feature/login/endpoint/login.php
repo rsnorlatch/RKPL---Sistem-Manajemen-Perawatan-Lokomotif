@@ -7,18 +7,11 @@ require_once __DIR__ . "../../../../db/lms.php";
 
 use lms\feature\login\LoginHandler;
 use lms\feature\login\LoginResult;
-use lms\feature\signup\persistence\MySqlCentralOfficeRepository;
-use lms\feature\signup\persistence\MySqlDriverRepository;
-use lms\feature\signup\persistence\MySqlMaintainerRepository;
 
 $username = $_POST['username'];
 $password = $_POST['password'];
 
-$driver = new MySqlDriverRepository($db);
-$maintainer = new MySqlMaintainerRepository($db);
-$central_office = new MySqlCentralOfficeRepository($db);
-
-$handler = new LoginHandler($driver, $maintainer, $central_office);
+$handler = LoginHandler::create_mysql($db);
 
 $result = $handler->handle($username, $password);
 
