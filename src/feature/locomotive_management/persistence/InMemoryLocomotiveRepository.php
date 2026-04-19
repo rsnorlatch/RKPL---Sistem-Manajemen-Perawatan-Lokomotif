@@ -23,12 +23,27 @@ class InMemoryLocomotiveRepository implements ILocomotiveRepository
 
     public function insert(int $id, int $driver_id, string $model): void
     {
-        $this->locomotive[$id] = new Locomotive($id, $driver_id, $model);
+        $this->locomotive[$id - 1] = new Locomotive($id, $driver_id, $model);
     }
 
     public function get(int $id): Locomotive | null
     {
         return $this->locomotive[$id - 1] ?? null;
+    }
+
+    public function getByDriverId(int $driver_id): Locomotive | null
+    {
+        return
+            array_shift(
+                array_values(
+                    array_filter(
+                        $this->locomotive,
+                        function (Locomotive $l) use ($driver_id) {
+                            return $l->driver_id == $driver_id;
+                        }
+                    )
+                )
+            );
     }
 
     public function getAll(): array
@@ -38,14 +53,14 @@ class InMemoryLocomotiveRepository implements ILocomotiveRepository
 
     public function update(int $id, int $driver_id, string $model): void
     {
-        if (isset($this->locomotive[$id])) {
-            $this->locomotive[$id]->driver_id = $driver_id;
-            $this->locomotive[$id]->model = $model;
+        if (isset($this->locomotive[$id - 1])) {
+            $this->locomotive[$id - 1]->driver_id = $driver_id;
+            $this->locomotive[$id - 1]->model = $model;
         }
     }
 
     public function delete(int $id): void
     {
-        unset($this->locomotive[$id]);
+        unset($this->locomotive[$id - 1]);
     }
 }

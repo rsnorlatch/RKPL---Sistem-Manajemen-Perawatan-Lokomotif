@@ -1,6 +1,7 @@
 <?php
 
 namespace lms\feature\locomotive_management\persistence;
+
 use lms\feature\locomotive_management\entities\Locomotive;
 use lms\feature\locomotive_management\entities\ILocomotiveRepository;
 use MySqli;
@@ -57,7 +58,6 @@ class MySqlLocomotiveRepository implements ILocomotiveRepository
             $locomotives[] = new Locomotive($row['id'], $row['name'], $row['model']);
         }
         return $locomotives;
-        
     }
 
     public function update(int $id, int $driver_id, string $model): void
@@ -74,3 +74,4 @@ class MySqlLocomotiveRepository implements ILocomotiveRepository
         $stmt->execute();
     }
 }
+

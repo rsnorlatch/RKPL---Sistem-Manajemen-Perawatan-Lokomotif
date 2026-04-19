@@ -10,6 +10,7 @@ final class ConfirmingCallTest extends TestCase
     public function testDriverShouldBeAbleToConfirmCall()
     {
         $controller = DriverCallingController::create_inmemory()
+            ->with_locomotive(1, 1, "Model")
             ->with_call(1, 1, new DateTime())
             ->with_accepted_calls(1, 1)
             ->build();
@@ -22,6 +23,7 @@ final class ConfirmingCallTest extends TestCase
     public function testCallShouldBeDeletedAfterConfirming()
     {
         $controller = DriverCallingController::create_inmemory()
+            ->with_locomotive(1, 1, "Model")
             ->with_accepted_calls(1, 1)
             ->with_call(1, 1, new DateTime())
             ->build();
@@ -34,6 +36,7 @@ final class ConfirmingCallTest extends TestCase
     public function testAcceptedCallShouldBeDeletedAfterConfirmFinish()
     {
         $controller = DriverCallingController::create_inmemory()
+            ->with_locomotive(1, 1, "Model")
             ->with_call(1, 1, new DateTime())
             ->with_accepted_calls(1, 1)
             ->build();
@@ -46,9 +49,8 @@ final class ConfirmingCallTest extends TestCase
     // TODO: implement a new behavior that adds locomotive belonged to a particular driver to OnSiteLocomotive storage
     public function testOnSiteLocomotiveShouldNotBeEmptyAfterConfirmingFinish()
     {
-        $this->markTestSkipped();
-
         $controller = DriverCallingController::create_inmemory()
+            ->with_locomotive(1, 1, "Model")
             ->with_call(1, 1, new DateTime())
             ->with_accepted_calls(1, 1)
             ->build();

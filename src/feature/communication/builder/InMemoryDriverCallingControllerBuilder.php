@@ -15,6 +15,7 @@ use lms\feature\communication\persistence\InMemoryConfirmationFinishRepository;
 use lms\feature\communication\persistence\InMemoryConfirmationProblemRepository;
 use lms\feature\communication\persistence\InMemoryRejectedCallRepository;
 use lms\feature\locomotive_management\entities\Locomotive;
+use lms\feature\locomotive_management\persistence\InMemoryLocomotiveRepository;
 use lms\feature\locomotive_management\persistence\InMemoryOnSiteLocomotiveRepository;
 
 
@@ -26,6 +27,7 @@ class InMemoryDriverCallingControllerBuilder
     private $_acceptedCalls = [];
     private $_rejectedCalls = [];
     private $_onSiteLocomotives = [];
+    private $_locomotives = [];
 
     public function with_call(int $id, int $driver_id, DateTime $timestamp)
     {
@@ -64,6 +66,13 @@ class InMemoryDriverCallingControllerBuilder
         return $this;
     }
 
+    public function with_locomotive(int $id, int $driver_id, string $model)
+    {
+        array_push($this->_locomotives, new Locomotive($id, $driver_id, $model));
+
+        return $this;
+    }
+
     public function build()
     {
         return new DriverCallingController(
@@ -72,7 +81,8 @@ class InMemoryDriverCallingControllerBuilder
             new InMemoryConfirmationProblemRepository($this->_confirmationProblems),
             new InMemoryAcceptedCallRepository($this->_acceptedCalls),
             new InMemoryRejectedCallRepository($this->_rejectedCalls),
-            new InMemoryOnSiteLocomotiveRepository($this->_onSiteLocomotives)
+            new InMemoryOnSiteLocomotiveRepository($this->_onSiteLocomotives),
+            new InMemoryLocomotiveRepository($this->_locomotives)
         );
     }
 }

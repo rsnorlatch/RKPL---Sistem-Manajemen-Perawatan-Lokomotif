@@ -10,6 +10,8 @@ interface ILocomotiveRepository
 
     public function get(int $id): Locomotive | null;
 
+    public function getByDriverId(int $driver_id): Locomotive | null;
+
     public function getAll(): array;
 
     public function update(int $id, int $driver_id, string $model): void;

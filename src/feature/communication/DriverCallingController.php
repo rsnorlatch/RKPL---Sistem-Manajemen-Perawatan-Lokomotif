@@ -19,7 +19,9 @@ use lms\feature\communication\persistence\MySqlCallRepository;
 use lms\feature\communication\persistence\MySqlConfirmationFinishRepository;
 use lms\feature\communication\persistence\MySqlConfirmationProblemRepository;
 use lms\feature\communication\persistence\MySqlRejectedCallRepository;
+use lms\feature\locomotive_management\entities\ILocomotiveRepository;
 use lms\feature\locomotive_management\entities\IOnSiteLocomotiveRepository;
+use lms\feature\locomotive_management\persistence\MySqlLocomotiveRepository;
 use lms\feature\locomotive_management\persistence\MySqlOnSiteLocomotiveRepository;
 use mysqli;
 
@@ -31,6 +33,7 @@ class DriverCallingController
     public IAcceptedCallRepository $_acceptedCalls;
     public IRejectedCallRepository $_rejectedCalls;
     public IOnSiteLocomotiveRepository $_onSiteLocomotives;
+    public ILocomotiveRepository $_locomotives;
 
     function __construct(
         ICallRepository $calls,
@@ -38,7 +41,8 @@ class DriverCallingController
         IConfirmationProblemRepository $confirmationProblems,
         IAcceptedCallRepository $acceptedCalls,
         IRejectedCallRepository $rejectedCalls,
-        IOnSiteLocomotiveRepository $onSiteLocomotives
+        IOnSiteLocomotiveRepository $onSiteLocomotives,
+        ILocomotiveRepository $locomotives
     ) {
         $this->_calls = $calls;
         $this->_confirmationFinishes = $confirmationFinishes;
@@ -46,6 +50,7 @@ class DriverCallingController
         $this->_acceptedCalls = $acceptedCalls;
         $this->_rejectedCalls = $rejectedCalls;
         $this->_onSiteLocomotives = $onSiteLocomotives;
+        $this->_locomotives = $locomotives;
     }
 
     public static function create_inmemory()
@@ -61,7 +66,8 @@ class DriverCallingController
             new MySqlConfirmationProblemRepository($db),
             new MySqlAcceptedCallRepository($db),
             new MySqlRejectedCallRepository($db),
-            new MySqlOnSiteLocomotiveRepository($db)
+            new MySqlOnSiteLocomotiveRepository($db),
+            new MySqlLocomotiveRepository($db)
         );
     }
 
@@ -79,6 +85,14 @@ class DriverCallingController
             $call_id,
             new DateTime()
         );
+
+        $locomotive = $this->_locomotives->getByDriverId($call->driver_id);
+
+        if ($locomotive == null) {
+            return CallingResult::LocomotiveNotFound;
+        }
+
+        $this->_onSiteLocomotives->insert($locomotive->id, $locomotive->driver_id, $locomotive->model);
 
         $tobedeleted_call = array_filter($this->_acceptedCalls->getAll(), function (AcceptedCall $a) use ($call_id) {
             return $a->call_id == $call_id;
