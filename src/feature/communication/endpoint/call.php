@@ -16,3 +16,4 @@ $controller = new MaintainerCallingController($calls, $locomotives);
 
 $result = $controller->call_locomotive($locomotive_id);
 var_dump($result);
+
