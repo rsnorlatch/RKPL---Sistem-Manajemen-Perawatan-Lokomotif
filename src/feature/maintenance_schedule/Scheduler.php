@@ -28,6 +28,11 @@ class Scheduler
         $this->_schedule = $_schedule;
     }
 
+    public static function create_inmemory()
+    {
+        return new InMemorySchedulerBuilder();
+    }
+
     private function is_unavailable(DateTime $start, DateTime $end)
     {
         return count(array_filter($this->_schedule->getAll(), function (Schedule $s) use ($start, $end) {

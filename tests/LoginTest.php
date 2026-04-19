@@ -2,12 +2,6 @@
 
 use lms\feature\login\LoginHandler;
 use lms\feature\login\LoginResult;
-use lms\feature\signup\entities\CentralOffice;
-use lms\feature\signup\entities\Driver;
-use lms\feature\signup\entities\Maintainer;
-use lms\feature\signup\persistence\InMemoryCentralOfficeRepository;
-use lms\feature\signup\persistence\InMemoryDriverRepository;
-use lms\feature\signup\persistence\InMemoryMaintainerRepository;
 use PHPUnit\Framework\TestCase;
 
 final class LoginTest extends TestCase
