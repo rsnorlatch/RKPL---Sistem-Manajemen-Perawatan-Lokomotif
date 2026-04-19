@@ -2,7 +2,7 @@
 
 namespace lms\feature\signup\entities;
 
-interface IDriverRepository
+interface IDriverRepository extends IUserRepository
 {
     public function count(): int;
 

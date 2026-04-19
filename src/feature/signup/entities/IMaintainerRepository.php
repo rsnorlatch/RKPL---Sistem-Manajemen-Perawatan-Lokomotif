@@ -2,7 +2,7 @@
 
 namespace lms\feature\signup\entities;
 
-interface IMaintainerRepository
+interface IMaintainerRepository extends IUserRepository
 {
     public function count(): int;
 

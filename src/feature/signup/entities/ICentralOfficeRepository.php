@@ -2,14 +2,14 @@
 
 namespace lms\feature\signup\entities;
 
-interface ICentralOfficeRepository
+interface ICentralOfficeRepository extends IUserRepository
 {
     public function count(): int;
 
     public function insert(int $id, string $username, string $email, string $password): void;
 
     public function get(int $id);
-    
+
     public function getByUsername(string $username);
 
     public function getAll(): array;
