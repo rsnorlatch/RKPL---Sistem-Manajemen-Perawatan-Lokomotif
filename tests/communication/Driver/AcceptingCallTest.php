@@ -2,17 +2,15 @@
 
 use PHPUnit\Framework\TestCase;
 use lms\feature\communication\CallingResult;
-use lms\feature\communication\DriverCallingControllerBuilder;
-use lms\feature\communication\entities\Call;
+use lms\feature\communication\DriverCallingController;
 
 final class AcceptingCallTest extends TestCase
 {
     public function testDriverShouldBeAbleToAcceptCalls()
     {
-        $builder = new DriverCallingControllerBuilder();
-        $controller = $builder
-            ->populate_call([new Call(1, 1, new DateTime())])
-            ->build_fake();
+        $controller = DriverCallingController::create_inmemory()
+            ->with_call(1, 1, new DateTime())
+            ->build();
 
         $result = $controller->accept_call(1);
 
@@ -21,8 +19,7 @@ final class AcceptingCallTest extends TestCase
 
     public function testDriverShouldNotBeAbleToAcceptCallThatDoesNotExists()
     {
-        $builder = new DriverCallingControllerBuilder();
-        $controller = $builder->build_fake();
+        $controller = DriverCallingController::create_inmemory()->build();
 
         $result = $controller->accept_call(1);
 

@@ -11,6 +11,13 @@ use lms\feature\communication\entities\IConfirmationProblemRepository;
 use lms\feature\communication\entities\IAcceptedCallRepository;
 use lms\feature\communication\entities\IRejectedCallRepository;
 
+use lms\feature\communication\persistence\MySqlCallRepository;
+use lms\feature\communication\persistence\MySqlConfirmationFinishRepository;
+use lms\feature\communication\persistence\MySqlConfirmationProblemRepository;
+use lms\feature\communication\persistence\MySqlAcceptedCallRepository;
+use lms\feature\communication\persistence\MySqlRejectedCallRepository;
+use lms\feature\locomotive_management\persistence\MySqlOnSiteLocomotiveRepository;
+
 use DateTime;
 use lms\feature\communication\entities\AcceptedCall;
 use lms\feature\locomotive_management\entities\IOnSiteLocomotiveRepository;
@@ -38,6 +45,23 @@ class DriverCallingController
         $this->_acceptedCalls = $acceptedCalls;
         $this->_rejectedCalls = $rejectedCalls;
         $this->_onSiteLocomotives = $onSiteLocomotives;
+    }
+
+    public static function create_mysql($db)
+    {
+        return new DriverCallingController(
+            new MySqlCallRepository($db),
+            new MySqlConfirmationFinishRepository($db),
+            new MySqlConfirmationProblemRepository($db),
+            new MySqlAcceptedCallRepository($db),
+            new MySqlRejectedCallRepository($db),
+            new MySqlOnSiteLocomotiveRepository($db)
+        );
+    }
+
+    public static function create_inmemory()
+    {
+        return new InMemoryDriverCallingControllerBuilder();
     }
 
     public function confirm_finish(int $call_id)

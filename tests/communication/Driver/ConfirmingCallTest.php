@@ -1,21 +1,17 @@
 <?php
 
 use lms\feature\communication\CallingResult;
-use lms\feature\communication\entities\AcceptedCall;
-use lms\feature\communication\entities\Call;
+use lms\feature\communication\DriverCallingController;
 use PHPUnit\Framework\TestCase;
-
-use lms\feature\communication\DriverCallingControllerBuilder;
 
 final class ConfirmingCallTest extends TestCase
 {
     public function testDriverShouldBeAbleToConfirmCall()
     {
-        $builder = new DriverCallingControllerBuilder();
-        $controller = $builder
-            ->populate_call([new Call(1, 1, new DateTime())])
-            ->populate_accepted_calls([new AcceptedCall(1, 1)])
-            ->build_fake();
+        $controller = DriverCallingController::create_inmemory()
+            ->with_call(1, 1, new DateTime())
+            ->with_accepted_call(1, 1)
+            ->build();
 
         $result = $controller->confirm_finish(1);
 
@@ -24,11 +20,10 @@ final class ConfirmingCallTest extends TestCase
 
     public function testCallShouldBeDeletedAfterConfirming()
     {
-        $builder = new DriverCallingControllerBuilder();
-        $controller = $builder
-            ->populate_accepted_calls([new AcceptedCall(1, 1)])
-            ->populate_call([new Call(1, 1, new DateTime())])
-            ->build_fake();
+        $controller = DriverCallingController::create_inmemory()
+            ->with_accepted_call(1, 1)
+            ->with_call(1, 1, new DateTime())
+            ->build();
 
         $controller->confirm_finish(1);
 
@@ -37,11 +32,10 @@ final class ConfirmingCallTest extends TestCase
 
     public function testAcceptedCallShouldBeDeletedAfterConfirmFinish()
     {
-        $builder = new DriverCallingControllerBuilder();
-        $controller = $builder
-            ->populate_call([new Call(1, 1, new DateTime())])
-            ->populate_accepted_calls([new AcceptedCall(1, 1)])
-            ->build_fake();
+        $controller = DriverCallingController::create_inmemory()
+            ->with_call(1, 1, new DateTime())
+            ->with_accepted_call(1, 1)
+            ->build();
 
         $controller->confirm_finish(1);
 
@@ -53,11 +47,10 @@ final class ConfirmingCallTest extends TestCase
     {
         $this->markTestSkipped();
 
-        $builder = new DriverCallingControllerBuilder();
-        $controller = $builder
-            ->populate_call([new Call(1, 1, new DateTime())])
-            ->populate_accepted_calls([new AcceptedCall(1, 1)])
-            ->build_fake();
+        $controller = DriverCallingController::create_inmemory()
+            ->with_call(1, 1, new DateTime())
+            ->with_accepted_call(1, 1)
+            ->build();
 
         $controller->confirm_finish(1);
 
