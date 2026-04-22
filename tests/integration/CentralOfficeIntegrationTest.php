@@ -1,11 +1,10 @@
 <?php
 
-use lms\feature\signup\persistence\MySqlDriverRepository;
-use lms\feature\signup\SignUpHandler;
+use lms\feature\signup\persistence\MySqlCentralOfficeRepository;
 use PHPUnit\Framework\TestCase;
 
 
-final class SignUpIntegrationTest extends TestCase
+final class CentralOfficeIntegrationTest extends TestCase
 {
     private MySqli $db;
 
@@ -17,7 +16,7 @@ final class SignUpIntegrationTest extends TestCase
 
     public function testCreatedUser_CanBeRetrievedFromStorage()
     {
-        $user = new MySqlDriverRepository($this->db);
+        $user = new MySqlCentralOfficeRepository($this->db);
 
         $id = $user->count() + 1;
 
@@ -32,7 +31,7 @@ final class SignUpIntegrationTest extends TestCase
 
     public function testCreatedUser_CanBeUpdated()
     {
-        $user = new MySqlDriverRepository($this->db);
+        $user = new MySqlCentralOfficeRepository($this->db);
 
         $id = $user->count() + 1;
         $user->insert($id, "username", "email@email", "password");
@@ -50,7 +49,7 @@ final class SignUpIntegrationTest extends TestCase
 
     public function testCreatedUser_CanBeDeleted()
     {
-        $user = new MySqlDriverRepository($this->db);
+        $user = new MySqlCentralOfficeRepository($this->db);
 
         $id = $user->count() + 1;
         $user->insert($id, "username", "email", "pass");
@@ -60,7 +59,7 @@ final class SignUpIntegrationTest extends TestCase
 
 
         $retrieved = $user->get($id);
-        $this->isNull($retrieved);
+        $this->assertEquals(null, $retrieved);
     }
 
 
