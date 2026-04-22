@@ -10,7 +10,7 @@ interface ISendRequestRepository
 
 	public function insert(int $id, int $locomotive_id, int $destination_id, DateTime $request_time): void;
 
-	public function get(int $id): SendRequest;
+	public function get(int $id): SendRequest | null;
 
 	public function getAll(): array;
 
