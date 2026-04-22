@@ -24,8 +24,8 @@ class MySqlCallRepository implements ICallRepository
 
     public function insert(int $id, int $driver_id, DateTime $timestamp): void
     {
-        $stmt = $this->db->prepare("INSERT INTO calling (id, driver_id, timestamp) VALUES (?, ?, ?)");
-        $stmt->bind_param("iis", $id, $driver_id, $timestamp);
+        $stmt = $this->db->prepare("INSERT INTO calling (id, driver_id, call_time) VALUES (?, ?, ?)");
+        $stmt->bind_param("iis", $id, $driver_id, $timestamp->format('Y-m-d H:i:s'));
         $stmt->execute();
         $stmt->close();
     }
@@ -36,7 +36,7 @@ class MySqlCallRepository implements ICallRepository
             SELECT 
                 c.id AS id,
                 c.driver_id AS driver_id,
-                c.call_time AS timestamp
+                c.call_time AS call_time
 
             FROM calling c
             WHERE c.id = ?;");
@@ -54,7 +54,7 @@ class MySqlCallRepository implements ICallRepository
         return new Call(
             $row['id'],
             $row['driver_id'],
-            new DateTime($row['timestamp'])
+            new DateTime($row['call_time'])
         );
     }
 
@@ -63,7 +63,7 @@ class MySqlCallRepository implements ICallRepository
         $stmt = $this->db->query("SELECT * FROM calling");
         $calls = [];
         while ($row = $stmt->fetch_assoc()) {
-            $calls[] = new Call($row['id'], $row['driver_id'], $row['timestamp']);
+            $calls[] = new Call($row['id'], $row['driver_id'], $row['call_time']);
         }
         return $calls;
     }
@@ -73,10 +73,10 @@ class MySqlCallRepository implements ICallRepository
         $stmt = $this->db->prepare("
             UPDATE calling 
             SET 
-                driver_id = ? 
-                timestamp = ?
+                driver_id = ?,
+                call_time = ?
             WHERE id = ?");
-        $stmt->bind_param("isi", $id, $driver_id, $timestamp);
+        $stmt->bind_param("isi", $driver_id, $timestamp->format('Y-m-d H:i:s'), $id);
         $stmt->execute();
         $stmt->close();
     }

@@ -24,7 +24,7 @@ class MySqlAcceptedCallRepository implements IAcceptedCallRepository
 
     public function get(int $id): AcceptedCall | null
     {
-        $stmt = $this->db->prepare("SELECT call_id, user_id FROM accepted_call WHERE id = ?");
+        $stmt = $this->db->prepare("SELECT call_id FROM accepted_call WHERE id = ?");
         $stmt->bind_param("i", $id);
         $stmt->execute();
         $result = $stmt->get_result();

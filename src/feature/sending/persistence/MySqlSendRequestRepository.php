@@ -35,7 +35,7 @@ class MySqlSendRequestRepository implements ISendRequestRepository
         $stmt->execute();
     }
 
-    public function get(int $id): SendRequest
+    public function get(int $id): SendRequest | null
     {
         $stmt = $this->db->prepare("SELECT id, locomotive_id, destination_id, request_time FROM send_request WHERE id = ?");
         $stmt->bind_param("i", $id);
@@ -44,14 +44,14 @@ class MySqlSendRequestRepository implements ISendRequestRepository
 
         if ($result && $row = $result->fetch_assoc()) {
             return new SendRequest(
-                (int)$row['id'], 
-                (int)$row['locomotive_id'], 
-                (int)$row['destination_id'], 
+                (int)$row['id'],
+                (int)$row['locomotive_id'],
+                (int)$row['destination_id'],
                 new DateTime($row['request_time'])
             );
         }
 
-        throw new \RuntimeException("SendRequest with id {$id} not found.");
+        return null;
     }
 
     public function getAll(): array
@@ -62,9 +62,9 @@ class MySqlSendRequestRepository implements ISendRequestRepository
         if ($result) {
             while ($row = $result->fetch_assoc()) {
                 $sendRequests[] = new SendRequest(
-                    (int)$row['id'], 
-                    (int)$row['locomotive_id'], 
-                    (int)$row['destination_id'], 
+                    (int)$row['id'],
+                    (int)$row['locomotive_id'],
+                    (int)$row['destination_id'],
                     new DateTime($row['request_time'])
                 );
             }

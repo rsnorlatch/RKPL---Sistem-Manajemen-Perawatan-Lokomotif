@@ -25,10 +25,10 @@ class MySqlOnSiteLocomotiveRepository implements IOnSiteLocomotiveRepository
         return 0;
     }
 
-    public function insert(int $id, int $driver_id, string $model): void
+    public function insert(int $onsite_locomotive_id, int $locomotive_id): void
     {
-        $stmt = $this->db->prepare("INSERT INTO onsite_locomotive (id, driver_id, model) VALUES (?, ?, ?)");
-        $stmt->bind_param("iis", $id, $driver_id, $model);
+        $stmt = $this->db->prepare("INSERT INTO onsite_locomotive (id, locomotive_id) VALUES (?, ?)");
+        $stmt->bind_param("ii", $onsite_locomotive_id, $locomotive_id);
         $stmt->execute();
     }
 
@@ -40,8 +40,8 @@ class MySqlOnSiteLocomotiveRepository implements IOnSiteLocomotiveRepository
                 l.driver_id,
                 l.model
             FROM onsite_locomotive o
-            JOIN locomotive l ON o.id = l.id
-            WHERE id = ?");
+            JOIN locomotive l ON o.locomotive_id = l.id
+            WHERE o.id = ?");
         $stmt->bind_param("i", $id);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -70,10 +70,14 @@ class MySqlOnSiteLocomotiveRepository implements IOnSiteLocomotiveRepository
         return $locomotives;
     }
 
-    public function update(int $id, int $driver_id, string $model): void
+    public function update(int $onsite_locomotive_id, int $locomotive_id): void
     {
-        $stmt = $this->db->prepare("UPDATE onsite_locomotive SET driver_id = ?, model = ? WHERE id = ?");
-        $stmt->bind_param("isi", $driver_id, $model, $id);
+        $stmt = $this->db->prepare("
+            UPDATE onsite_locomotive 
+            SET 
+                locomotive_id = ? 
+            WHERE id = ?");
+        $stmt->bind_param("ii", $locomotive_id, $onsite_locomotive_id);
         $stmt->execute();
     }
 

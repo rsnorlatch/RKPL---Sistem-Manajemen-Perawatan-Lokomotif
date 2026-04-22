@@ -78,7 +78,7 @@ class MySqlLocomotiveRepository implements ILocomotiveRepository
     public function update(int $id, int $driver_id, string $model): void
     {
         $stmt = $this->db->prepare("UPDATE locomotive SET driver_id = ?, model = ? WHERE id = ?");
-        $stmt->bind_param("iis", $driver_id, $model, $id);
+        $stmt->bind_param("isi", $driver_id, $model, $id);
         $stmt->execute();
     }
 
@@ -89,4 +89,3 @@ class MySqlLocomotiveRepository implements ILocomotiveRepository
         $stmt->execute();
     }
 }
-
