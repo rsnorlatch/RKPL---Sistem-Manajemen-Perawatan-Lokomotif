@@ -11,6 +11,7 @@ final class MaintainerIntegrationTest extends TestCase
     {
         parent::setUp();
         $this->db = new \mysqli("localhost", "root", "", "lms_test");
+        $this->db->begin_transaction();
     }
 
     public function testCreatedUser_CanBeRetrievedFromStorage()
@@ -65,7 +66,7 @@ final class MaintainerIntegrationTest extends TestCase
     {
         parent::tearDown();
 
-        $stmt = $this->db->prepare("DELETE FROM maintainer");
-        $stmt->execute();
+        $this->db->rollback();
+        $this->db->close();
     }
 }
