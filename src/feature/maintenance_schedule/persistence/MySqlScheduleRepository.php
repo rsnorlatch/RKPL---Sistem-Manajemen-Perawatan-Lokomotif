@@ -45,7 +45,7 @@ class MySqlScheduleRepository implements IScheduleRepository
         $stmt->execute();
         $result = $stmt->get_result();
         if ($row = $result->fetch_assoc()) {
-            return new Schedule($row['id'], $row['start'], $row['end'], $row['locomotive_id']);
+            return new Schedule($row['id'], new DateTime($row['start']), new DateTime($row['end']), $row['locomotive_id']);
         } else {
             return null;
         }
