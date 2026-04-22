@@ -109,8 +109,10 @@ use lms\feature\maintenance_program\MaintenanceProgramShowUnitHandler;
             <!-- Kirim ke backend edit_unit.php -->
             <form action="../src/feature/maintenance_program/endpoint/edit_unit.php" method="POST">
               <input type="hidden" name="id" value="<?= $row['id'] ?>" />
-              <input type="hidden" name="sequence_number" value="<?= $row['sequence_number'] ?>" />
-              <input type="text" name="unit" value="<?= htmlspecialchars($row['unit_name']) ?>" required />
+              <input type="hidden" name="sequence_number"  value="<?= $row['sequence_number'] ?>" />
+              <input type="text" name="unit" placeholder="Nama Unit Perawatan" value= "<?= htmlspecialchars($row['unit_name']) ?>" required />
+              <input type="text" name="description" placeholder="Deskripsi Program" value="<?= htmlspecialchars($row['unit_description']) ?>" required />
+              <input type="text" name="unit_type" placeholder="Jenis Perawatan" value="<?= htmlspecialchars($row['unit_type']) ?>" required />
               <div class="btn-row" style="margin-top:4px">
                 <button type="submit" class="btn btn-orange2">Simpan</button>
                 <a href="atur_program.php" class="btn btn-red" style="text-align:center">Batal</a>
