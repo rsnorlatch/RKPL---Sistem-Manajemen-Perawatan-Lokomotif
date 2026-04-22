@@ -18,8 +18,8 @@ class SignUpHandler
     {
         $new_id = $this->_users->count() + 1;
 
-        $is_taken = count(array_filter($this->_users->getAll(), function (User $d) use ($username) {
-            return $d->name == $username;
+        $is_taken = count(array_filter($this->_users->getAll(), function (User $d) use ($username, $email) {
+            return $d->name == $username || $d->email == $email;
         })) > 0;
 
         if ($is_taken)
