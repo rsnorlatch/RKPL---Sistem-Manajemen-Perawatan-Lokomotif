@@ -63,7 +63,7 @@ if ($step === 2) {
     }
 
     $u      = $db->real_escape_string($username);
-    $hashed = $db->real_escape_string(password_hash($new_password));
+    $hashed = $db->real_escape_string($new_password);
     $tables = ['driver', 'maintainer', 'central_office'];
     $updated = false;
 
