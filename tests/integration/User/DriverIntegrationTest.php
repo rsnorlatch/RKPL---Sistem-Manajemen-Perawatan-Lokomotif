@@ -12,6 +12,7 @@ final class DriverIntegrationTest extends TestCase
     {
         parent::setUp();
         $this->db = new \mysqli("localhost", "root", "", "lms_test");
+        $this->db->begin_transaction();
     }
 
     public function testCreatedUser_CanBeRetrievedFromStorage()
@@ -67,7 +68,7 @@ final class DriverIntegrationTest extends TestCase
     {
         parent::tearDown();
 
-        $stmt = $this->db->prepare("DELETE FROM driver");
-        $stmt->execute();
+        $this->db->rollback();
+        $this->db->close();
     }
 }
