@@ -27,6 +27,25 @@ switch ($result) {
         break;
 
     case SendResult::Success:
+        // Cari driver_id dari lokomotif ini, lalu insert panggilan ke masinis
+        $stmt = $db->prepare("SELECT driver_id FROM locomotive WHERE id = ? LIMIT 1");
+        if ($stmt) {
+            $stmt->bind_param("i", $locomotive_id);
+            $stmt->execute();
+            $row = $stmt->get_result()->fetch_assoc();
+            $stmt->close();
+ 
+            if ($row && $row['driver_id']) {
+                $driver_id = (int)$row['driver_id'];
+                $ins = $db->prepare("INSERT INTO calling (driver_id, call_time) VALUES (?, NOW())");
+                if ($ins) {
+                    $ins->bind_param("i", $driver_id);
+                    $ins->execute();
+                    $ins->close();
+                }
+            }
+        }
         header("Location: ../../../../front-end/dashboard_timbalaiyasa.php?status=locomotive_send_success");
         break;
 }
+exit;
