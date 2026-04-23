@@ -1,7 +1,5 @@
 <?php
 
-require_once __DIR__ . "/../../../vendor/autoload.php";
-
 use lms\feature\communication\CallingResult;
 use lms\feature\communication\MaintainerCallingController;
 use PHPUnit\Framework\TestCase;

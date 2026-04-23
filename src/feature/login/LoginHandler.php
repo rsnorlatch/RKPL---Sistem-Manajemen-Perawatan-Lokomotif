@@ -66,7 +66,7 @@ class LoginHandler
             return LoginResult::UsernameOrPasswordIncorrect;
 
         session_start();
-        $_SESSION['user_id'] = $target_user[0]->id;
+        $_SESSION['user_id'] = array_shift(array_values($target_user))->id;
         $_SESSION['user'] = $username;
         $_SESSION['is_logged_in'] = true;
 
