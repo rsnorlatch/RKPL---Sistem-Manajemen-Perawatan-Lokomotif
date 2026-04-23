@@ -24,12 +24,12 @@ class InMemoryMaintainerRepository implements IMaintainerRepository
 
     public function insert(int $id, string $username, string $email, string $password): void
     {
-        $this->maintainer[$id] = new Maintainer($id, $username, $email, $password);
+        array_push($this->maintainer, new Maintainer($id, $username, $email, $password));
     }
 
     public function get(int $id)
     {
-        return $this->maintainer[$id] ?? null;
+        return $this->maintainer[$id - 1] ?? null;
     }
 
     public function getByUsername(string $username)

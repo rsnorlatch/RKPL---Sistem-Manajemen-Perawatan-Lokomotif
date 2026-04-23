@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . "/../vendor/autoload.php";
+/* require_once __DIR__ . "/../vendor/autoload.php"; */
 
 use lms\feature\maintenance_schedule\Scheduler;
 use lms\feature\maintenance_schedule\ScheduleResult;

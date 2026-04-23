@@ -3,7 +3,7 @@
 namespace lms\feature\locomotive_management\persistence;
 
 use lms\feature\locomotive_management\entities\IOnSiteLocomotiveRepository;
-use lms\feature\locomotive_management\entities\Locomotive;
+use lms\feature\locomotive_management\entities\OnSiteLocomotive;
 
 class InMemoryOnSiteLocomotiveRepository implements IOnSiteLocomotiveRepository
 {
@@ -19,14 +19,14 @@ class InMemoryOnSiteLocomotiveRepository implements IOnSiteLocomotiveRepository
         return count($this->locomotives);
     }
 
-    public function insert(int $id, int $driver_id, string $model): void
+    public function insert($id, $locomotive_id): void
     {
-        array_push($this->locomotives, new Locomotive($id, $driver_id, $model));
+        array_push($this->locomotives, new OnSiteLocomotive($id, $locomotive_id));
     }
 
     public function get(int $id)
     {
-        return array_filter($this->locomotives, function (Locomotive $l) use ($id) {
+        return array_filter($this->locomotives, function (OnSiteLocomotive $l) use ($id) {
             return $l->id == $id;
         })[0];
     }
@@ -36,12 +36,11 @@ class InMemoryOnSiteLocomotiveRepository implements IOnSiteLocomotiveRepository
         return $this->locomotives;
     }
 
-    public function update(int $id, int $driver_id, string $model): void
+    public function update(int $id, int $locomotive_id): void
     {
         foreach ($this->locomotives as $l) {
             if ($l->id == $id) {
-                $l->driver_id = $driver_id;
-                $l->model = $model;
+                $l->locomotive_id = $locomotive_id;
             }
         }
     }
