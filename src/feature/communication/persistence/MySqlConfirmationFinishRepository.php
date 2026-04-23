@@ -23,10 +23,11 @@ class MySqlConfirmationFinishRepository implements IConfirmationFinishRepository
         return (int)$row['count'];
     }
 
-    public function insert(int $id, int $driver_id, int $calling_id): void
+    public function insert(int $id, int $driver_id, int $call_id, DateTime $timestamp): void
     {
-        $stmt = $this->db->prepare("INSERT INTO confirmation_finish (id, driver_id, calling_id) VALUES (?, ?, ?)");
-        $stmt->bind_param("iii", $id, $driver_id, $calling_id);
+        $formatted = $timestamp->format('Y-m-d H:i:s');
+        $stmt = $this->db->prepare("INSERT INTO confirmation_finish (id, driver_id, calling_id, timestamp) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("iiss", $id, $driver_id, $call_id, $formatted);
         $stmt->execute();
         $stmt->close();
     }
@@ -38,6 +39,7 @@ class MySqlConfirmationFinishRepository implements IConfirmationFinishRepository
                 f.id AS id,
                 c.driver_id AS driver_id,
                 f.calling_id AS calling_id
+                f.timestamp AS timestamp
 
             FROM confirmation_finish f
             JOIN calling c ON c.id = f.calling_id
@@ -46,7 +48,8 @@ class MySqlConfirmationFinishRepository implements IConfirmationFinishRepository
         $stmt->execute();
         $result = $stmt->get_result();
         if ($row = $result->fetch_assoc()) {
-            return new ConfirmationFinish($row['id'], $row['driver_id'], $row['calling_id'], new DateTime($row['timestamp']));
+            $timestamp = $row['timestamp'] ? new DateTime($row['timestamp']) : new DateTime();
+            return new ConfirmationFinish($row['id'], $row['driver_id'], $row['calling_id'], $timestamp);
         } else {
             return null;
         }
@@ -69,10 +72,11 @@ class MySqlConfirmationFinishRepository implements IConfirmationFinishRepository
         return $finishes;
     }
 
-    public function update(int $id, int $driver_id, int $calling_id): void
+    public function update(int $id, int $driver_id, int $call_id, DateTime $timestamp): void
     {
-        $stmt = $this->db->prepare("UPDATE confirmation_finish SET driver_id = ? calling_id = ? WHERE id = ?");
-        $stmt->bind_param("ii", $driver_id, $calling_id, $id);
+        $formatted = $timestamp->format('Y-m-d H:i:s');
+        $stmt = $this->db->prepare("UPDATE confirmation_finish SET driver_id = ?, calling_id = ?, timestamp = ? WHERE id = ?");
+        $stmt->bind_param("iisi", $driver_id, $call_id, $formatted, $id);
         $stmt->execute();
         $stmt->close();
     }
