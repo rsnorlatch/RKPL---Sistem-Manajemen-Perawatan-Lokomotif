@@ -13,7 +13,7 @@ class ThemeToggleHandler
     public IUserPreferenceRepository $preferences;
     public IUserRepository $users;
 
-    public function __construct(InMemoryUserPreferenceRepository $preferences, IUserRepository $users)
+    public function __construct(IUserPreferenceRepository $preferences, IUserRepository $users)
     {
         $this->preferences = $preferences;
         $this->users = $users;
@@ -36,8 +36,8 @@ class ThemeToggleHandler
         if (!$preference)
             throw new Error("preference doesn't exists!");
 
-        $theme = $preference->theme == ThemeVariant::Light ? ThemeVariant::Dark : ThemeVariant::Light;
+        $preference->theme = $preference->theme == ThemeVariant::Light ? ThemeVariant::Dark : ThemeVariant::Light;
 
-        $this->preferences->update($preference->id, $preference->user_id, $theme);
+        $this->preferences->update($preference);
     }
 }

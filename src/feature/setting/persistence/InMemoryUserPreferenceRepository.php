@@ -4,7 +4,6 @@ namespace lms\feature\setting\persistence;
 
 use Error;
 use lms\feature\setting\entities\UserPreference;
-use lms\feature\setting\ThemeVariant;
 use lms\feature\setting\entities\IUserPreferenceRepository;
 
 class InMemoryUserPreferenceRepository implements IUserPreferenceRepository
@@ -21,9 +20,9 @@ class InMemoryUserPreferenceRepository implements IUserPreferenceRepository
         return count($this->user_preferences);
     }
 
-    public function insert(int $id, int $user_id, ThemeVariant $theme): void
+    public function insert(UserPreference $preference): void
     {
-        $this->user_preferences[$id - 1] = new UserPreference($id, $user_id, $theme);
+        $this->user_preferences[$preference->id - 1] = new UserPreference($preference->id, $preference->user_id, $preference->theme);
     }
 
     public function get(int $id): UserPreference
@@ -37,13 +36,13 @@ class InMemoryUserPreferenceRepository implements IUserPreferenceRepository
         return array_values($this->user_preferences);
     }
 
-    public function update(int $id, int $user_id, ThemeVariant $theme): void
+    public function update(UserPreference $preference): void
     {
-        if (isset($this->user_preferences[$id - 1])) {
-            $this->user_preferences[$id - 1]->user_id = $user_id;
-            $this->user_preferences[$id - 1]->theme = $theme;
+        if (isset($this->user_preferences[$preference->id - 1])) {
+            $this->user_preferences[$preference->id - 1]->user_id = $preference->user_id;
+            $this->user_preferences[$preference->id - 1]->theme = $preference->theme;
         } else {
-            throw new Error("cannot find user with the id of $id");
+            throw new Error("cannot find user with the id of $preference->id");
         }
     }
 

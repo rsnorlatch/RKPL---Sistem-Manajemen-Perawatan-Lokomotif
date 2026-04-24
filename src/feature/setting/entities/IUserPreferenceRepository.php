@@ -8,13 +8,13 @@ interface IUserPreferenceRepository
 {
     public function count(): int;
 
-    public function insert(int $id, int $user_id, ThemeVariant $theme): void;
+    public function insert(UserPreference $preference): void;
 
     public function get(int $id);
 
     public function getAll(): array;
 
-    public function update(int $id, int $user_id, ThemeVariant $theme): void;
+    public function update(UserPreference $preference): void;
 
     public function delete(int $id): void;
 }

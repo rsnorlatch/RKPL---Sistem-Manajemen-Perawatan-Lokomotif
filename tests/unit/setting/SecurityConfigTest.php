@@ -3,6 +3,8 @@
 use lms\feature\setting\ChangePasswordHandler;
 use lms\feature\signup\persistence\InMemoryMaintainerRepository;
 use lms\feature\setting\ChangePasswordResult;
+use lms\feature\signup\persistence\InMemoryCentralOfficeRepository;
+use lms\feature\signup\persistence\InMemoryDriverRepository;
 use PHPUnit\Framework\TestCase;
 
 final class SecurityConfigTest extends TestCase
@@ -19,7 +21,7 @@ final class SecurityConfigTest extends TestCase
 
     public function testWhenPasswordConfirmDidNotMatch_ItShouldGiveConfirmNotMatchStatus()
     {
-        $user = new InMemoryMaintainerRepository([]);
+        $user = new InMemoryDriverRepository([]);
         $user->insert(1, "username", "email", "old_pass");
         $handler = new ChangePasswordHandler($user);
 
@@ -30,7 +32,7 @@ final class SecurityConfigTest extends TestCase
 
     public function testWhenPasswordConfirmMatch_ItShouldChangePassword()
     {
-        $user = new InMemoryMaintainerRepository([]);
+        $user = new InMemoryCentralOfficeRepository([]);
         $user->insert(1, "username", "email", "old_pass");
         $handler = new ChangePasswordHandler($user);
 

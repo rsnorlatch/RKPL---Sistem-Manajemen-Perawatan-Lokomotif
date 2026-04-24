@@ -1,10 +1,14 @@
 <?php
 
-use lms\feature\setting\entities\UserPreference;
+use lms\feature\setting\entities\CentralOfficePreference;
+use lms\feature\setting\entities\DriverPreference;
+use lms\feature\setting\entities\MaintainerPreference;
 use lms\feature\setting\persistence\InMemoryUserPreferenceRepository;
 use lms\feature\signup\persistence\InMemoryDriverRepository;
 use lms\feature\setting\ThemeToggleHandler;
 use lms\feature\setting\ThemeVariant;
+use lms\feature\signup\persistence\InMemoryCentralOfficeRepository;
+use lms\feature\signup\persistence\InMemoryMaintainerRepository;
 use PHPUnit\Framework\TestCase;
 
 final class ThemeTest extends TestCase
@@ -21,53 +25,48 @@ final class ThemeTest extends TestCase
         $handler->handle(1);
     }
 
-    public function testItShouldGiveTheCurrentlyActiveTheme()
+    public function testTogglingThemeToMaintainersPreference_ShouldToggleTheme()
     {
-        $drivers = new InMemoryDriverRepository([]);
-        $driver_id = $drivers->count() + 1;
-        $drivers->insert($driver_id, "user",  "email", "password");
+        $user = new InMemoryDriverRepository([]);
+        $user->insert(1, "", "", "");
 
-        $preferences = new InMemoryUserPreferenceRepository([
-            new UserPreference(1, $driver_id, ThemeVariant::Light)
-        ]);
-        $drivers->insert(1, "", "", "");
+        $preferences = new InMemoryUserPreferenceRepository([]);
+        $preferences->insert(new DriverPreference(1, 1, ThemeVariant::Light));
 
-
-        $this->assertNotNull($preferences->get(1)->theme);
-    }
-
-    public function testUserShouldBeAbleToEnableDarkTheme()
-    {
-        $drivers = new InMemoryDriverRepository([]);
-        $driver_id = $drivers->count() + 1;
-        $drivers->insert($driver_id, "user",  "email", "password");
-
-        $preferences = new InMemoryUserPreferenceRepository([
-            new UserPreference(1, $driver_id, ThemeVariant::Light)
-        ]);
-
-        $handler = new ThemeToggleHandler($preferences, $drivers);
+        $handler = new ThemeToggleHandler($preferences, $user);
         $handler->handle(1);
-
 
         $this->assertEquals(ThemeVariant::Dark, $preferences->get(1)->theme);
     }
 
-    public function testUserSHouldBeAbleToDisableDarkTheme()
+    public function testTogglingThemeTwice_ShouldNotChangeTheTheme()
     {
-        $drivers = new InMemoryDriverRepository([]);
-        $driver_id = $drivers->count() + 1;
-        $drivers->insert($driver_id, "user",  "email", "password");
+        $user = new InMemoryMaintainerRepository([]);
+        $user->insert(1, "", "", "");
 
-        $preferences = new InMemoryUserPreferenceRepository([
-            new UserPreference(1, $driver_id, ThemeVariant::Light)
-        ]);
+        $preferences = new InMemoryUserPreferenceRepository([]);
+        $preferences->insert(new MaintainerPreference(1, 1, ThemeVariant::Light));
 
-        $handler = new ThemeToggleHandler($preferences, $drivers);
+        $handler = new ThemeToggleHandler($preferences, $user);
         $handler->handle(1);
         $handler->handle(1);
-
 
         $this->assertEquals(ThemeVariant::Light, $preferences->get(1)->theme);
+    }
+
+    public function testTogglingThemeThreeTimes_ShouldChangeToDarkMode()
+    {
+        $user = new InMemoryCentralOfficeRepository([]);
+        $user->insert(1, "", "", "");
+
+        $preferences = new InMemoryUserPreferenceRepository([]);
+        $preferences->insert(new CentralOfficePreference(1, 1, ThemeVariant::Light));
+
+        $handler = new ThemeToggleHandler($preferences, $user);
+        $handler->handle(1);
+        $handler->handle(1);
+        $handler->handle(1);
+
+        $this->assertEquals(ThemeVariant::Dark, $preferences->get(1)->theme);
     }
 }

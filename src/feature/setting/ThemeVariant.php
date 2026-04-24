@@ -2,8 +2,8 @@
 
 namespace lms\feature\setting;
 
-enum ThemeVariant
+enum ThemeVariant: string
 {
-    case Light;
-    case Dark;
+    case Light = "Light";
+    case Dark = "Dark";
 }
