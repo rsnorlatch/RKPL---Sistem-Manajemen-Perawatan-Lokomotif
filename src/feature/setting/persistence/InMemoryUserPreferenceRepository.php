@@ -22,7 +22,8 @@ class InMemoryUserPreferenceRepository implements IUserPreferenceRepository
 
     public function insert(UserPreference $preference): void
     {
-        $this->user_preferences[$preference->id - 1] = new UserPreference($preference->id, $preference->user_id, $preference->theme);
+        $this->user_preferences[$preference->id - 1] =
+            new UserPreference($preference->id, $preference->user_id, $preference->theme, $preference->language);
     }
 
     public function get(int $id): UserPreference
@@ -41,6 +42,7 @@ class InMemoryUserPreferenceRepository implements IUserPreferenceRepository
         if (isset($this->user_preferences[$preference->id - 1])) {
             $this->user_preferences[$preference->id - 1]->user_id = $preference->user_id;
             $this->user_preferences[$preference->id - 1]->theme = $preference->theme;
+            $this->user_preferences[$preference->id - 1]->language = $preference->language;
         } else {
             throw new Error("cannot find user with the id of $preference->id");
         }

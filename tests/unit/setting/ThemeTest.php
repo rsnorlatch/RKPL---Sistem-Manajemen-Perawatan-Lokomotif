@@ -3,6 +3,7 @@
 use lms\feature\setting\entities\CentralOfficePreference;
 use lms\feature\setting\entities\DriverPreference;
 use lms\feature\setting\entities\MaintainerPreference;
+use lms\feature\setting\LanguageVariant;
 use lms\feature\setting\persistence\InMemoryUserPreferenceRepository;
 use lms\feature\signup\persistence\InMemoryDriverRepository;
 use lms\feature\setting\ThemeToggleHandler;
@@ -31,7 +32,7 @@ final class ThemeTest extends TestCase
         $user->insert(1, "", "", "");
 
         $preferences = new InMemoryUserPreferenceRepository([]);
-        $preferences->insert(new DriverPreference(1, 1, ThemeVariant::Light));
+        $preferences->insert(new DriverPreference(1, 1, ThemeVariant::Light, LanguageVariant::Indonesia));
 
         $handler = new ThemeToggleHandler($preferences, $user);
         $handler->handle(1);
@@ -45,7 +46,7 @@ final class ThemeTest extends TestCase
         $user->insert(1, "", "", "");
 
         $preferences = new InMemoryUserPreferenceRepository([]);
-        $preferences->insert(new MaintainerPreference(1, 1, ThemeVariant::Light));
+        $preferences->insert(new MaintainerPreference(1, 1, ThemeVariant::Light, LanguageVariant::Indonesia));
 
         $handler = new ThemeToggleHandler($preferences, $user);
         $handler->handle(1);
@@ -60,7 +61,7 @@ final class ThemeTest extends TestCase
         $user->insert(1, "", "", "");
 
         $preferences = new InMemoryUserPreferenceRepository([]);
-        $preferences->insert(new CentralOfficePreference(1, 1, ThemeVariant::Light));
+        $preferences->insert(new CentralOfficePreference(1, 1, ThemeVariant::Light, LanguageVariant::Indonesia));
 
         $handler = new ThemeToggleHandler($preferences, $user);
         $handler->handle(1);
