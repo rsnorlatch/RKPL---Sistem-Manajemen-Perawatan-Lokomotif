@@ -50,7 +50,8 @@ class MaintainerCallingController
         $driver_id = $locomotive->driver_id;
         $latest_id = $this->_call->count() + 1;
 
-        $this->_call->insert($latest_id, $driver_id, new DateTime());
+        $timestamp = new DateTime();
+        $this->_call->insert($latest_id, $driver_id, $timestamp);
 
         return CallingResult::Success;
     }

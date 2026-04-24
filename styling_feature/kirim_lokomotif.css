@@ -1,216 +1,289 @@
+/* kirim_lokomotif.css — untuk front-end/kirim_lokomotif.php */
+
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-:root { --orange: #f97316; }
-body { 
-  font-family: 'DM Sans', sans-serif; 
-  background: #f5f5f5; 
-  min-height: 100vh; 
-  display: flex; 
-  justify-content: center; 
+
+:root {
+  --blue:   #2196F3;
+  --green:  #4CAF50;
+  --orange: #FF7043;
+  --red:    #F44336;
+  --dark:   #1a1a1a;
+  --gray:   #757575;
+  --lgray:  #bdbdbd;
+  --border: #e0e0e0;
+  --bg:     #ffffff;
+  --bg2:    #f5f5f5;
 }
 
-.shell { 
-  width: 100%; 
-  max-width: 430px; 
-  min-height: 100vh; 
-  background: #f5f5f5; 
-  display: flex; 
-  flex-direction: column; 
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: #e8edf2;
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 24px 12px;
 }
 
-.topbar { 
-  display: flex; 
-  align-items: center; 
-  gap: 12px; 
-  padding: 16px 20px 12px; 
-  background: #fff; 
-  position: sticky; 
-  top: 0; 
-  z-index: 200; 
-  box-shadow: 0 1px 3px rgba(0,0,0,.07); 
+/* ── Shell ── */
+.shell {
+  width: min(340px, 100%);
+  background: var(--bg);
+  border-radius: clamp(0px, 3.5vw, 24px);
+  box-shadow: 0 20px 56px rgba(0,0,0,.13);
+  overflow: hidden;
+  animation: fadeUp .4s ease both;
 }
 
-.back-btn { 
-  width: 36px; 
-  height: 36px; 
-  display: flex; 
-  align-items: center; 
-  justify-content: center; 
-  border-radius: 50%; 
-  background: #f3f4f6; 
-  text-decoration: none; 
-  color: #1a1a1a; 
-  flex-shrink: 0; 
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-.back-btn svg { 
-  width: 20px; 
-  height: 20px; 
-  fill: currentColor; 
+/* ── Top Bar ── */
+.topbar {
+  background: var(--blue);
+  display: flex;
+  align-items: center;
+  padding: 16px 16px;
+  gap: 10px;
 }
 
-.topbar h1 { 
-  font-size: 18px; 
-  font-weight: 700; 
-}
-
-.route-strip { 
-  background: #fff; 
-  padding: 14px 20px; 
-  border-bottom: 1px solid #efefef; 
-  display: flex; 
-  align-items: 
-  center; gap: 10px; 
-}
-
-.route-col { 
-  flex: 1; 
-  min-width: 0; 
-}
-
-.route-label { 
-  font-size: 11px; 
-  font-weight: 700; 
-  color: #999; 
-  letter-spacing: .5px; 
-  text-transform: uppercase; 
-  margin-bottom: 3px; 
-}
-
-.route-val { 
-  font-size: 14px; 
-  font-weight: 600; 
-  color: #1a1a1a; 
-  white-space: nowrap; 
-  overflow: hidden; 
-  text-overflow: ellipsis; 
-}
-
-.route-arrow { 
-  color: #ccc; 
-  font-size: 18px; 
-  flex-shrink: 0; 
-}
-
-#map { 
-  width: 100%; 
-  height: 320px; 
-  z-index: 1; 
-}
-
-.info-box { 
-  background: #fff; 
-  margin: 14px 16px 0; 
-  border-radius: 14px; 
-  padding: 16px; 
-  box-shadow: 0 1px 4px rgba(0,0,0,.07);
- }
-
-.info-box p { 
-  font-size: 13px; 
-  color: #888; 
-  margin-bottom: 10px; 
-}
-
-.selected-stop { 
-  display: flex; 
-  align-items: center; 
-  gap: 10px; }
-
-.stop-dot { 
-  width: 10px; 
-  height: 10px; 
-  border-radius: 50%; 
-  background: var(--orange); 
+.back-btn {
+  display: flex;
+  align-items: center;
+  color: #fff;
+  text-decoration: none;
   flex-shrink: 0;
 }
+.back-btn svg { width: 22px; height: 22px; fill: #fff; }
+.topbar h1    { font-size: 17px; font-weight: 600; color: #fff; }
 
-.stop-name { 
-  font-size: 15px; 
-  font-weight: 700; 
-  color: #1a1a1a; 
+/* ── Route strip ── */
+.route-strip {
+  background: #fff;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.stop-hint { 
-  font-size: 12px; 
-  color: #aaa; 
-  margin-top: 2px; 
+.route-col { flex: 1; min-width: 0; }
+.route-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--gray);
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  margin-bottom: 3px;
 }
+.route-val {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--dark);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.route-arrow { color: var(--lgray); font-size: 18px; flex-shrink: 0; }
 
-/* Container untuk info lokomotif */
+/* ── Peta ── */
+#map { width: 100%; height: 320px; z-index: 1; }
+
+/* ── Info box (stasiun) ── */
+.info-box {
+  background: var(--bg);
+  margin: 14px 16px 0;
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.07);
+}
+.info-box p { font-size: 13px; color: var(--gray); margin-bottom: 10px; }
+.selected-stop { display: flex; align-items: center; gap: 10px; }
+.stop-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--orange);
+  flex-shrink: 0;
+}
+.stop-name { font-size: 15px; font-weight: 700; color: var(--dark); }
+.stop-hint { font-size: 12px; color: var(--lgray); margin-top: 2px; }
+
+/* ── Box lokomotif ── */
 .loco-box {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: #fff7ed;
-    border: 1.5px solid #fed7aa;
-    border-radius: 14px;
-    margin: 10px 16px 0;
-    padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #fff7ed;
+  border: 1.5px solid #fed7aa;
+  border-radius: 14px;
+  margin: 10px 16px 0;
+  padding: 14px 16px;
 }
 .loco-icon {
-    width: 38px; height: 38px;
-    border-radius: 10px;
-    background: var(--orange);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
+  width: 38px; height: 38px;
+  border-radius: 10px;
+  background: var(--orange);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 .loco-icon svg { width: 22px; height: 22px; fill: #fff; }
 .loco-info { flex: 1; }
 .loco-label { font-size: 13px; color: #92400e; font-weight: 500; }
 .loco-model { font-size: 15px; font-weight: 700; color: #78350f; }
-.loco-kode { font-weight: 400; color: #b45309; }
+.loco-kode  { font-weight: 400; color: #b45309; }
 
-/* Box pilih masinis */
+/* ── Dropdown masinis ── */
 .driver-select-box {
-    background: #fff;
-    margin: 0 16px;
-    padding: 14px 16px;
-    border-radius: 14px;
-    box-shadow: 0 1px 4px rgba(0,0,0,.07);
+  background: var(--bg);
+  margin: 10px 16px 0;
+  padding: 14px 16px;
+  border-radius: 14px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.07);
 }
 .driver-label {
-    font-size: 12px;
-    font-weight: 700;
-    color: #999;
-    text-transform: uppercase;
-    letter-spacing: .5px;
-    display: block;
-    margin-bottom: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--gray);
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  display: block;
+  margin-bottom: 6px;
 }
 .driver-select {
-    width: 100%;
-    padding: 12px;
-    border: 1.5px solid #e5e7eb;
-    border-radius: 10px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    font-weight: 500;
-    background: #fff;
-    color: #1a1a1a;
-    outline: none;
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='%23999'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 12px center;
+  width: 100%;
+  padding: 12px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  background: #fff;
+  color: var(--dark);
+  outline: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='%23999'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
 }
 .driver-current {
-    margin-top: 8px;
-    font-size: 12px;
-    color: #888;
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--gray);
 }
+
+/* ── Tombol Kirim ── */
 .btn-wrap { padding: 16px; margin-top: auto; }
-.btn-kirim { display: block; width: 100%; padding: 15px; background: var(--orange); color: #fff; border: none; border-radius: 14px; font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 700; cursor: pointer; }
-.btn-kirim:disabled { background: #d1d5db; cursor: not-allowed; }
-.hint-txt { font-size: 12px; color: #aaa; text-align: center; margin-top: 8px; }
-.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.45); z-index: 300; align-items: flex-end; }
-.modal-overlay.open { display: flex; }
-.modal-sheet { width: 100%; background: #fff; border-radius: 24px 24px 0 0; padding: 28px 24px 36px; animation: slideUp .25s ease; }
-@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-.modal-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
-.modal-desc { font-size: 14px; color: #666; line-height: 1.6; margin-bottom: 22px; }
-.modal-desc strong { color: #1a1a1a; }
-.modal-actions { display: flex; gap: 12px; }
-.btn-batal { flex: 1; padding: 13px; background: #f3f4f6; color: #555; border: none; border-radius: 12px; font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; }
-.btn-ya { flex: 1; padding: 13px; background: var(--orange); color: #fff; border: none; border-radius: 12px; font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 700; cursor: pointer; }
+.btn-kirim {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  background: var(--orange);
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity .15s, transform .1s;
+}
+.btn-kirim:hover  { opacity: .88; }
+.btn-kirim:active { transform: scale(.98); }
+.btn-kirim:disabled {
+  background: #d1d5db;
+  cursor: not-allowed;
+}
+.hint-txt {
+  font-size: 12px;
+  color: var(--lgray);
+  text-align: center;
+  margin-top: 8px;
+}
+
+/* ── Modal Overlay ── */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+  z-index: 300;
+  align-items: flex-end;        /* tetap di bawah */
+  justify-content: center;      /* tetap di tengah horizontal */
+  padding: 0;                   /* tanpa padding */
+}
+
+.modal-overlay.open {
+  display: flex;
+}
+
+/* ── Lembar Modal (Bottom Sheet) ── */
+.modal-sheet {
+  width: 100%;
+  max-width: 430px;             /* sama dengan shell */
+  background: #fff;
+  border-radius: 24px 24px 0 0;
+  padding: 28px 24px 36px;
+  padding-bottom: calc(36px + env(safe-area-inset-bottom, 0px));
+  animation: slideUp .25s ease;
+  box-shadow: 0 -4px 20px rgba(0,0,0,.1);
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+
+.modal-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--dark);
+}
+
+.modal-desc {
+  font-size: 14px;
+  color: var(--gray);
+  line-height: 1.6;
+  margin-bottom: 22px;
+}
+
+.modal-desc strong { color: var(--dark); }
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+}
+
+
+.btn-batal,
+.btn-ya {
+  flex: 1;
+  padding: 13px;
+  border: none;
+  border-radius: 12px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-batal {
+  background: #f3f4f6;   /* abu‑abu terang */
+  color: var(--dark);
+}
+
+.btn-ya {
+  background: var(--orange);
+  color: #fff;
+  font-weight: 700;
+}
+
+/* ── Responsive ── */
+@media (max-width: 400px) {
+  body { background: var(--bg); align-items: flex-start; padding: 0; }
+  .shell { width: 100%; min-height: 100svh; border-radius: 0 !important; box-shadow: none; }
+}

@@ -8,7 +8,7 @@ function cekTombolKirim() {
     document.getElementById('btn-kirim').disabled = !(selectedStopId > 0 && selectedDriverId > 0);
 }
 
-// Load daftar masinis dari database
+// Load daftar masinis
 async function loadDrivers() {
     try {
         const resp = await fetch('../src/feature/sending/endpoint/get_drivers.php');
@@ -29,7 +29,7 @@ async function loadDrivers() {
     }
 }
 
-// Load titik stasiun dari database
+// Load titik stasiun
 async function loadStops() {
     try {
         const resp = await fetch('../src/feature/sending/endpoint/get_points.php');
