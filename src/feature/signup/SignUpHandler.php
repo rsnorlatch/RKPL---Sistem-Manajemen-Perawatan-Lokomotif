@@ -40,9 +40,9 @@ class SignUpHandler
 
         $user_type = $this->_users->get($new_id);
         $preference = $user_type::class == Driver::class ?
-            new DriverPreference(1, $new_id, ThemeVariant::Light, LanguageVariant::Indonesia)
-            : ($user_type::class == Maintainer::class ? new MaintainerPreference(1, $new_id, ThemeVariant::Light, LanguageVariant::Indonesia)
-                : new CentralOfficePreference(1, $new_id, ThemeVariant::Light, LanguageVariant::Indonesia));
+            new DriverPreference($this->_preferences->count() + 1, $new_id, ThemeVariant::Light, LanguageVariant::Indonesia)
+            : ($user_type::class == Maintainer::class ? new MaintainerPreference($this->_preferences->count() + 1, $new_id, ThemeVariant::Light, LanguageVariant::Indonesia)
+                : new CentralOfficePreference($this->_preferences->count() + 1, $new_id, ThemeVariant::Light, LanguageVariant::Indonesia));
 
         $this->_preferences->insert($preference);
     }
