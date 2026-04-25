@@ -1,4 +1,7 @@
 <?php
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Pragma: no-cache");
+header("Expires: 0");
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -14,9 +17,6 @@
 <body>
   <?php
   session_start();
-  header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
-  header("Pragma: no-cache");
-  header("Expires: 0");
   if (empty($_SESSION['is_logged_in'])) {
     header('Location: login.php');
     exit;

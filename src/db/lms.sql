@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 24 Apr 2026 pada 17.51
--- Versi server: 10.4.32-MariaDB
--- Versi PHP: 8.2.12
+-- Generation Time: Apr 25, 2026 at 01:57 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,7 +24,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `accepted_call`
+-- Table structure for table `accepted_call`
 --
 
 CREATE TABLE `accepted_call` (
@@ -33,19 +33,16 @@ CREATE TABLE `accepted_call` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `accepted_call`
+-- Dumping data for table `accepted_call`
 --
 
 INSERT INTO `accepted_call` (`id`, `call_id`) VALUES
-(1, 4),
-(2, 4),
-(3, 6),
-(4, 8);
+(1, 2);
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `calling`
+-- Table structure for table `calling`
 --
 
 CREATE TABLE `calling` (
@@ -55,23 +52,16 @@ CREATE TABLE `calling` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `calling`
+-- Dumping data for table `calling`
 --
 
 INSERT INTO `calling` (`id`, `driver_id`, `call_time`) VALUES
-(1, 1, '2026-03-11 07:02:28'),
-(2, 1, '2026-04-23 04:19:43'),
-(3, 1, '2026-04-23 12:31:28'),
-(4, 3, '2026-04-23 13:26:13'),
-(5, 3, '2026-04-23 13:26:22'),
-(6, 3, '2026-04-23 14:55:54'),
-(7, 3, '2026-04-24 12:34:51'),
-(8, 3, '2026-04-24 13:01:21');
+(2, 3, '2026-04-24 17:51:37');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `central_office`
+-- Table structure for table `central_office`
 --
 
 CREATE TABLE `central_office` (
@@ -82,7 +72,7 @@ CREATE TABLE `central_office` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `central_office`
+-- Dumping data for table `central_office`
 --
 
 INSERT INTO `central_office` (`id`, `username`, `email`, `password`) VALUES
@@ -91,7 +81,20 @@ INSERT INTO `central_office` (`id`, `username`, `email`, `password`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `confirmation_finish`
+-- Table structure for table `central_office_preference`
+--
+
+CREATE TABLE `central_office_preference` (
+  `id` int(255) NOT NULL,
+  `user_id` int(255) DEFAULT NULL,
+  `theme` enum('Light','Dark') DEFAULT NULL,
+  `language` enum('Indonesia','English') DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `confirmation_finish`
 --
 
 CREATE TABLE `confirmation_finish` (
@@ -100,17 +103,10 @@ CREATE TABLE `confirmation_finish` (
   `calling_id` int(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data untuk tabel `confirmation_finish`
---
-
-INSERT INTO `confirmation_finish` (`id`, `driver_id`, `calling_id`) VALUES
-(15, 3, 6);
-
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `confirmation_problem`
+-- Table structure for table `confirmation_problem`
 --
 
 CREATE TABLE `confirmation_problem` (
@@ -120,17 +116,10 @@ CREATE TABLE `confirmation_problem` (
   `problem` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data untuk tabel `confirmation_problem`
---
-
-INSERT INTO `confirmation_problem` (`id`, `driver_id`, `calling_id`, `problem`) VALUES
-(1, 3, 4, 'crash');
-
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `driver`
+-- Table structure for table `driver`
 --
 
 CREATE TABLE `driver` (
@@ -141,7 +130,7 @@ CREATE TABLE `driver` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `driver`
+-- Dumping data for table `driver`
 --
 
 INSERT INTO `driver` (`id`, `username`, `email`, `password`) VALUES
@@ -152,7 +141,20 @@ INSERT INTO `driver` (`id`, `username`, `email`, `password`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `locomotive`
+-- Table structure for table `driver_preference`
+--
+
+CREATE TABLE `driver_preference` (
+  `id` int(255) NOT NULL,
+  `user_id` int(255) DEFAULT NULL,
+  `theme` enum('Light','Dark') DEFAULT NULL,
+  `language` enum('Indonesia','English') DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `locomotive`
 --
 
 CREATE TABLE `locomotive` (
@@ -162,7 +164,7 @@ CREATE TABLE `locomotive` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `locomotive`
+-- Dumping data for table `locomotive`
 --
 
 INSERT INTO `locomotive` (`id`, `driver_id`, `model`) VALUES
@@ -171,7 +173,7 @@ INSERT INTO `locomotive` (`id`, `driver_id`, `model`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `maintainer`
+-- Table structure for table `maintainer`
 --
 
 CREATE TABLE `maintainer` (
@@ -182,18 +184,36 @@ CREATE TABLE `maintainer` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `maintainer`
+-- Dumping data for table `maintainer`
 --
 
 INSERT INTO `maintainer` (`id`, `username`, `email`, `password`) VALUES
-(7, 'user', 'email@email.email', 'password'),
-(8, 'username', 'email@email.email', 'password'),
-(9, 'maintainer', 'maintainer@gmail.com', 'maintainer');
+(1, 'maintainer', 'maintainer@email.com', 'maintainer');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `maintenance_schedule`
+-- Table structure for table `maintainer_preference`
+--
+
+CREATE TABLE `maintainer_preference` (
+  `id` int(255) NOT NULL,
+  `user_id` int(255) DEFAULT NULL,
+  `theme` enum('Light','Dark') DEFAULT NULL,
+  `language` enum('Indonesia','English') DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `maintainer_preference`
+--
+
+INSERT INTO `maintainer_preference` (`id`, `user_id`, `theme`, `language`) VALUES
+(1, 1, 'Dark', 'Indonesia');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `maintenance_schedule`
 --
 
 CREATE TABLE `maintenance_schedule` (
@@ -204,7 +224,7 @@ CREATE TABLE `maintenance_schedule` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `maintenance_schedule`
+-- Dumping data for table `maintenance_schedule`
 --
 
 INSERT INTO `maintenance_schedule` (`id`, `start`, `end`, `locomotive_id`) VALUES
@@ -215,7 +235,7 @@ INSERT INTO `maintenance_schedule` (`id`, `start`, `end`, `locomotive_id`) VALUE
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `maintenance_unit`
+-- Table structure for table `maintenance_unit`
 --
 
 CREATE TABLE `maintenance_unit` (
@@ -227,7 +247,7 @@ CREATE TABLE `maintenance_unit` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `maintenance_unit`
+-- Dumping data for table `maintenance_unit`
 --
 
 INSERT INTO `maintenance_unit` (`id`, `sequence_number`, `unit_name`, `unit_description`, `unit_type`) VALUES
@@ -237,7 +257,7 @@ INSERT INTO `maintenance_unit` (`id`, `sequence_number`, `unit_name`, `unit_desc
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `notification_balaiyasa`
+-- Table structure for table `notification_balaiyasa`
 --
 
 CREATE TABLE `notification_balaiyasa` (
@@ -249,7 +269,7 @@ CREATE TABLE `notification_balaiyasa` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `onsite_locomotive`
+-- Table structure for table `onsite_locomotive`
 --
 
 CREATE TABLE `onsite_locomotive` (
@@ -258,7 +278,7 @@ CREATE TABLE `onsite_locomotive` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `onsite_locomotive`
+-- Dumping data for table `onsite_locomotive`
 --
 
 INSERT INTO `onsite_locomotive` (`id`, `locomotive_id`) VALUES
@@ -267,7 +287,7 @@ INSERT INTO `onsite_locomotive` (`id`, `locomotive_id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `rejected_call`
+-- Table structure for table `rejected_call`
 --
 
 CREATE TABLE `rejected_call` (
@@ -276,21 +296,10 @@ CREATE TABLE `rejected_call` (
   `reason` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data untuk tabel `rejected_call`
---
-
-INSERT INTO `rejected_call` (`id`, `call_id`, `reason`) VALUES
-(1, 1, 'ffdfdfd'),
-(2, 1, 'fdfdfd'),
-(3, 1, 'fdfdfd'),
-(4, 4, 'i can\'t'),
-(5, 5, 'no');
-
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `send_request`
+-- Table structure for table `send_request`
 --
 
 CREATE TABLE `send_request` (
@@ -301,7 +310,7 @@ CREATE TABLE `send_request` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `send_request`
+-- Dumping data for table `send_request`
 --
 
 INSERT INTO `send_request` (`id`, `locomotive_id`, `destination_id`, `request_time`) VALUES
@@ -322,7 +331,7 @@ INSERT INTO `send_request` (`id`, `locomotive_id`, `destination_id`, `request_ti
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `stop`
+-- Table structure for table `stop`
 --
 
 CREATE TABLE `stop` (
@@ -333,7 +342,7 @@ CREATE TABLE `stop` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `stop`
+-- Dumping data for table `stop`
 --
 
 INSERT INTO `stop` (`id`, `name`, `x`, `y`) VALUES
@@ -378,27 +387,34 @@ INSERT INTO `stop` (`id`, `name`, `x`, `y`) VALUES
 --
 
 --
--- Indeks untuk tabel `accepted_call`
+-- Indexes for table `accepted_call`
 --
 ALTER TABLE `accepted_call`
   ADD PRIMARY KEY (`id`),
   ADD KEY `call_id` (`call_id`);
 
 --
--- Indeks untuk tabel `calling`
+-- Indexes for table `calling`
 --
 ALTER TABLE `calling`
   ADD PRIMARY KEY (`id`),
   ADD KEY `driver_id` (`driver_id`);
 
 --
--- Indeks untuk tabel `central_office`
+-- Indexes for table `central_office`
 --
 ALTER TABLE `central_office`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `confirmation_finish`
+-- Indexes for table `central_office_preference`
+--
+ALTER TABLE `central_office_preference`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- Indexes for table `confirmation_finish`
 --
 ALTER TABLE `confirmation_finish`
   ADD PRIMARY KEY (`id`),
@@ -406,7 +422,7 @@ ALTER TABLE `confirmation_finish`
   ADD KEY `calling_id` (`calling_id`);
 
 --
--- Indeks untuk tabel `confirmation_problem`
+-- Indexes for table `confirmation_problem`
 --
 ALTER TABLE `confirmation_problem`
   ADD PRIMARY KEY (`id`),
@@ -414,59 +430,72 @@ ALTER TABLE `confirmation_problem`
   ADD KEY `calling_id` (`calling_id`);
 
 --
--- Indeks untuk tabel `driver`
+-- Indexes for table `driver`
 --
 ALTER TABLE `driver`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `locomotive`
+-- Indexes for table `driver_preference`
+--
+ALTER TABLE `driver_preference`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `locomotive`
 --
 ALTER TABLE `locomotive`
   ADD PRIMARY KEY (`id`),
   ADD KEY `driver_id` (`driver_id`);
 
 --
--- Indeks untuk tabel `maintainer`
+-- Indexes for table `maintainer`
 --
 ALTER TABLE `maintainer`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `maintenance_schedule`
+-- Indexes for table `maintainer_preference`
+--
+ALTER TABLE `maintainer_preference`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `maintainer_id` (`user_id`);
+
+--
+-- Indexes for table `maintenance_schedule`
 --
 ALTER TABLE `maintenance_schedule`
   ADD PRIMARY KEY (`id`),
   ADD KEY `locomotive_id` (`locomotive_id`);
 
 --
--- Indeks untuk tabel `maintenance_unit`
+-- Indexes for table `maintenance_unit`
 --
 ALTER TABLE `maintenance_unit`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `notification_balaiyasa`
+-- Indexes for table `notification_balaiyasa`
 --
 ALTER TABLE `notification_balaiyasa`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `onsite_locomotive`
+-- Indexes for table `onsite_locomotive`
 --
 ALTER TABLE `onsite_locomotive`
   ADD PRIMARY KEY (`id`),
   ADD KEY `locomotive_id` (`locomotive_id`);
 
 --
--- Indeks untuk tabel `rejected_call`
+-- Indexes for table `rejected_call`
 --
 ALTER TABLE `rejected_call`
   ADD PRIMARY KEY (`id`),
   ADD KEY `call_id` (`call_id`);
 
 --
--- Indeks untuk tabel `send_request`
+-- Indexes for table `send_request`
 --
 ALTER TABLE `send_request`
   ADD PRIMARY KEY (`id`),
@@ -474,161 +503,185 @@ ALTER TABLE `send_request`
   ADD KEY `destination_id` (`destination_id`);
 
 --
--- Indeks untuk tabel `stop`
+-- Indexes for table `stop`
 --
 ALTER TABLE `stop`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT untuk tabel yang dibuang
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT untuk tabel `accepted_call`
+-- AUTO_INCREMENT for table `accepted_call`
 --
 ALTER TABLE `accepted_call`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT untuk tabel `calling`
+-- AUTO_INCREMENT for table `calling`
 --
 ALTER TABLE `calling`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT untuk tabel `central_office`
+-- AUTO_INCREMENT for table `central_office`
 --
 ALTER TABLE `central_office`
   MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT untuk tabel `confirmation_finish`
+-- AUTO_INCREMENT for table `central_office_preference`
+--
+ALTER TABLE `central_office_preference`
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `confirmation_finish`
 --
 ALTER TABLE `confirmation_finish`
   MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
--- AUTO_INCREMENT untuk tabel `confirmation_problem`
+-- AUTO_INCREMENT for table `confirmation_problem`
 --
 ALTER TABLE `confirmation_problem`
   MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT untuk tabel `driver`
+-- AUTO_INCREMENT for table `driver`
 --
 ALTER TABLE `driver`
   MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT untuk tabel `locomotive`
+-- AUTO_INCREMENT for table `driver_preference`
+--
+ALTER TABLE `driver_preference`
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `locomotive`
 --
 ALTER TABLE `locomotive`
   MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT untuk tabel `maintainer`
+-- AUTO_INCREMENT for table `maintainer`
 --
 ALTER TABLE `maintainer`
   MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
--- AUTO_INCREMENT untuk tabel `maintenance_schedule`
+-- AUTO_INCREMENT for table `maintainer_preference`
+--
+ALTER TABLE `maintainer_preference`
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `maintenance_schedule`
 --
 ALTER TABLE `maintenance_schedule`
   MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT untuk tabel `maintenance_unit`
+-- AUTO_INCREMENT for table `maintenance_unit`
 --
 ALTER TABLE `maintenance_unit`
   MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT untuk tabel `notification_balaiyasa`
---
-ALTER TABLE `notification_balaiyasa`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT untuk tabel `onsite_locomotive`
+-- AUTO_INCREMENT for table `onsite_locomotive`
 --
 ALTER TABLE `onsite_locomotive`
   MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT untuk tabel `rejected_call`
+-- AUTO_INCREMENT for table `rejected_call`
 --
 ALTER TABLE `rejected_call`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT untuk tabel `send_request`
+-- AUTO_INCREMENT for table `send_request`
 --
 ALTER TABLE `send_request`
   MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
--- AUTO_INCREMENT untuk tabel `stop`
+-- AUTO_INCREMENT for table `stop`
 --
 ALTER TABLE `stop`
   MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
--- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
+-- Constraints for dumped tables
 --
 
 --
--- Ketidakleluasaan untuk tabel `accepted_call`
+-- Constraints for table `accepted_call`
 --
 ALTER TABLE `accepted_call`
   ADD CONSTRAINT `accepted_call_ibfk_1` FOREIGN KEY (`call_id`) REFERENCES `calling` (`id`);
 
 --
--- Ketidakleluasaan untuk tabel `calling`
+-- Constraints for table `calling`
 --
 ALTER TABLE `calling`
   ADD CONSTRAINT `calling_ibfk_1` FOREIGN KEY (`driver_id`) REFERENCES `driver` (`id`);
 
 --
--- Ketidakleluasaan untuk tabel `confirmation_finish`
+-- Constraints for table `central_office_preference`
+--
+ALTER TABLE `central_office_preference`
+  ADD CONSTRAINT `central_office_preference_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `central_office` (`id`);
+
+--
+-- Constraints for table `confirmation_finish`
 --
 ALTER TABLE `confirmation_finish`
   ADD CONSTRAINT `confirmation_finish_ibfk_1` FOREIGN KEY (`driver_id`) REFERENCES `driver` (`id`),
   ADD CONSTRAINT `confirmation_finish_ibfk_2` FOREIGN KEY (`calling_id`) REFERENCES `calling` (`id`);
 
 --
--- Ketidakleluasaan untuk tabel `confirmation_problem`
+-- Constraints for table `confirmation_problem`
 --
 ALTER TABLE `confirmation_problem`
   ADD CONSTRAINT `confirmation_problem_ibfk_1` FOREIGN KEY (`driver_id`) REFERENCES `driver` (`id`),
   ADD CONSTRAINT `confirmation_problem_ibfk_2` FOREIGN KEY (`calling_id`) REFERENCES `calling` (`id`);
 
 --
--- Ketidakleluasaan untuk tabel `locomotive`
+-- Constraints for table `locomotive`
 --
 ALTER TABLE `locomotive`
   ADD CONSTRAINT `locomotive_ibfk_1` FOREIGN KEY (`driver_id`) REFERENCES `driver` (`id`);
 
 --
--- Ketidakleluasaan untuk tabel `maintenance_schedule`
+-- Constraints for table `maintainer_preference`
+--
+ALTER TABLE `maintainer_preference`
+  ADD CONSTRAINT `maintainer_preference_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `maintainer` (`id`);
+
+--
+-- Constraints for table `maintenance_schedule`
 --
 ALTER TABLE `maintenance_schedule`
   ADD CONSTRAINT `maintenance_schedule_ibfk_1` FOREIGN KEY (`locomotive_id`) REFERENCES `locomotive` (`id`);
 
 --
--- Ketidakleluasaan untuk tabel `onsite_locomotive`
+-- Constraints for table `onsite_locomotive`
 --
 ALTER TABLE `onsite_locomotive`
   ADD CONSTRAINT `onsite_locomotive_ibfk_1` FOREIGN KEY (`locomotive_id`) REFERENCES `locomotive` (`id`);
 
 --
--- Ketidakleluasaan untuk tabel `rejected_call`
+-- Constraints for table `rejected_call`
 --
 ALTER TABLE `rejected_call`
   ADD CONSTRAINT `rejected_call_ibfk_1` FOREIGN KEY (`call_id`) REFERENCES `calling` (`id`);
 
 --
--- Ketidakleluasaan untuk tabel `send_request`
+-- Constraints for table `send_request`
 --
 ALTER TABLE `send_request`
   ADD CONSTRAINT `send_request_ibfk_1` FOREIGN KEY (`locomotive_id`) REFERENCES `locomotive` (`id`),

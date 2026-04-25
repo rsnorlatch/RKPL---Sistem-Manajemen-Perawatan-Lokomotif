@@ -17,4 +17,3 @@ class Driver extends User
         $this->password = $password;
     }
 }
-
