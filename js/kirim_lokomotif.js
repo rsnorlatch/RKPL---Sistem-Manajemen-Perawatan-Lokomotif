@@ -1,3 +1,4 @@
+// logic backend javascript untuk fitur kirim_lokomotif
 const CONFIG = {
   initialCoordinates: [-7.801389, 110.364444],
   initialZoom: 13,
