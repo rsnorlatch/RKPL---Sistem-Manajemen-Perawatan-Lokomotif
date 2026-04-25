@@ -1,3 +1,4 @@
+<!-- Mengambil data daftar masinis dari database untuk mengirim lokomotif -->
 <?php
 require_once __DIR__ . '/../../../db/lms.php';
 header('Content-Type: application/json');
