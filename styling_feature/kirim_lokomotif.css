@@ -284,6 +284,15 @@ body {
 
 /* ── Responsive ── */
 @media (max-width: 400px) {
-  body { background: var(--bg); align-items: flex-start; padding: 0; }
-  .shell { width: 100%; min-height: 100svh; border-radius: 0 !important; box-shadow: none; }
+  body { 
+  background: var(--bg); 
+  align-items: flex-start; padding: 0;
+ }
+
+  .shell { 
+    width: 100%; 
+    min-height: 100svh; 
+    border-radius: 0 !important; 
+    box-shadow: none; 
+  }
 }
