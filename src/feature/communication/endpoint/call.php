@@ -5,6 +5,7 @@ namespace lms\feature\communication\endpoint;
 use lms\feature\communication\MaintainerCallingController;
 
 require_once __DIR__ . "../../../../../vendor/autoload.php";
+require_once __DIR__ . "/../../../db/lms.php";
 
 $locomotive_id = $_GET["locomotive_id"];
 
