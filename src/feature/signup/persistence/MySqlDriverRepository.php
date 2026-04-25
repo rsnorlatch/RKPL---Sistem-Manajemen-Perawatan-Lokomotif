@@ -6,8 +6,8 @@ use lms\feature\signup\entities\Driver;
 use MySqli;
 use lms\feature\signup\entities\IDriverRepository;
 
-require_once __DIR__."../../../../../vendor/autoload.php";
-require_once __DIR__."../../../../../src/db/lms.php";
+require_once __DIR__ . "../../../../../vendor/autoload.php";
+require_once __DIR__ . "../../../../../src/db/lms.php";
 
 class MySqlDriverRepository implements IDriverRepository
 {
@@ -74,10 +74,9 @@ class MySqlDriverRepository implements IDriverRepository
         while ($row = $result->fetch_assoc()) {
             $driver[] = $row;
         }
-        return array_map(function($row) {
+        return array_map(function ($row) {
             return new Driver($row['id'], $row['username'], $row['email'], $row['password']);
         }, $driver);
-        
     }
     public function update(int $id, string $username, string $email, string $password): void
     {
@@ -92,3 +91,4 @@ class MySqlDriverRepository implements IDriverRepository
         $stmt->execute();
     }
 }
+
