@@ -20,7 +20,7 @@ class ThemeDispatcher
 
     private function get_preference(int $user_id)
     {
-        return array_shift(
+        $filtered =
             array_values(
                 array_filter(
                     $this->preferences->getAll(),
@@ -28,8 +28,8 @@ class ThemeDispatcher
                         return $preference->user_id == $user_id;
                     }
                 )
-            )
-        );
+            );
+        return array_shift($filtered);
     }
 
     public function switch_to_dark_mode(int $user_id)

@@ -11,6 +11,18 @@
 
 <body>
   <?php
+
+  use lms\feature\setting\ThemeQuery;
+  use lms\feature\setting\persistence\MySqlUserPreferenceRepository;
+  use lms\feature\signup\persistence\MySqlDriverRepository;
+  use lms\feature\signup\persistence\MySqlMaintainerRepository;
+  use lms\feature\signup\persistence\MySqlCentralOfficeRepository;
+
+  use lms\feature\setting\persistence\RolePreference;
+  use lms\feature\setting\ThemeVariant;
+
+  require_once __DIR__ . "/../vendor/autoload.php";
+
   session_start();
   if (empty($_SESSION['is_logged_in'])) {
     header('Location: login.php');
@@ -33,8 +45,22 @@
   /* $uid = (int)$_SESSION['user_id']; */
   /* $res = $db->query("SELECT theme FROM `$st` WHERE `$fk`=$uid LIMIT 1"); */
   /* $theme = ($res && $res->num_rows > 0) ? $res->fetch_assoc()['theme'] : 'day'; */
-  $theme = "day";
-  $_SESSION['theme'] = $theme;
+  if (!empty($_SESSION['user_is_driver']))         $role = 'driver';
+  elseif (!empty($_SESSION['user_is_maintainer']))  $role = 'maintainer';
+  else                                              $role = 'central_office';
+
+  $preferences = $role == "driver" ? new MySqlUserPreferenceRepository($db, RolePreference::Driver)
+    : ($role == "maintainer" ? new MySqlUserPreferenceRepository($db, RolePreference::Maintainer)
+      : new MySqlUserPreferenceRepository($db, RolePreference::CentralOffice));
+
+  $users = isset($_SESSION["user_is_driver"]) ? new MySqlDriverRepository($db)
+    : (isset($_SESSION["user_is_maintainer"]) ? new MySqlMaintainerRepository($db)
+      : new MySqlCentralOfficeRepository($db));
+
+  $theme_query = new ThemeQuery($preferences, $users);
+
+  $theme = $theme_query->get_current_theme($_SESSION["user_id"]) == ThemeVariant::Light ? "day" : "night";
+  $_SESSION["theme"] = $theme;
   ?>
   <div class="shell">
     <div class="topbar">
@@ -64,10 +90,10 @@
                 <path d="M6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.79zM4 10.5H1v2h3zm9-9.95h-2V3.5h2zM18.24 4.84l-1.42 1.41 1.8 1.79 1.41-1.41zM20 10.5v2h3v-2zm-8-5c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm-1 16.95h2V19.5h-2zm-7.45-3.91l1.41 1.41 1.79-1.8-1.41-1.41z" />
               </svg>
             </div>
+            <input type="radio" name="theme" value="day" <?= $theme === 'day' ? 'checked' : '' ?> />
             <span>Day <span class="hint-text">(Terang)</span></span>
             <div class="radio-dot"></div>
           </label>
-          <input type="radio" name="theme" value="day" <?= $theme === 'day' ? 'checked' : '' ?> />
 
           <label class="radio-row <?= $theme === 'night' ? 'active' : '' ?>">
             <div class="row-icon">
@@ -75,10 +101,10 @@
                 <path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z" />
               </svg>
             </div>
+            <input type="radio" name="theme" value="night" <?= $theme === 'night' ? 'checked' : '' ?> />
             <span>Night <span class="hint-text">(Gelap)</span></span>
             <div class="radio-dot"></div>
           </label>
-          <input type="radio" name="theme" value="night" <?= $theme === 'night' ? 'checked' : '' ?> />
 
         </div>
         <button type="submit" class="btn-save">Simpan</button>

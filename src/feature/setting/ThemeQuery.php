@@ -19,7 +19,7 @@ class ThemeQuery
 
     private function get_preference(int $user_id): UserPreference
     {
-        return array_shift(
+        $filtered =
             array_values(
                 array_filter(
                     $this->preferences->getAll(),
@@ -27,8 +27,8 @@ class ThemeQuery
                         return $preference->user_id == $user_id;
                     }
                 )
-            )
-        );
+            );
+        return array_shift($filtered);
     }
 
     public function get_current_theme(int $user_id)
