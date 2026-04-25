@@ -5,6 +5,7 @@ namespace lms\feature\login;
 require_once __DIR__ . "../../../../vendor/autoload.php";
 
 use lms\feature\login\InMemoryLoginHandlerBuilder;
+use lms\feature\setting\entities\IUserPreferenceRepository;
 use lms\feature\signup\entities\Driver;
 use lms\feature\signup\entities\Maintainer;
 use lms\feature\signup\entities\CentralOffice;

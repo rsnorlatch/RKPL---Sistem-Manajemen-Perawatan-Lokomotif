@@ -2,7 +2,7 @@
 
 namespace lms\feature\signup\entities;
 
-abstract class User
+class User
 {
 
     public int $id;
