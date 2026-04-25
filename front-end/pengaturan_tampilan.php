@@ -18,21 +18,22 @@
   }
   require_once __DIR__ . '/../src/db/lms.php';
 
-  // Tentukan tabel settings berdasarkan role
-  if (!empty($_SESSION['user_is_driver'])) {
-    $st = 'driver_settings';
-    $fk = 'driver_id';
-  } elseif (!empty($_SESSION['user_is_maintainer'])) {
-    $st = 'maintainer_settings';
-    $fk = 'maintainer_id';
-  } else {
-    $st = 'central_office_settings';
-    $fk = 'central_office_id';
-  }
-
-  $uid = (int)$_SESSION['user_id'];
-  $res = $db->query("SELECT theme FROM `$st` WHERE `$fk`=$uid LIMIT 1");
-  $theme = ($res && $res->num_rows > 0) ? $res->fetch_assoc()['theme'] : 'day';
+  /* // Tentukan tabel settings berdasarkan role */
+  /* if (!empty($_SESSION['user_is_driver'])) { */
+  /*   $st = 'driver_settings'; */
+  /*   $fk = 'driver_id'; */
+  /* } elseif (!empty($_SESSION['user_is_maintainer'])) { */
+  /*   $st = 'maintainer_settings'; */
+  /*   $fk = 'maintainer_id'; */
+  /* } else { */
+  /*   $st = 'central_office_settings'; */
+  /*   $fk = 'central_office_id'; */
+  /* } */
+  /**/
+  /* $uid = (int)$_SESSION['user_id']; */
+  /* $res = $db->query("SELECT theme FROM `$st` WHERE `$fk`=$uid LIMIT 1"); */
+  /* $theme = ($res && $res->num_rows > 0) ? $res->fetch_assoc()['theme'] : 'day'; */
+  $theme = "day";
   $_SESSION['theme'] = $theme;
   ?>
   <div class="shell">
@@ -64,9 +65,9 @@
               </svg>
             </div>
             <span>Day <span class="hint-text">(Terang)</span></span>
-            <input type="radio" name="theme" value="day" <?= $theme === 'day' ? 'checked' : '' ?> />
             <div class="radio-dot"></div>
           </label>
+          <input type="radio" name="theme" value="day" <?= $theme === 'day' ? 'checked' : '' ?> />
 
           <label class="radio-row <?= $theme === 'night' ? 'active' : '' ?>">
             <div class="row-icon">
@@ -75,9 +76,9 @@
               </svg>
             </div>
             <span>Night <span class="hint-text">(Gelap)</span></span>
-            <input type="radio" name="theme" value="night" <?= $theme === 'night' ? 'checked' : '' ?> />
             <div class="radio-dot"></div>
           </label>
+          <input type="radio" name="theme" value="night" <?= $theme === 'night' ? 'checked' : '' ?> />
 
         </div>
         <button type="submit" class="btn-save">Simpan</button>

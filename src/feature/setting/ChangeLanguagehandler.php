@@ -29,17 +29,16 @@ class ChangeLanguagehandler
         if (!$user)
             throw new Error("user not found");
 
-        $preference =
-            array_shift(
-                array_values(
-                    array_filter(
-                        $this->preferences->getAll(),
-                        function (UserPreference $p) use ($user_id) {
-                            return $p->user_id == $user_id;
-                        }
-                    )
+        $unshifted_preference =
+            array_values(
+                array_filter(
+                    $this->preferences->getAll(),
+                    function (UserPreference $p) use ($user_id) {
+                        return $p->user_id == $user_id;
+                    }
                 )
             );
+        $preference = array_shift($unshifted_preference);
 
         $driver_preference = new DriverPreference($preference->id, $preference->user_id, $preference->theme, $language);
         $maintianer_preference = new MaintainerPreference($preference->id, $preference->user_id, $preference->theme, $language);

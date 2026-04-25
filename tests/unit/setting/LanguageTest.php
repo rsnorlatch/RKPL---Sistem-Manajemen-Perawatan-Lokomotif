@@ -7,6 +7,7 @@ use lms\feature\signup\persistence\InMemoryDriverRepository;
 
 use Error;
 use lms\feature\setting\entities\MaintainerPreference;
+use lms\feature\setting\GetCurrentLanguageHandler;
 use lms\feature\setting\LanguageVariant;
 use lms\feature\setting\ThemeVariant;
 use lms\feature\signup\persistence\InMemoryCentralOfficeRepository;
@@ -50,5 +51,49 @@ final class LanguageTest extends TestCase
         $handler->handle(1, LanguageVariant::English);
 
         $this->assertEquals(LanguageVariant::English, $preferences->get(1)->language);
+    }
+
+    public function testGetCurrentLanguage()
+    {
+        $maintainer = new InMemoryMaintainerRepository([]);
+        $maintainer = new InMemoryCentralOfficeRepository([]);
+        $maintainer->insert(1, "", "", "");
+        $preferences = new InMemoryUserPreferenceRepository([]);
+        $preferences->insert(new MaintainerPreference(1, 1, ThemeVariant::Dark, LanguageVariant::English));
+
+        $handler = new GetCurrentLanguageHandler($maintainer, $preferences);
+        $current = $handler->handle(1);
+
+        $this->assertEquals(LanguageVariant::English, $current);
+    }
+
+    public function testGetIndonesian()
+    {
+
+        $maintainer = new InMemoryMaintainerRepository([]);
+
+        $maintainer = new InMemoryCentralOfficeRepository([]);
+        $maintainer->insert(1, "", "", "");
+        $preferences = new InMemoryUserPreferenceRepository([]);
+        $preferences->insert(new MaintainerPreference(1, 1, ThemeVariant::Dark, LanguageVariant::Indonesia));
+
+        $handler = new GetCurrentLanguageHandler($maintainer, $preferences);
+        $current = $handler->handle(1);
+
+        $this->assertEquals(LanguageVariant::Indonesia, $current);
+    }
+
+    public function testGeLanguageFromCentralOffice()
+    {
+        $central_office = new InMemoryCentralOfficeRepository([]);
+        $central_office->insert(1, "", "", "");
+
+        $preferences = new InMemoryUserPreferenceRepository([]);
+        $preferences->insert(new MaintainerPreference(1, 1, ThemeVariant::Dark, LanguageVariant::Indonesia));
+
+        $handler = new GetCurrentLanguageHandler($central_office, $preferences);
+        $current = $handler->handle(1);
+
+        $this->assertEquals(LanguageVariant::Indonesia, $current);
     }
 }
