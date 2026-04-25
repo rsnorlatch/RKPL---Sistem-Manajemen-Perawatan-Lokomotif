@@ -151,11 +151,31 @@ body {
   user-select: none;
 }
 
-.day-cell:not(.other-month):hover { background: #e3f2fd; }
-.day-cell.other-month             { color: var(--lgray); pointer-events: none; }
-.day-cell.today                   { font-weight: 700; color: var(--blue); }
-.day-cell.selected                { background: var(--orange) !important; color: #fff !important; font-weight: 700; }
+.day-cell:not(.other-month):hover 
+{ background: #e3f2fd;
+ 
+}
 
+.day-cell.other-month            
+ { color: var(--lgray); 
+  pointer-events: none;
+ }
+
+.day-cell.today { 
+  font-weight: 700; 
+  color: var(--blue);
+ }
+
+.day-cell.selected { 
+  background: var(--orange) !important; 
+  color: #fff !important; 
+  font-weight: 700; 
+}
+
+.day-cell.start-selected {
+    border: 2px solid var(--orange);
+    background: #fff0e5;
+}
 /* ── Tombol Pilih Tanggal ── */
 .btn-pilih {
   display: block;
@@ -173,14 +193,20 @@ body {
   transition: opacity .15s, transform .1s;
 }
 
-.btn-pilih:hover  { opacity: .88; }
-.btn-pilih:active { transform: scale(.98); }
+.btn-pilih:hover  { 
+  opacity: .88;
+ }
+
+.btn-pilih:active { 
+  transform: scale(.98);
+ }
 
 .btn-pilih:disabled {
   opacity: .4;
   cursor: not-allowed;
   transform: none;
 }
+
 
 /* ── Responsive ── */
 @media (max-width: 400px) {
