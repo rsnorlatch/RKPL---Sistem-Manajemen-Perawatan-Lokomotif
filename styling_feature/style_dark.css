@@ -1,0 +1,56 @@
+body.dark {
+  background: #121212;
+  color: #e0e0e0;
+}
+
+body.dark .shell {
+  background: #1e1e1e;
+  box-shadow: 0 20px 56px rgba(0,0,0,.6);
+}
+
+body.dark .topbar {
+  background: #0d47a1;
+}
+
+body.dark .topbar h1,
+body.dark .back-btn { color: #fff; }
+
+body.dark .msg.success {
+  background: #1b5e20;
+  color: #c8e6c9;
+}
+
+body.dark .msg.error {
+  background: #b71c1c;
+  color: #ffcdd2;
+}
+
+body.dark .call-item,
+body.dark .notif-card,
+body.dark .info-box,
+body.dark .loco-box,
+body.dark .driver-select-box {
+  background: #2a2a2a;
+  border-color: #444;
+  color: #e0e0e0;
+}
+
+body.dark .call-label,
+body.dark .notif-msg,
+body.dark .stop-name,
+body.dark .loco-model { color: #e0e0e0; }
+
+body.dark .empty-state { color: #999; }
+body.dark .empty-state svg { fill: #666; }
+
+body.dark .day-cell { color: #ccc; }
+body.dark .day-cell.today { background: #0d47a1; }
+body.dark .day-cell.selected { background: #f97316; }
+
+body.dark .btn-kirim,
+body.dark .btn-ya,
+body.dark .btn-tolak,
+body.dark .btn-confirm,
+body.dark .btn-save {
+  opacity: 0.9;
+}
