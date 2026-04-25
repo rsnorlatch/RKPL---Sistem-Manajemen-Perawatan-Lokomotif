@@ -29,8 +29,8 @@ $users = isset($_SESSION["user_is_driver"]) ? new MySqlDriverRepository($db)
 
 $dispatcher = new ThemeDispatcher($preferences, $users);
 
-if ($theme == "day") $dispatcher->switch_to_light_mode(1);
-else if ($theme == "night") $dispatcher->switch_to_dark_mode(1);
+if ($theme == "day") $dispatcher->switch_to_light_mode($_SESSION["user_id"]);
+else if ($theme == "night") $dispatcher->switch_to_dark_mode($_SESSION["user_id"]);
 else throw new Exception("invalid theme");
 
 header("Location: ../../../../front-end/pengaturan_tampilan.php?status=saved");

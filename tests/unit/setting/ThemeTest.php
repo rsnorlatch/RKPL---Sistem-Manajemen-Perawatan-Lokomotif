@@ -1,6 +1,7 @@
 <?php
 
 use lms\feature\setting\entities\DriverPreference;
+use lms\feature\setting\exception\UserNotFoundException;
 use lms\feature\setting\LanguageVariant;
 use lms\feature\setting\persistence\InMemoryUserPreferenceRepository;
 use lms\feature\setting\ThemeDispatcher;
@@ -48,5 +49,16 @@ final class ThemeTest extends TestCase
         $theme = $theme_query->get_current_theme(1);
 
         $this->assertEquals(ThemeVariant::Dark, $theme);
+    }
+
+    public function testShouldThrowException_WhenUserNotFound()
+    {
+        $users = new InMemoryDriverRepository([]);
+        $preferences = new InMemoryUserPreferenceRepository([]);
+        $preferences->insert(new DriverPreference(1, 1, ThemeVariant::Dark, LanguageVariant::Indonesia));
+        $theme_query = new ThemeQuery($preferences, $users);
+
+        $this->expectException(UserNotFoundException::class);
+        $theme = $theme_query->get_current_theme(1);
     }
 }

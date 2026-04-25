@@ -5,6 +5,7 @@ namespace lms\feature\setting;
 use lms\feature\setting\entities\IUserPreferenceRepository;
 use lms\feature\signup\entities\IUserRepository;
 use lms\feature\setting\entities\UserPreference;
+use lms\feature\setting\exception\UserNotFoundException;
 
 class ThemeQuery
 {
@@ -19,6 +20,10 @@ class ThemeQuery
 
     private function get_preference(int $user_id): UserPreference
     {
+        $user = $this->users->get($user_id);
+
+        if (!$user) throw new UserNotFoundException();
+
         $filtered =
             array_values(
                 array_filter(
@@ -34,6 +39,7 @@ class ThemeQuery
     public function get_current_theme(int $user_id)
     {
         $preference = $this->get_preference($user_id);
+
         return $preference->theme;
     }
 }
