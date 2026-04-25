@@ -33,18 +33,28 @@ class Scheduler
         return new InMemorySchedulerBuilder();
     }
 
-    private function is_unavailable(DateTime $start, DateTime $end)
+    /**
+     * Cek apakah rentang waktu sudah digunakan oleh lokomotif YANG SAMA.
+     * Hanya jadwal dengan locomotive_id yang sama yang diperiksa.
+     */
+    private function is_unavailable(DateTime $start, DateTime $end, int $locomotive_id)
     {
-        return count(array_filter($this->_schedule->getAll(), function (Schedule $s) use ($start, $end) {
-            return $start >= $s->start && $start <= $s->end ||
-                $end >= $s->start && $end <= $s->end ||
-                $start <= $s->start && $end >= $s->end;
+        return count(array_filter($this->_schedule->getAll(), function (Schedule $s) use ($start, $end, $locomotive_id) {
+            // Abaikan jadwal milik lokomotif lain
+            if ($s->locomotive_id !== $locomotive_id) {
+                return false;
+            }
+            // Deteksi overlap
+            return ($start >= $s->start && $start <= $s->end) ||
+                   ($end >= $s->start && $end <= $s->end) ||
+                   ($start <= $s->start && $end >= $s->end);
         })) > 0;
     }
 
     function add_schedule(int $locomotive_id, DateTime $start, DateTime $end)
     {
-        if ($this->is_unavailable($start, $end)) {
+        // Sekarang memeriksa hanya untuk lokomotif yang sama
+        if ($this->is_unavailable($start, $end, $locomotive_id)) {
             return ScheduleResult::ScheduleUnavailable;
         }
 
@@ -61,7 +71,8 @@ class Scheduler
 
     function edit_schedule(int $locomotive_id, DateTime $start, DateTime $end)
     {
-        if ($this->is_unavailable($start, $end)) {
+        // Perbaikan yang sama
+        if ($this->is_unavailable($start, $end, $locomotive_id)) {
             return ScheduleResult::ScheduleUnavailable;
         }
 
