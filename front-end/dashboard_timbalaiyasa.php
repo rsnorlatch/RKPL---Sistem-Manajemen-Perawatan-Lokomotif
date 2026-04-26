@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -12,7 +11,6 @@
 <body>
 
   <?php
-
   session_start();
 
   use lms\feature\setting\GetCurrentLanguageHandler;
@@ -20,7 +18,6 @@
   use lms\feature\signup\persistence\MySqlDriverRepository;
   use lms\feature\signup\persistence\MySqlMaintainerRepository;
   use lms\feature\signup\persistence\MySqlCentralOfficeRepository;
-
   use lms\feature\setting\persistence\MySqlUserPreferenceRepository;
   use lms\feature\setting\persistence\RolePreference;
   use lms\feature\setting\ThemeQuery;
@@ -41,22 +38,22 @@
     : (isset($_SESSION["user_is_maintainer"]) ? new MySqlMaintainerRepository($db)
       : new MySqlCentralOfficeRepository($db));
 
-  $theme_query = new ThemeQuery($preferences, $users);
-  $language_query =  new GetCurrentLanguageHandler($users, $preferences);
+  $theme_query    = new ThemeQuery($preferences, $users);
+  $language_query = new GetCurrentLanguageHandler($users, $preferences);
 
   $theme = $theme_query->get_current_theme($_SESSION["user_id"]) == ThemeVariant::Light ? "day" : "night";
-  $lang = $language_query->handle($_SESSION["user_id"]) == LanguageVariant::Indonesia ? "id" : "en";
+  $lang  = $language_query->handle($_SESSION["user_id"]) == LanguageVariant::Indonesia ? "id" : "en";
 
-  $_SESSION["lang"] = $lang;
   $_SESSION["theme"] = $theme;
+  $_SESSION["lang"]  = $lang;
 
   $username = $_SESSION["user"];
-
   ?>
 
-  <div class="shell">
+  <!-- STEP 3: Apply dark class sebelum konten render -->
+  <script>if ('<?= $theme ?>' === 'night') document.body.classList.add('dark');</script>
 
-    <!-- Header -->
+  <div class="shell">
     <div class="header">
       <div class="avatar">
         <svg viewBox="0 0 24 24">
@@ -66,10 +63,8 @@
       <h1>Welcome <?= $username ?></h1>
     </div>
 
-    <!-- Grid menu — 5 item: 2 kolom, baris terakhir 1 item -->
     <div class="menu-grid">
 
-      <!-- Notifikasi -->
       <a href="notifikasi_balaiyasa.php" class="menu-item">
         <div class="menu-icon orange">
           <svg viewBox="0 0 24 24">
@@ -79,7 +74,6 @@
         <span>notifikasi</span>
       </a>
 
-      <!-- Kirim Lokomotif -->
       <a href="kirim_lokomotif_pilihan.php" class="menu-item">
         <div class="menu-icon orange">
           <svg viewBox="0 0 24 24">
@@ -89,7 +83,6 @@
         <span>kirim lokomotif</span>
       </a>
 
-      <!-- Pengaturan -->
       <a href="pengaturan.php" class="menu-item">
         <div class="menu-icon orange">
           <svg viewBox="0 0 24 24">
@@ -99,7 +92,6 @@
         <span>pengaturan</span>
       </a>
 
-      <!-- Atur Jadwal -->
       <a href="jadwal.php" class="menu-item">
         <div class="menu-icon orange">
           <svg viewBox="0 0 24 24">
@@ -109,7 +101,6 @@
         <span>atur jadwal</span>
       </a>
 
-      <!-- Logout — sendirian di baris ketiga, rata kiri -->
       <a href="../src/feature/login/endpoint/logout.php" class="menu-item">
         <div class="menu-icon red">
           <svg viewBox="0 0 24 24">
@@ -123,5 +114,4 @@
   </div>
 
 </body>
-
 </html>
