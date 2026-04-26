@@ -12,17 +12,13 @@ $start_day   = isset($_GET['start_day'])   ? (int)$_GET['start_day']   : null;
 $start_month = isset($_GET['start_month']) ? (int)$_GET['start_month'] : null;
 $start_year  = isset($_GET['start_year'])  ? (int)$_GET['start_year']  : null;
 $end_day     = isset($_GET['end_day'])     ? (int)$_GET['end_day']     : null;
+$end_month   = isset($_GET['end_month'])   ? (int)$_GET['end_month']   : null;
+$end_year    = isset($_GET['end_year'])    ? (int)$_GET['end_year']    : null;
 
 // Mode pemilihan: 'start' atau 'end'
 $mode = ($start_day !== null && $end_day === null) ? 'end' : 'start';
 
-// Jika end sudah dipilih, kita langsung submit form
-$auto_submit = false;
-if ($start_day !== null && $end_day !== null) {
-    $auto_submit = true;
-}
-
-// Hitung kalender seperti biasa
+// Hitung kalender
 $first_dow     = (int)date('w', mktime(0, 0, 0, $month, 1, $year));
 $days_in_month = (int)date('t', mktime(0, 0, 0, $month, 1, $year));
 $days_in_prev  = (int)date('t', mktime(0, 0, 0, $month - 1, 1, $year));
@@ -35,10 +31,10 @@ if ($prev_m < 1) { $prev_m = 12; $prev_y--; }
 $next_m = $month + 1; $next_y = $year;
 if ($next_m > 12) { $next_m = 1; $next_y++; }
 
-// Base URL untuk link kalender (dengan info lokomotif)
+// Base URL untuk link kalender
 $base = "atur_jadwal.php?loco_id=$loco_id&model=" . urlencode($model) . "&kode=" . urlencode($kode);
 
-// Jika dalam mode 'end', kita tambahkan start ke base URL
+// Jika dalam mode 'end', tambahkan start ke base URL
 if ($mode === 'end') {
     $base .= "&start_day=$start_day&start_month=$start_month&start_year=$start_year";
 }
@@ -51,14 +47,6 @@ if ($mode === 'end') {
   <title>Jadwal Perawatan – LMS PT KAI</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../styling_feature/atur_jadwal.css" />
-  <?php if ($auto_submit): ?>
-  <script>
-    // Auto-submit saat end sudah dipilih
-    window.addEventListener('DOMContentLoaded', function() {
-      document.getElementById('form-jadwal').submit();
-    });
-  </script>
-  <?php endif; ?>
 </head>
 <body>
 <div class="shell">
@@ -114,22 +102,26 @@ if ($mode === 'end') {
         $tm = (int)date('n');
         $ty = (int)date('Y');
 
+        // Loop tanggal bulan ini
         for ($d = 1; $d <= $days_in_month; $d++) {
           $cls = 'day-cell';
           if ($d === $td && $month === $tm && $year === $ty) $cls .= ' today';
 
-          // Apakah tanggal ini adalah start yang sudah dipilih?
-          if ($mode === 'end' && $d == $start_day && $month == $start_month && $year == $start_year) {
-            $cls .= ' start-selected'; // bisa ditandai dengan border khusus
+          // Highlight start
+          if ($start_day !== null && $d == $start_day && $month == $start_month && $year == $start_year) {
+            $cls .= ' start-selected';
+          }
+
+          // Highlight end
+          if ($end_day !== null && $d == $end_day && $month == $end_month && $year == $end_year) {
+            $cls .= ' end-selected';
           }
 
           // Link
           if ($mode === 'start') {
-            // Klik untuk memilih start
             $link = "{$base}&year=$year&month=$month&start_day=$d&start_month=$month&start_year=$year";
           } else {
-            // Mode 'end', klik untuk memilih end
-            $link = "{$base}&year=$year&month=$month&end_day=$d";
+            $link = "{$base}&year=$year&month=$month&end_day=$d&end_month=$month&end_year=$year";
           }
 
           echo "<a class='$cls' href='$link'>$d</a>";
@@ -145,26 +137,24 @@ if ($mode === 'end') {
       </div>
     </div>
 
-    <!-- Form untuk submit (auto-submit jika end sudah dipilih) -->
+    <!-- Form untuk submit (tombol hanya aktif jika kedua tanggal dipilih) -->
     <?php
-    if ($auto_submit) {
-        // Format datetime untuk backend
+    $start_str = '';
+    $end_str   = '';
+    $tombol_aktif = false;
+    if ($start_day !== null && $end_day !== null) {
         $start_str = sprintf('%04d-%02d-%02d 00:00:00', $start_year, $start_month, $start_day);
-        $end_str   = sprintf('%04d-%02d-%02d 23:59:59', $year, $month, $end_day);
-    } else {
-        $start_str = '';
-        $end_str   = '';
+        $end_str   = sprintf('%04d-%02d-%02d 23:59:59', $end_year, $end_month, $end_day);
+        $tombol_aktif = true;
     }
     ?>
     <form id="form-jadwal" action="../src/feature/maintenance_schedule/endpoint/add_schedule.php" method="POST">
       <input type="hidden" name="locomotive_id" value="<?= $loco_id ?>" />
       <input type="hidden" name="start" value="<?= $start_str ?>" />
       <input type="hidden" name="end" value="<?= $end_str ?>" />
-      <?php if (!$auto_submit): ?>
-        <button type="submit" class="btn-pilih" disabled>Pilih Rentang</button>
-      <?php else: ?>
-        <button type="submit" class="btn-pilih">Mengirim...</button>
-      <?php endif; ?>
+      <button type="submit" class="btn-pilih" <?= $tombol_aktif ? '' : 'disabled' ?>>
+        <?= $tombol_aktif ? 'Pilih Rentang' : 'Pilih tanggal mulai dan akhir' ?>
+      </button>
     </form>
   </div>
 </div>
