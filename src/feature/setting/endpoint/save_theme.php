@@ -14,13 +14,13 @@ use Exception;
 require_once __DIR__ . "/../../../../vendor/autoload.php";
 require_once __DIR__ . "/../../../db/lms.php";
 
-
 session_start();
 
 $theme = $_POST["theme"];
 
-$preferences = isset($_SESSION["user_is_driver"]) == "driver" ? new MySqlUserPreferenceRepository($db, RolePreference::Driver)
-    : ($_SESSION["user_is_maintainer"] == "maintainer" ? new MySqlUserPreferenceRepository($db, RolePreference::Maintainer)
+// ── FIX: gunakan isset() konsisten untuk semua role ──
+$preferences = isset($_SESSION["user_is_driver"]) ? new MySqlUserPreferenceRepository($db, RolePreference::Driver)
+    : (isset($_SESSION["user_is_maintainer"]) ? new MySqlUserPreferenceRepository($db, RolePreference::Maintainer)
         : new MySqlUserPreferenceRepository($db, RolePreference::CentralOffice));
 
 $users = isset($_SESSION["user_is_driver"]) ? new MySqlDriverRepository($db)
@@ -29,8 +29,11 @@ $users = isset($_SESSION["user_is_driver"]) ? new MySqlDriverRepository($db)
 
 $dispatcher = new ThemeDispatcher($preferences, $users);
 
-if ($theme == "day") $dispatcher->switch_to_light_mode($_SESSION["user_id"]);
+if ($theme == "day")        $dispatcher->switch_to_light_mode($_SESSION["user_id"]);
 else if ($theme == "night") $dispatcher->switch_to_dark_mode($_SESSION["user_id"]);
 else throw new Exception("invalid theme");
+
+// Simpan ke session agar halaman lain bisa langsung pakai
+$_SESSION["theme"] = $theme;
 
 header("Location: ../../../../front-end/pengaturan_tampilan.php?status=saved");

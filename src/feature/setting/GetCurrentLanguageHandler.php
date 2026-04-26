@@ -32,8 +32,9 @@ class GetCurrentLanguageHandler
             );
         $all_preference = array_shift($filtered);
 
+        // Kalau user belum punya preference, kembalikan default Indonesia
         if (!$all_preference)
-            throw new Exception("cannot find preference");
+            return LanguageVariant::Indonesia;
 
         return $all_preference->language;
     }

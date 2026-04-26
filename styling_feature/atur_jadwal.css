@@ -47,9 +47,25 @@ body {
   gap: 10px;
 }
 
-.back-btn { display: flex; align-items: center; color: #fff; text-decoration: none; flex-shrink: 0; }
-.back-btn svg { width: 22px; height: 22px; fill: #fff; }
-.topbar h1 { font-size: 17px; font-weight: 600; color: #fff; }
+.back-btn { 
+  display: flex; 
+  align-items: center; 
+  color: #fff; 
+  text-decoration: none; 
+  flex-shrink: 0;
+ }
+
+.back-btn svg { 
+  width: 22px; 
+  height: 22px; 
+  fill: #fff;
+ }
+
+.topbar h1 { 
+  font-size: 17px; 
+  font-weight: 600; 
+  color: #fff;
+ }
 
 /* ── Page body ── */
 .page-body {
@@ -60,8 +76,6 @@ body {
 }
 
 /* ── Loco header ── */
-.loco-header { }
-
 .loco-name {
   font-size: 20px;
   font-weight: 700;
@@ -107,8 +121,15 @@ body {
   transition: background .15s;
 }
 
-.nav-btn:hover { background: #f0f0f0; }
-.nav-btn svg   { width: 20px; height: 20px; fill: currentColor; }
+.nav-btn:hover { 
+  background: #f0f0f0;
+ }
+
+.nav-btn svg   { 
+  width: 20px; 
+  height: 20px; 
+  fill: currentColor; 
+}
 
 .month-label {
   font-size: 17px;
@@ -151,10 +172,48 @@ body {
   user-select: none;
 }
 
-.day-cell:not(.other-month):hover { background: #e3f2fd; }
-.day-cell.other-month             { color: var(--lgray); pointer-events: none; }
-.day-cell.today                   { font-weight: 700; color: var(--blue); }
-.day-cell.selected                { background: var(--orange) !important; color: #fff !important; font-weight: 700; }
+.day-cell:not(.other-month):hover 
+{ background: #e3f2fd;
+ 
+}
+
+.day-cell.other-month            
+ { color: var(--lgray); 
+  pointer-events: none;
+ }
+
+.day-cell.today { 
+  font-weight: 700; 
+  color: var(--blue);
+ }
+
+.day-cell.selected { 
+  background: var(--orange) !important; 
+  color: #fff !important; 
+  font-weight: 700; 
+}
+
+/* ── Highlight rentang tanggal ── */
+.day-cell.start-selected {
+    border: 2px solid var(--orange);
+    background: #fff0e5;
+    font-weight: 700;
+    color: #e65100;               /* oranye pekat untuk teks */
+}
+
+.day-cell.end-selected {
+    border: 2px solid var(--orange);
+    background: #ffe0b2;
+    font-weight: 700;
+    color: #e65100;
+}
+
+/* Jika start dan end di hari yang sama */
+.day-cell.start-selected.end-selected {
+    background: var(--orange);
+    color: #fff;
+    border-color: var(--orange);
+}
 
 /* ── Tombol Pilih Tanggal ── */
 .btn-pilih {
@@ -173,14 +232,20 @@ body {
   transition: opacity .15s, transform .1s;
 }
 
-.btn-pilih:hover  { opacity: .88; }
-.btn-pilih:active { transform: scale(.98); }
+.btn-pilih:hover  { 
+  opacity: .88;
+ }
+
+.btn-pilih:active { 
+  transform: scale(.98);
+ }
 
 .btn-pilih:disabled {
   opacity: .4;
   cursor: not-allowed;
   transform: none;
 }
+
 
 /* ── Responsive ── */
 @media (max-width: 400px) {

@@ -1,10 +1,13 @@
 <?php
+// FILE   : front-end/pengaturan_bahasa.php
+// CSS    : styling_feature/pengaturan.css
+// BACKEND: src/feature/setting/endpoint/save_language.php
+//          src/feature/setting/GetCurrentLanguageHandler.php
+//          src/feature/setting/LanguageVariant.php
+
 /* header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0"); */
 /* header("Pragma: no-cache"); */
 /* header("Expires: 0"); */
-
-use lms\feature\communication\PreferenceFactory;
-
 ?>
 
 <!DOCTYPE html>
@@ -21,6 +24,14 @@ use lms\feature\communication\PreferenceFactory;
 <body>
   <?php
 
+  use lms\feature\setting\GetCurrentLanguageHandler;
+  use lms\feature\signup\persistence\MySqlDriverRepository;
+  use lms\feature\signup\persistence\MySqlMaintainerRepository;
+  use lms\feature\signup\persistence\MySqlCentralOfficeRepository;
+
+  use lms\feature\setting\persistence\MySqlUserPreferenceRepository;
+  use lms\feature\setting\persistence\RolePreference;
+
   require_once __DIR__ . "/../vendor/autoload.php";
 
   session_start();
@@ -29,17 +40,6 @@ use lms\feature\communication\PreferenceFactory;
     exit;
   }
   require_once __DIR__ . '/../src/db/lms.php';
-
-  use lms\feature\setting\GetCurrentLanguageHandler;
-  use lms\feature\setting\LanguageVariant;
-  use lms\feature\signup\persistence\MySqlDriverRepository;
-  use lms\feature\signup\persistence\MySqlMaintainerRepository;
-  use lms\feature\signup\persistence\MySqlCentralOfficeRepository;
-
-  use lms\feature\setting\persistence\MySqlUserPreferenceRepository;
-  use lms\feature\setting\persistence\RolePreference;
-  use lms\feature\setting\ThemeQuery;
-  use lms\feature\setting\ThemeVariant;
 
   if (!empty($_SESSION['user_is_driver']))         $role = 'driver';
   elseif (!empty($_SESSION['user_is_maintainer']))  $role = 'maintainer';
@@ -53,14 +53,25 @@ use lms\feature\communication\PreferenceFactory;
     : (isset($_SESSION["user_is_maintainer"]) ? new MySqlMaintainerRepository($db)
       : new MySqlCentralOfficeRepository($db));
 
-  $theme_query = new ThemeQuery($preferences, $users);
-  $language_query =  new GetCurrentLanguageHandler($users, $preferences);
+  $handler = new GetCurrentLanguageHandler($users, $preferences);
+  $langVariant = $handler->handle($_SESSION["user_id"]);
+  // LanguageVariant::Indonesia->value = "Indonesia", ::English->value = "English"
+  $lang = ($langVariant->value === 'Indonesia') ? 'id' : 'en';
 
-  $theme = $theme_query->get_current_theme($_SESSION["user_id"]) == ThemeVariant::Light ? "day" : "night";
-  $lang = $language_query->handle($_SESSION["user_id"]) == LanguageVariant::Indonesia ? "id" : "en";
-
-  $_SESSION["lang"] = $lang;
-  $_SESSION["theme"] = $theme;
+  // ── Teks UI bilingual ──
+  $ui = $lang === 'en' ? [
+    'page_title' => 'Language',
+    'hint'       => 'Select application language',
+    'saved_ok'   => 'Language saved successfully.',
+    'saved_err'  => 'An error occurred.',
+    'btn_save'   => 'Save',
+  ] : [
+    'page_title' => 'Bahasa',
+    'hint'       => 'Pilih bahasa aplikasi',
+    'saved_ok'   => 'Bahasa berhasil disimpan.',
+    'saved_err'  => 'Terjadi kesalahan.',
+    'btn_save'   => 'Simpan',
+  ];
   ?>
 
   <div class="shell">
@@ -70,37 +81,37 @@ use lms\feature\communication\PreferenceFactory;
           <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
         </svg>
       </a>
-      <h1>Bahasa</h1>
+      <h1><?= htmlspecialchars($ui['page_title']) ?></h1>
     </div>
     <div class="page-body">
 
       <?php if (isset($_GET['status'])): ?>
-        <?php if ($_GET['status'] === 'saved'): ?><p class="msg success">Bahasa berhasil disimpan.</p>
-        <?php elseif ($_GET['status'] === 'error'): ?><p class="msg error">Terjadi kesalahan.</p>
+        <?php if ($_GET['status'] === 'saved'): ?>
+          <p class="msg success"><?= $ui['saved_ok'] ?></p>
+        <?php elseif ($_GET['status'] === 'error'): ?>
+          <p class="msg error"><?= $ui['saved_err'] ?></p>
         <?php endif; ?>
       <?php endif; ?>
 
-      <p class="section-hint">Pilih bahasa aplikasi</p>
+      <p class="section-hint"><?= $ui['hint'] ?></p>
 
       <form action="../src/feature/setting/endpoint/save_language.php" method="POST">
         <div class="radio-list">
 
           <label class="radio-row <?= $lang === 'id' ? 'active' : '' ?>">
-            <span class="flag">🇮🇩</span>
             <span>Indonesia</span>
             <input type="radio" name="lang" value="id" <?= $lang === 'id' ? 'checked' : '' ?> />
             <div class="radio-dot"></div>
           </label>
 
           <label class="radio-row <?= $lang === 'en' ? 'active' : '' ?>">
-            <span class="flag">🇬🇧</span>
             <span>English</span>
             <input type="radio" name="lang" value="en" <?= $lang === 'en' ? 'checked' : '' ?> />
             <div class="radio-dot"></div>
           </label>
 
         </div>
-        <button type="submit" class="btn-save">Simpan</button>
+        <button type="submit" class="btn-save"><?= $ui['btn_save'] ?></button>
       </form>
 
     </div>

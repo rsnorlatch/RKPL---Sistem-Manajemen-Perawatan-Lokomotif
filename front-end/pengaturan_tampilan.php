@@ -1,4 +1,12 @@
 <!DOCTYPE html>
+<?php
+// FILE   : front-end/pengaturan_tampilan.php
+// CSS    : styling_feature/pengaturan.css  ← dark mode ditambahkan di sini
+// BACKEND: src/feature/setting/endpoint/save_theme.php
+//          src/feature/setting/ThemeQuery.php
+//          src/feature/setting/ThemeDispatcher.php
+//          src/feature/setting/ThemeVariant.php
+?>
 <html lang="id">
 
 <head>
@@ -12,8 +20,14 @@
 <body>
   <?php
 
-  use lms\feature\communication\PreferenceFactory;
+  use lms\feature\setting\ThemeQuery;
   use lms\feature\setting\ThemeVariant;
+  use lms\feature\setting\GetCurrentLanguageHandler;
+  use lms\feature\setting\persistence\MySqlUserPreferenceRepository;
+  use lms\feature\signup\persistence\MySqlDriverRepository;
+  use lms\feature\signup\persistence\MySqlMaintainerRepository;
+  use lms\feature\signup\persistence\MySqlCentralOfficeRepository;
+  use lms\feature\setting\persistence\RolePreference;
 
   require_once __DIR__ . "/../vendor/autoload.php";
 
@@ -23,32 +37,6 @@
     exit;
   }
   require_once __DIR__ . '/../src/db/lms.php';
-
-  /* // Tentukan tabel settings berdasarkan role */
-  /* if (!empty($_SESSION['user_is_driver'])) { */
-  /*   $st = 'driver_settings'; */
-  /*   $fk = 'driver_id'; */
-  /* } elseif (!empty($_SESSION['user_is_maintainer'])) { */
-  /*   $st = 'maintainer_settings'; */
-  /*   $fk = 'maintainer_id'; */
-  /* } else { */
-  /*   $st = 'central_office_settings'; */
-  /*   $fk = 'central_office_id'; */
-  /* } */
-  /**/
-  /* $uid = (int)$_SESSION['user_id']; */
-  /* $res = $db->query("SELECT theme FROM `$st` WHERE `$fk`=$uid LIMIT 1"); */
-  /* $theme = ($res && $res->num_rows > 0) ? $res->fetch_assoc()['theme'] : 'day'; */
-
-  use lms\feature\setting\GetCurrentLanguageHandler;
-  use lms\feature\setting\LanguageVariant;
-  use lms\feature\signup\persistence\MySqlDriverRepository;
-  use lms\feature\signup\persistence\MySqlMaintainerRepository;
-  use lms\feature\signup\persistence\MySqlCentralOfficeRepository;
-
-  use lms\feature\setting\persistence\MySqlUserPreferenceRepository;
-  use lms\feature\setting\persistence\RolePreference;
-  use lms\feature\setting\ThemeQuery;
 
   if (!empty($_SESSION['user_is_driver']))         $role = 'driver';
   elseif (!empty($_SESSION['user_is_maintainer']))  $role = 'maintainer';
@@ -62,15 +50,46 @@
     : (isset($_SESSION["user_is_maintainer"]) ? new MySqlMaintainerRepository($db)
       : new MySqlCentralOfficeRepository($db));
 
+  // ── Ambil tema saat ini ──
   $theme_query = new ThemeQuery($preferences, $users);
-  $language_query =  new GetCurrentLanguageHandler($users, $preferences);
-
-  $theme = $theme_query->get_current_theme($_SESSION["user_id"]) == ThemeVariant::Light ? "day" : "night";
-  $lang = $language_query->handle($_SESSION["user_id"]) == LanguageVariant::Indonesia ? "id" : "en";
-
-  $_SESSION["lang"] = $lang;
+  $themeVariant = $theme_query->get_current_theme($_SESSION["user_id"]);
+  $theme = ($themeVariant == ThemeVariant::Light) ? 'day' : 'night';
   $_SESSION["theme"] = $theme;
+
+  // ── Ambil bahasa saat ini ──
+  $lang_handler = new GetCurrentLanguageHandler($users, $preferences);
+  $langVariant  = $lang_handler->handle($_SESSION["user_id"]);
+  $lang = ($langVariant->value === 'Indonesia') ? 'id' : 'en';
+
+  // ── Teks UI bilingual ──
+  $ui = $lang === 'en' ? [
+    'page_title' => 'Display',
+    'hint'       => 'Choose the application display theme',
+    'day_label'  => 'Day',
+    'day_hint'   => 'Light',
+    'night_label'=> 'Night',
+    'night_hint' => 'Dark',
+    'saved_ok'   => 'Display theme saved successfully.',
+    'saved_err'  => 'An error occurred.',
+    'btn_save'   => 'Save',
+  ] : [
+    'page_title' => 'Tampilan',
+    'hint'       => 'Pilih tema tampilan aplikasi',
+    'day_label'  => 'Day',
+    'day_hint'   => 'Terang',
+    'night_label'=> 'Night',
+    'night_hint' => 'Gelap',
+    'saved_ok'   => 'Tampilan berhasil disimpan.',
+    'saved_err'  => 'Terjadi kesalahan.',
+    'btn_save'   => 'Simpan',
+  ];
   ?>
+
+  <!-- Terapkan class dark pada body jika tema malam -->
+  <script>
+    if ('<?= $theme ?>' === 'night') document.body.classList.add('dark');
+  </script>
+
   <div class="shell">
     <div class="topbar">
       <a href="pengaturan.php" class="back-btn">
@@ -78,17 +97,19 @@
           <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
         </svg>
       </a>
-      <h1>Tampilan</h1>
+      <h1><?= htmlspecialchars($ui['page_title']) ?></h1>
     </div>
     <div class="page-body">
 
       <?php if (isset($_GET['status'])): ?>
-        <?php if ($_GET['status'] === 'saved'): ?><p class="msg success">Tampilan berhasil disimpan.</p>
-        <?php elseif ($_GET['status'] === 'error'): ?><p class="msg error">Terjadi kesalahan.</p>
+        <?php if ($_GET['status'] === 'saved'): ?>
+          <p class="msg success"><?= $ui['saved_ok'] ?></p>
+        <?php elseif ($_GET['status'] === 'error'): ?>
+          <p class="msg error"><?= $ui['saved_err'] ?></p>
         <?php endif; ?>
       <?php endif; ?>
 
-      <p class="section-hint">Pilih tema tampilan aplikasi</p>
+      <p class="section-hint"><?= $ui['hint'] ?></p>
 
       <form action="../src/feature/setting/endpoint/save_theme.php" method="POST">
         <div class="radio-list">
@@ -100,7 +121,7 @@
               </svg>
             </div>
             <input type="radio" name="theme" value="day" <?= $theme === 'day' ? 'checked' : '' ?> />
-            <span>Day <span class="hint-text">(Terang)</span></span>
+            <span><?= $ui['day_label'] ?> <span class="hint-text">(<?= $ui['day_hint'] ?>)</span></span>
             <div class="radio-dot"></div>
           </label>
 
@@ -111,15 +132,16 @@
               </svg>
             </div>
             <input type="radio" name="theme" value="night" <?= $theme === 'night' ? 'checked' : '' ?> />
-            <span>Night <span class="hint-text">(Gelap)</span></span>
+            <span><?= $ui['night_label'] ?> <span class="hint-text">(<?= $ui['night_hint'] ?>)</span></span>
             <div class="radio-dot"></div>
           </label>
 
         </div>
-        <button type="submit" class="btn-save">Simpan</button>
+        <button type="submit" class="btn-save"><?= $ui['btn_save'] ?></button>
       </form>
     </div>
   </div>
 </body>
 
 </html>
+
