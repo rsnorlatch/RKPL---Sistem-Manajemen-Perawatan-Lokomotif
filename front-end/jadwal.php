@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="id">
 
@@ -19,7 +23,7 @@
           <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
         </svg>
       </a>
-      <h1>Jadwal Perawatan</h1>
+      <h1><?= $_SESSION["language"] == "id" ? "Jadwal Perawatan" : "Maintenance Schedule" ?></h1>
     </div>
 
     <div class="page-body">
@@ -55,7 +59,7 @@
               </div>
               <a class="btn-atur"
                 href="atur_jadwal.php?loco_id=<?= $loco['id'] ?>&model=<?= urlencode($label) ?>&kode=<?= urlencode($code) ?>">
-                Atur
+                <?= $_SESSION["language"] == "id" ? "Atur" : "Configure" ?>
               </a>
             </div>
           <?php endforeach; ?>

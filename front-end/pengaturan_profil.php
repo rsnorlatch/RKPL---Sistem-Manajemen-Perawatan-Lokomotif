@@ -39,25 +39,55 @@ header("Expires: 0");
           <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
         </svg>
       </a>
-      <h1>Atur Profil</h1>
+      <h1>
+        <?php if ($_SESSION["language"] == "id"): ?>
+          Atur Profil
+        <?php elseif ($_SESSION["language"] == "en"): ?>
+          Configure Profile
+        <?php endif; ?>
+      </h1>
     </div>
     <div class="page-body">
 
       <?php if (isset($_GET['status'])): ?>
-        <?php if ($_GET['status'] === 'saved'): ?><p class="msg success">Nama berhasil disimpan.</p>
-        <?php elseif ($_GET['status'] === 'error'): ?><p class="msg error">Terjadi kesalahan.</p>
+        <?php if ($_GET['status'] === 'saved'): ?><p class="msg success">
+            <?php if ($_SESSION["language"] == "id"): ?>
+              Nama berhasil disimpan.
+            <?php elseif ($_SESSION["language"] == "en"): ?>
+              Successfully saved new username
+            <?php endif; ?>
+          </p>
+        <?php elseif ($_GET['status'] === 'error'): ?><p class="msg error">
+            <?php if ($_SESSION["language"] == "id"): ?>
+              Terjadi kesalahan.
+            <?php elseif ($_SESSION["language"] == "en"): ?>
+              Problem occured
+            <?php endif; ?>
+          </p>
         <?php endif; ?>
       <?php endif; ?>
 
       <!-- Profil: hanya nama saja -->
       <form class="form-card" action="../src/feature/setting/endpoint/save_profile.php" method="POST">
         <div class="field-group">
-          <label>Nama</label>
+          <label>
+            <?php if ($_SESSION["language"] == "id"): ?>
+              Nama
+            <?php elseif ($_SESSION["language"] == "en"): ?>
+              Username
+            <?php endif; ?>
+          </label>
           <input type="text" name="nama"
             value="<?= htmlspecialchars($nama) ?>"
             placeholder="Masukkan nama" required />
         </div>
-        <button type="submit" class="btn-save">Simpan</button>
+        <button type="submit" class="btn-save">
+          <?php if ($_SESSION["language"] == "id"): ?>
+            Simpan
+          <?php elseif ($_SESSION["language"] == "en"): ?>
+            Save
+          <?php endif; ?>
+        </button>
       </form>
 
     </div>

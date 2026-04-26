@@ -31,6 +31,7 @@ while ($row = $result->fetch_assoc()) {
 ?>
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -38,49 +39,85 @@ while ($row = $result->fetch_assoc()) {
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../styling_feature/panggilan.css">
 </head>
-<body>
-<div class="shell">
-    <div class="topbar">
-        <a href="dashboard_masinis.php" class="back-btn">
-            <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
-        </a>
-        <h1>Konfirmasi Panggilan</h1>
-    </div>
-    <div class="page-body">
-        <?php if (isset($_GET['status']) && $_GET['status'] === 'success'): ?>
-            <p class="msg success">Konfirmasi berhasil dikirim.</p>
-        <?php endif; ?>
 
-        <?php if (empty($calls)): ?>
-            <div class="empty-state">
-                <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
-                <p>Tidak ada panggilan yang perlu dikonfirmasi</p>
-            </div>
-        <?php else: ?>
-            <div class="call-list">
-                <?php foreach ($calls as $call): ?>
-                    <div class="call-item">
-                        <span class="call-label">
-                            Lokomotif <?= htmlspecialchars($call['locomotive_model']) ?>
-                            <small style="display:block; font-weight:400; color:#757575; margin-top:2px;">
-                                <?= date('d M Y, H:i', strtotime($call['call_time'])) ?>
-                            </small>
-                        </span>
-                        <div class="call-actions">
-                            <form action="../src/feature/communication/endpoint/confirm_finish.php" method="POST">
-                                <input type="hidden" name="call_id" value="<?= $call['call_id'] ?>">
-                                <button type="submit" class="btn-konfirmasi green">Selesai</button>
-                            </form>
-                            <form action="laporkan_kendala.php" method="POST">
-                                <input type="hidden" name="call_id" value="<?= $call['call_id'] ?>">
-                                <button type="submit" class="btn-konfirmasi">Terkendala</button>
-                            </form>
+<body>
+    <div class="shell">
+        <div class="topbar">
+            <a href="dashboard_masinis.php" class="back-btn">
+                <svg viewBox="0 0 24 24">
+                    <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
+                </svg>
+            </a>
+            <h1>
+                <?php if ($_SESSION["language"] == "id"): ?>
+                    Konfirmasi Panggilan
+                <?php elseif ($_SESSION["language"] == "en"): ?>
+                    Confirmations
+                <?php endif; ?>
+            </h1>
+        </div>
+        <div class="page-body">
+            <?php if (isset($_GET['status']) && $_GET['status'] === 'success'): ?>
+                <p class="msg success">
+                    <?php if ($_SESSION["language"] == "id"): ?>
+                        Konfirmasi berhasil dikirim.
+                    <?php elseif ($_SESSION["language"] == "en"): ?>
+                        Successfuly sent confirmation.
+                    <?php endif; ?>
+                </p>
+            <?php endif; ?>
+
+            <?php if (empty($calls)): ?>
+                <div class="empty-state">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                    </svg>
+                    <p>
+                        <?php if ($_SESSION["language"] == "id"): ?>
+                            Tidak ada panggilan yang perlu dikonfirmasi
+                        <?php elseif ($_SESSION["language"] == "en"): ?>
+                            No calls to be confirmed yet
+                        <?php endif; ?>
+                    </p>
+                </div>
+            <?php else: ?>
+                <div class="call-list">
+                    <?php foreach ($calls as $call): ?>
+                        <div class="call-item">
+                            <span class="call-label">
+                                Lokomotif <?= htmlspecialchars($call['locomotive_model']) ?>
+                                <small style="display:block; font-weight:400; color:#757575; margin-top:2px;">
+                                    <?= date('d M Y, H:i', strtotime($call['call_time'])) ?>
+                                </small>
+                            </span>
+                            <div class="call-actions">
+                                <form action="../src/feature/communication/endpoint/confirm_finish.php" method="POST">
+                                    <input type="hidden" name="call_id" value="<?= $call['call_id'] ?>">
+                                    <button type="submit" class="btn-konfirmasi green">
+                                        <?php if ($_SESSION["language"] == "id"): ?>
+                                            Selesai
+                                        <?php elseif ($_SESSION["language"] == "en"): ?>
+                                            Done
+                                        <?php endif; ?>
+                                    </button>
+                                </form>
+                                <form action="laporkan_kendala.php" method="POST">
+                                    <input type="hidden" name="call_id" value="<?= $call['call_id'] ?>">
+                                    <button type="submit" class="btn-konfirmasi">
+                                        <?php if ($_SESSION["language"] == "id"): ?>
+                                            Terkendala
+                                        <?php elseif ($_SESSION["language"] == "en"): ?>
+                                            There's issue
+                                        <?php endif; ?>
+                                    </button>
+                                </form>
+                            </div>
                         </div>
-                    </div>
-                <?php endforeach; ?>
-            </div>
-        <?php endif; ?>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+        </div>
     </div>
-</div>
 </body>
+
 </html>

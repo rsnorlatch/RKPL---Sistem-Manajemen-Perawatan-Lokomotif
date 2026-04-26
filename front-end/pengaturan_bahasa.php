@@ -57,6 +57,7 @@
   $langVariant = $handler->handle($_SESSION["user_id"]);
   // LanguageVariant::Indonesia->value = "Indonesia", ::English->value = "English"
   $lang = ($langVariant->value === 'Indonesia') ? 'id' : 'en';
+  $_SESSION["language"] = $lang;
 
   // ── Teks UI bilingual ──
   $ui = $lang === 'en' ? [
