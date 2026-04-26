@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 25, 2026 at 01:57 PM
+-- Generation Time: Apr 26, 2026 at 12:31 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -37,7 +37,9 @@ CREATE TABLE `accepted_call` (
 --
 
 INSERT INTO `accepted_call` (`id`, `call_id`) VALUES
-(1, 2);
+(1, 2),
+(2, 3),
+(3, 4);
 
 -- --------------------------------------------------------
 
@@ -56,7 +58,9 @@ CREATE TABLE `calling` (
 --
 
 INSERT INTO `calling` (`id`, `driver_id`, `call_time`) VALUES
-(2, 3, '2026-04-24 17:51:37');
+(2, 3, '2026-04-24 17:51:37'),
+(3, 5, '2026-04-25 13:22:52'),
+(4, 5, '2026-04-26 07:45:44');
 
 -- --------------------------------------------------------
 
@@ -91,6 +95,13 @@ CREATE TABLE `central_office_preference` (
   `language` enum('Indonesia','English') DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `central_office_preference`
+--
+
+INSERT INTO `central_office_preference` (`id`, `user_id`, `theme`, `language`) VALUES
+(1, 1, 'Dark', 'English');
+
 -- --------------------------------------------------------
 
 --
@@ -102,6 +113,14 @@ CREATE TABLE `confirmation_finish` (
   `driver_id` int(255) NOT NULL,
   `calling_id` int(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `confirmation_finish`
+--
+
+INSERT INTO `confirmation_finish` (`id`, `driver_id`, `calling_id`) VALUES
+(16, 5, 3),
+(17, 5, 3);
 
 -- --------------------------------------------------------
 
@@ -115,6 +134,13 @@ CREATE TABLE `confirmation_problem` (
   `calling_id` int(255) NOT NULL,
   `problem` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `confirmation_problem`
+--
+
+INSERT INTO `confirmation_problem` (`id`, `driver_id`, `calling_id`, `problem`) VALUES
+(2, 5, 4, 'ada kendala');
 
 -- --------------------------------------------------------
 
@@ -136,7 +162,9 @@ CREATE TABLE `driver` (
 INSERT INTO `driver` (`id`, `username`, `email`, `password`) VALUES
 (1, 'user', 'email@mail.mail', 'jfiejifejif'),
 (2, 'username', 'email@mail.com', 'password'),
-(3, 'Masinis2', 'masinis@gmail.com', 'masinis3');
+(3, 'Masinis2', 'masinis@gmail.com', 'masinis3'),
+(4, 'drver', 'driver@email.com', 'password'),
+(5, 'driverbaru', 'driverbaru@gmail.com', 'driverbaru');
 
 -- --------------------------------------------------------
 
@@ -150,6 +178,14 @@ CREATE TABLE `driver_preference` (
   `theme` enum('Light','Dark') DEFAULT NULL,
   `language` enum('Indonesia','English') DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `driver_preference`
+--
+
+INSERT INTO `driver_preference` (`id`, `user_id`, `theme`, `language`) VALUES
+(1, 4, 'Light', 'Indonesia'),
+(2, 5, 'Light', 'English');
 
 -- --------------------------------------------------------
 
@@ -168,7 +204,7 @@ CREATE TABLE `locomotive` (
 --
 
 INSERT INTO `locomotive` (`id`, `driver_id`, `model`) VALUES
-(1, 3, 'model-1');
+(1, 5, 'model-1');
 
 -- --------------------------------------------------------
 
@@ -188,7 +224,7 @@ CREATE TABLE `maintainer` (
 --
 
 INSERT INTO `maintainer` (`id`, `username`, `email`, `password`) VALUES
-(1, 'maintainer', 'maintainer@email.com', 'maintainer');
+(1, 'newmaintainer', 'maintainer@email.com', 'newmaintainer');
 
 -- --------------------------------------------------------
 
@@ -208,7 +244,7 @@ CREATE TABLE `maintainer_preference` (
 --
 
 INSERT INTO `maintainer_preference` (`id`, `user_id`, `theme`, `language`) VALUES
-(1, 1, 'Dark', 'Indonesia');
+(1, 1, 'Light', 'English');
 
 -- --------------------------------------------------------
 
@@ -261,10 +297,18 @@ INSERT INTO `maintenance_unit` (`id`, `sequence_number`, `unit_name`, `unit_desc
 --
 
 CREATE TABLE `notification_balaiyasa` (
-  `id` int(11) NOT NULL,
+  `id` int(255) NOT NULL,
   `message` text NOT NULL,
   `created_at` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `notification_balaiyasa`
+--
+
+INSERT INTO `notification_balaiyasa` (`id`, `message`, `created_at`) VALUES
+(3, 'Panggilan ID 4 diterima oleh masinis.', '2026-04-26 14:45:54'),
+(4, 'Konfirmasi terkendala untuk panggilan ID 4: ada kendala', '2026-04-26 14:46:01');
 
 -- --------------------------------------------------------
 
@@ -326,7 +370,9 @@ INSERT INTO `send_request` (`id`, `locomotive_id`, `destination_id`, `request_ti
 (10, 1, 3, '2026-04-23 15:26:22'),
 (11, 1, 35, '2026-04-23 16:55:54'),
 (12, 1, 12, '2026-04-24 14:34:51'),
-(13, 1, 17, '2026-04-24 15:01:21');
+(13, 1, 17, '2026-04-24 15:01:21'),
+(14, 1, 32, '2026-04-25 15:22:52'),
+(15, 1, 35, '2026-04-26 09:45:44');
 
 -- --------------------------------------------------------
 
@@ -439,7 +485,8 @@ ALTER TABLE `driver`
 -- Indexes for table `driver_preference`
 --
 ALTER TABLE `driver_preference`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `locomotive`
@@ -522,7 +569,7 @@ ALTER TABLE `accepted_call`
 -- AUTO_INCREMENT for table `calling`
 --
 ALTER TABLE `calling`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `central_office`
@@ -534,25 +581,25 @@ ALTER TABLE `central_office`
 -- AUTO_INCREMENT for table `central_office_preference`
 --
 ALTER TABLE `central_office_preference`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `confirmation_finish`
 --
 ALTER TABLE `confirmation_finish`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `confirmation_problem`
 --
 ALTER TABLE `confirmation_problem`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `driver`
 --
 ALTER TABLE `driver`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `driver_preference`
@@ -591,6 +638,12 @@ ALTER TABLE `maintenance_unit`
   MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
+-- AUTO_INCREMENT for table `notification_balaiyasa`
+--
+ALTER TABLE `notification_balaiyasa`
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT for table `onsite_locomotive`
 --
 ALTER TABLE `onsite_locomotive`
@@ -606,7 +659,7 @@ ALTER TABLE `rejected_call`
 -- AUTO_INCREMENT for table `send_request`
 --
 ALTER TABLE `send_request`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `stop`
@@ -649,6 +702,12 @@ ALTER TABLE `confirmation_finish`
 ALTER TABLE `confirmation_problem`
   ADD CONSTRAINT `confirmation_problem_ibfk_1` FOREIGN KEY (`driver_id`) REFERENCES `driver` (`id`),
   ADD CONSTRAINT `confirmation_problem_ibfk_2` FOREIGN KEY (`calling_id`) REFERENCES `calling` (`id`);
+
+--
+-- Constraints for table `driver_preference`
+--
+ALTER TABLE `driver_preference`
+  ADD CONSTRAINT `driver_preference_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `driver` (`id`);
 
 --
 -- Constraints for table `locomotive`
