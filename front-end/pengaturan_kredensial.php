@@ -24,32 +24,92 @@
           <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
         </svg>
       </a>
-      <h1>Kredensial &amp; Keamanan</h1>
+      <h1>
+        <?php if ($_SESSION["language"] == "id"): ?>
+          Kredensial &amp; Keamanan
+        <?php elseif ($_SESSION["language"] == "en"): ?>
+          Credential &amp; Security
+        <?php endif; ?>
+      </h1>
     </div>
     <div class="page-body">
 
       <?php if (isset($_GET['status'])): ?>
-        <?php if ($_GET['status'] === 'saved'):    ?><p class="msg success">Password berhasil diubah.</p>
-        <?php elseif ($_GET['status'] === 'mismatch'): ?><p class="msg error">Password baru tidak cocok.</p>
-        <?php elseif ($_GET['status'] === 'wrong'):    ?><p class="msg error">Password lama salah.</p>
-        <?php elseif ($_GET['status'] === 'error'):    ?><p class="msg error">Terjadi kesalahan.</p>
+        <?php if ($_GET['status'] === 'saved'):    ?>
+          <p class="msg success">
+            <?php if ($_SESSION["language"] == "id"): ?>
+              Password berhasil diubah.
+            <?php elseif ($_SESSION["language"] == "en"): ?>
+              Password successfully changed.
+            <?php endif; ?>
+          </p>
+        <?php elseif ($_GET['status'] === 'mismatch'): ?>
+          <p class="msg error">
+            <?php if ($_SESSION["language"] == "id"): ?>
+              Password baru tidak cocok.
+            <?php elseif ($_SESSION["language"] == "en"): ?>
+              Password does not match.
+            <?php endif; ?>
+          </p>
+        <?php elseif ($_GET['status'] === 'wrong'):    ?>
+          <p class="msg error">
+            <?php if ($_SESSION["language"] == "id"): ?>
+              Password lama salah.
+            <?php elseif ($_SESSION["language"] == "en"): ?>
+              Old password incorrect.
+            <?php endif; ?>
+          </p>
+        <?php elseif ($_GET['status'] === 'error'):    ?>
+          <p class="msg error">
+            <?php if ($_SESSION["language"] == "id"): ?>
+              Terjadi kesalahan.
+            <?php elseif ($_SESSION["language"] == "en"): ?>
+              there is a problem.
+            <?php endif; ?>
+          </p>
         <?php endif; ?>
       <?php endif; ?>
 
       <form class="form-card" action="../src/feature/setting/endpoint/save_password.php" method="POST">
         <div class="field-group">
-          <label>Password Lama</label>
-          <input type="password" name="old_password" placeholder="Password saat ini" required />
+          <label>
+            <?php if ($_SESSION["language"] == "id"): ?>
+              Password Lama
+            <?php elseif ($_SESSION["language"] == "en"): ?>
+              Old Password
+            <?php endif; ?>
+          </label>
+          <input type="password" name="old_password" placeholder="<?= $_SESSION["language"] == "id" ? "Password saat ini" : "Current password" ?>" required />
         </div>
         <div class="field-group">
-          <label>Password Baru</label>
-          <input type="password" name="new_password" placeholder="Minimal 6 karakter" required minlength="6" />
+          <label>
+            <?php if ($_SESSION["language"] == "id"): ?>
+              Password Baru
+            <?php elseif ($_SESSION["language"] == "en"): ?>
+              New Password
+            <?php endif; ?>
+          </label>
+          <input type="password" name="new_password"
+            placeholder="<?= $_SESSION["language"] == "id" ? "minimal 6 karakter" : "At least 6 characters" ?>" required minlength="6" />
         </div>
         <div class="field-group">
-          <label>Konfirmasi Password Baru</label>
-          <input type="password" name="confirm_password" placeholder="Ulangi password baru" required minlength="6" />
+          <label>
+            <?php if ($_SESSION["language"] == "id"): ?>
+              Konfirmasi Password Baru
+            <?php elseif ($_SESSION["language"] == "en"): ?>
+              Confirm New Password
+            <?php endif; ?>
+          </label>
+          <input type="password" name="confirm_password"
+            placeholder="<?= $_SESSION["language"] == "id" ? "Ulangi password baru" : "Repeat new password" ?>" required minlength="6" />
         </div>
-        <button type="submit" class="btn-save">Simpan</button>
+        <button type="submit" class="btn-save">
+          <?php if ($_SESSION["language"] == "id"): ?>
+            Simpan
+          <?php elseif ($_SESSION["language"] == "en"): ?>
+            Save
+          <?php endif; ?>
+        </button>
       </form>
 
     </div>

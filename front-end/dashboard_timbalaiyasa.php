@@ -47,7 +47,7 @@
   $theme = $theme_query->get_current_theme($_SESSION["user_id"]) == ThemeVariant::Light ? "day" : "night";
   $lang = $language_query->handle($_SESSION["user_id"]) == LanguageVariant::Indonesia ? "id" : "en";
 
-  $_SESSION["lang"] = $lang;
+  $_SESSION["language"] = $lang;
   $_SESSION["theme"] = $theme;
 
   $username = $_SESSION["user"];
