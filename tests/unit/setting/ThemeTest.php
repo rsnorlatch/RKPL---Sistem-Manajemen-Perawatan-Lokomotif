@@ -9,6 +9,8 @@ use lms\feature\setting\ThemeVariant;
 use lms\feature\signup\persistence\InMemoryDriverRepository;
 use PHPUnit\Framework\TestCase;
 use lms\feature\setting\ThemeQuery;
+use lms\feature\signup\persistence\InMemoryCentralOfficeRepository;
+use lms\feature\signup\persistence\MySqlCentralOfficeRepository;
 
 final class ThemeTest extends TestCase
 {
@@ -59,6 +61,18 @@ final class ThemeTest extends TestCase
         $theme_query = new ThemeQuery($preferences, $users);
 
         $this->expectException(UserNotFoundException::class);
+        $theme_query->get_current_theme(1);
+    }
+
+    public function testIfUserHasNoPreference_ItShouldGenerateADefaultPreference()
+    {
+        $users = new InMemoryCentralOfficeRepository([]);
+        $users->insert(1, "", "", "");
+        $preferences = new InMemoryUserPreferenceRepository([]);
+        $theme_query = new ThemeQuery($preferences, $users);
+
         $theme = $theme_query->get_current_theme(1);
+
+        $this->assertEquals(ThemeVariant::Light, $theme);
     }
 }

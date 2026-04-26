@@ -2,6 +2,9 @@
 /* header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0"); */
 /* header("Pragma: no-cache"); */
 /* header("Expires: 0"); */
+
+use lms\feature\communication\PreferenceFactory;
+
 ?>
 
 <!DOCTYPE html>
@@ -18,14 +21,6 @@
 <body>
   <?php
 
-  use lms\feature\setting\GetCurrentLanguageHandler;
-  use lms\feature\signup\persistence\MySqlDriverRepository;
-  use lms\feature\signup\persistence\MySqlMaintainerRepository;
-  use lms\feature\signup\persistence\MySqlCentralOfficeRepository;
-
-  use lms\feature\setting\persistence\MySqlUserPreferenceRepository;
-  use lms\feature\setting\persistence\RolePreference;
-
   require_once __DIR__ . "/../vendor/autoload.php";
 
   session_start();
@@ -34,6 +29,17 @@
     exit;
   }
   require_once __DIR__ . '/../src/db/lms.php';
+
+  use lms\feature\setting\GetCurrentLanguageHandler;
+  use lms\feature\setting\LanguageVariant;
+  use lms\feature\signup\persistence\MySqlDriverRepository;
+  use lms\feature\signup\persistence\MySqlMaintainerRepository;
+  use lms\feature\signup\persistence\MySqlCentralOfficeRepository;
+
+  use lms\feature\setting\persistence\MySqlUserPreferenceRepository;
+  use lms\feature\setting\persistence\RolePreference;
+  use lms\feature\setting\ThemeQuery;
+  use lms\feature\setting\ThemeVariant;
 
   if (!empty($_SESSION['user_is_driver']))         $role = 'driver';
   elseif (!empty($_SESSION['user_is_maintainer']))  $role = 'maintainer';
@@ -47,8 +53,14 @@
     : (isset($_SESSION["user_is_maintainer"]) ? new MySqlMaintainerRepository($db)
       : new MySqlCentralOfficeRepository($db));
 
-  $handler =  new GetCurrentLanguageHandler($users, $preferences);
-  $lang = $handler->handle($_SESSION["user_id"]);
+  $theme_query = new ThemeQuery($preferences, $users);
+  $language_query =  new GetCurrentLanguageHandler($users, $preferences);
+
+  $theme = $theme_query->get_current_theme($_SESSION["user_id"]) == ThemeVariant::Light ? "day" : "night";
+  $lang = $language_query->handle($_SESSION["user_id"]) == LanguageVariant::Indonesia ? "id" : "en";
+
+  $_SESSION["lang"] = $lang;
+  $_SESSION["theme"] = $theme;
   ?>
 
   <div class="shell">

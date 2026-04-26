@@ -18,7 +18,7 @@
   session_start();
 
   $back_link = isset($_SESSION["user_is_driver"]) ? "dashboard_masinis.php"
-    : (isset($_SESSION["user_is_maintainer"]) ? "dashboard_timebalaiyasa.php"
+    : (isset($_SESSION["user_is_maintainer"]) ? "dashboard_timbalaiyasa.php"
       : "dashboard_kantorpusat.php");
   ?>
 

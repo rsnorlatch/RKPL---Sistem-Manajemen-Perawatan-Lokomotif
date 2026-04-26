@@ -35,11 +35,16 @@ class Scheduler
 
     private function is_unavailable(DateTime $start, DateTime $end)
     {
-        return count(array_filter($this->_schedule->getAll(), function (Schedule $s) use ($start, $end) {
-            return $start >= $s->start && $start <= $s->end ||
-                $end >= $s->start && $end <= $s->end ||
-                $start <= $s->start && $end >= $s->end;
-        })) > 0;
+        return count(
+            array_filter(
+                $this->_schedule->getAll(),
+                function (Schedule $s) use ($start, $end) {
+                    return $start >= $s->start && $start <= $s->end ||
+                        $end >= $s->start && $end <= $s->end ||
+                        $start <= $s->start && $end >= $s->end;
+                }
+            )
+        ) > 0;
     }
 
     function add_schedule(int $locomotive_id, DateTime $start, DateTime $end)
@@ -65,9 +70,12 @@ class Scheduler
             return ScheduleResult::ScheduleUnavailable;
         }
 
-        $schedule = array_filter($this->_schedule->getAll(), function (Schedule $s) use ($locomotive_id) {
-            return $s->locomotive_id == $locomotive_id;
-        });
+        $schedule = array_filter(
+            $this->_schedule->getAll(),
+            function (Schedule $s) use ($locomotive_id) {
+                return $s->locomotive_id == $locomotive_id;
+            }
+        );
 
         if (count($schedule) == 0) {
             return ScheduleResult::LocomotiveUnscheduled;

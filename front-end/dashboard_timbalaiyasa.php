@@ -12,8 +12,46 @@
 <body>
 
   <?php
+
   session_start();
-  $username = isset($_SESSION['user']) ? htmlspecialchars($_SESSION['user']) : 'User';
+
+  use lms\feature\setting\GetCurrentLanguageHandler;
+  use lms\feature\setting\LanguageVariant;
+  use lms\feature\signup\persistence\MySqlDriverRepository;
+  use lms\feature\signup\persistence\MySqlMaintainerRepository;
+  use lms\feature\signup\persistence\MySqlCentralOfficeRepository;
+
+  use lms\feature\setting\persistence\MySqlUserPreferenceRepository;
+  use lms\feature\setting\persistence\RolePreference;
+  use lms\feature\setting\ThemeQuery;
+  use lms\feature\setting\ThemeVariant;
+
+  require_once "../vendor/autoload.php";
+  require_once "../src/db/lms.php";
+
+  if (!empty($_SESSION['user_is_driver']))         $role = 'driver';
+  elseif (!empty($_SESSION['user_is_maintainer']))  $role = 'maintainer';
+  else                                              $role = 'central_office';
+
+  $preferences = $role == "driver" ? new MySqlUserPreferenceRepository($db, RolePreference::Driver)
+    : ($role == "maintainer" ? new MySqlUserPreferenceRepository($db, RolePreference::Maintainer)
+      : new MySqlUserPreferenceRepository($db, RolePreference::CentralOffice));
+
+  $users = isset($_SESSION["user_is_driver"]) ? new MySqlDriverRepository($db)
+    : (isset($_SESSION["user_is_maintainer"]) ? new MySqlMaintainerRepository($db)
+      : new MySqlCentralOfficeRepository($db));
+
+  $theme_query = new ThemeQuery($preferences, $users);
+  $language_query =  new GetCurrentLanguageHandler($users, $preferences);
+
+  $theme = $theme_query->get_current_theme($_SESSION["user_id"]) == ThemeVariant::Light ? "day" : "night";
+  $lang = $language_query->handle($_SESSION["user_id"]) == LanguageVariant::Indonesia ? "id" : "en";
+
+  $_SESSION["lang"] = $lang;
+  $_SESSION["theme"] = $theme;
+
+  $username = $_SESSION["user"];
+
   ?>
 
   <div class="shell">
