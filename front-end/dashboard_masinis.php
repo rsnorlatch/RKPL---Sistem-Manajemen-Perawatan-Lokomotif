@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -14,20 +13,13 @@
   <?php
   require_once "../vendor/autoload.php";
   require_once "../src/db/lms.php";
-
-  /* var_dump( */
-  /*   file_exists(__DIR__ . "/../src/feature/communication/PreferenceFactory.php"), */
-  /*   class_exists(\lms\feature\communication\PreferenceFactory::class) */
-  /* ); */
   session_start();
-  $username = isset($_SESSION['user']) ? htmlspecialchars($_SESSION['user']) : 'User';
 
   use lms\feature\setting\GetCurrentLanguageHandler;
   use lms\feature\setting\LanguageVariant;
   use lms\feature\signup\persistence\MySqlDriverRepository;
   use lms\feature\signup\persistence\MySqlMaintainerRepository;
   use lms\feature\signup\persistence\MySqlCentralOfficeRepository;
-
   use lms\feature\setting\persistence\MySqlUserPreferenceRepository;
   use lms\feature\setting\persistence\RolePreference;
   use lms\feature\setting\ThemeVariant;
@@ -45,16 +37,21 @@
     : (isset($_SESSION["user_is_maintainer"]) ? new MySqlMaintainerRepository($db)
       : new MySqlCentralOfficeRepository($db));
 
-  $theme_query = new ThemeQuery($preferences, $users);
-  $language_query =  new GetCurrentLanguageHandler($users, $preferences);
+  $theme_query    = new ThemeQuery($preferences, $users);
+  $language_query = new GetCurrentLanguageHandler($users, $preferences);
 
-  $theme = $theme_query->get_current_theme($_SESSION["user_id"]) == ThemeVariant::Light ? "day" : "night";
+  $theme    = $theme_query->get_current_theme($_SESSION["user_id"]) == ThemeVariant::Light ? "day" : "night";
   $language = $language_query->handle($_SESSION["user_id"]) == LanguageVariant::Indonesia ? "id" : "en";
+
+  $_SESSION["theme"] = $theme;
+  $_SESSION["lang"]  = $language;
+
+  $username = isset($_SESSION['user']) ? htmlspecialchars($_SESSION['user']) : 'User';
   ?>
 
-  <div class="shell">
+  <script>if ('<?= $theme ?>' === 'night') document.body.classList.add('dark');</script>
 
-    <!-- Header -->
+  <div class="shell">
     <div class="header">
       <div class="avatar">
         <svg viewBox="0 0 24 24">
@@ -64,10 +61,8 @@
       <h1>Welcome <?= $username ?></h1>
     </div>
 
-    <!-- Grid menu -->
     <div class="menu-grid">
 
-      <!-- Panggilan -->
       <a href="panggilan.php" class="menu-item">
         <div class="menu-icon orange">
           <svg viewBox="0 0 24 24">
@@ -77,7 +72,6 @@
         <span>panggilan</span>
       </a>
 
-      <!-- Pengaturan -->
       <a href="pengaturan.php" class="menu-item">
         <div class="menu-icon orange">
           <svg viewBox="0 0 24 24">
@@ -87,7 +81,6 @@
         <span>pengaturan</span>
       </a>
 
-      <!-- Logout -->
       <a href="../src/feature/login/endpoint/logout.php" class="menu-item">
         <div class="menu-icon red">
           <svg viewBox="0 0 24 24">
@@ -97,10 +90,8 @@
         <span>logout</span>
       </a>
 
-      <!-- Konfirmasi -->
       <a href="konfirmasi.php" class="menu-item">
         <div class="menu-icon orange">
-          <!-- icon kereta/lokomotif -->
           <svg viewBox="0 0 24 24">
             <path d="M12 2c-4 0-8 .5-8 4v9.5A2.5 2.5 0 0 0 6.5 18l-1.5 1.5v.5h2l2-2h6l2 2h2v-.5L17.5 18a2.5 2.5 0 0 0 2.5-2.5V6c0-3.5-3.58-4-8-4zM7.5 17a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm3.5-7H6V6h5v4zm2 0V6h5v4h-5zm3.5 7a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
           </svg>
@@ -112,5 +103,4 @@
   </div>
 
 </body>
-
 </html>
