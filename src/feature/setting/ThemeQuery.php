@@ -33,7 +33,8 @@ class ThemeQuery
                     }
                 )
             );
-        return array_shift($filtered);
+        // Kalau user belum punya data preference, kembalikan default (Light + Indonesia)
+        return array_shift($filtered) ?? new UserPreference(0, $user_id, ThemeVariant::Light, \lms\feature\setting\LanguageVariant::Indonesia);
     }
 
     public function get_current_theme(int $user_id)

@@ -2,32 +2,39 @@
 
 namespace lms\feature\setting\endpoint;
 
+use lms\feature\setting\ThemeDispatcher;
+use lms\feature\setting\persistence\MySqlUserPreferenceRepository;
+use lms\feature\signup\persistence\MySqlDriverRepository;
+use lms\feature\signup\persistence\MySqlMaintainerRepository;
+use lms\feature\signup\persistence\MySqlCentralOfficeRepository;
+use lms\feature\setting\persistence\RolePreference;
+
+use Exception;
+
 require_once __DIR__ . "/../../../../vendor/autoload.php";
 require_once __DIR__ . "/../../../db/lms.php";
 
-use lms\feature\setting\ChangeUsernameHandler;
-use lms\feature\setting\ChangeUsernameResult;
-use lms\feature\signup\persistence\MySqlCentralOfficeRepository;
-use lms\feature\signup\persistence\MySqlDriverRepository;
-use lms\feature\signup\persistence\MySqlMaintainerRepository;
-
 session_start();
-$name = $_POST['nama'];
 
-$user =
-    (isset($_SESSION['user_is_driver']) ? new MySqlDriverRepository($db)
-        : (isset($_SESSION['user_is_maintainer']) ? new MySqlMaintainerRepository($db)
-            : (new MySqlCentralOfficeRepository($db))));
+$theme = $_POST["theme"];
 
-$handler = new ChangeUsernameHandler($user);
-$result = $handler->handle($_SESSION['user'], $name);
+// ── FIX: gunakan isset() konsisten untuk semua role ──
+$preferences = isset($_SESSION["user_is_driver"]) ? new MySqlUserPreferenceRepository($db, RolePreference::Driver)
+    : (isset($_SESSION["user_is_maintainer"]) ? new MySqlUserPreferenceRepository($db, RolePreference::Maintainer)
+        : new MySqlUserPreferenceRepository($db, RolePreference::CentralOffice));
 
-switch ($result) {
-    case ChangeUsernameResult::UsernameNotFound:
-        header("Location: ../../../../front-end/pengaturan_profil.php?status=error");
-        break;
+$users = isset($_SESSION["user_is_driver"]) ? new MySqlDriverRepository($db)
+    : (isset($_SESSION["user_is_maintainer"]) ? new MySqlMaintainerRepository($db)
+        : new MySqlCentralOfficeRepository($db));
 
-    case ChangeUsernameResult::Success:
-        header("Location: ../../../../front-end/pengaturan_profil.php?status=saved");
-        break;
-}
+$dispatcher = new ThemeDispatcher($preferences, $users);
+
+if ($theme == "day")        $dispatcher->switch_to_light_mode($_SESSION["user_id"]);
+else if ($theme == "night") $dispatcher->switch_to_dark_mode($_SESSION["user_id"]);
+else throw new Exception("invalid theme");
+
+// Simpan ke session agar halaman lain bisa langsung pakai
+$_SESSION["theme"] = $theme;
+
+header("Location: ../../../../front-end/pengaturan_tampilan.php?status=saved");
+
