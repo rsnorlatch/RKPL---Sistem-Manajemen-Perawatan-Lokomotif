@@ -44,19 +44,19 @@ if ($stmt) {
                     <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
                 </svg>
             </a>
-            <h1>Kirim Lokomotif</h1>
+            <h1><?= $_SESSION["language"] == "id" ? "Kirim Lokomotif" : "Send a Locomotive" ?></h1>
         </div>
 
         <!-- Rute -->
         <div class="route-strip">
             <div class="route-col">
-                <div class="route-label">Dari</div>
-                <div class="route-val">Balai Yasa</div>
+                <div class="route-label"><?= $_SESSION["language"] == "id" ? "Dari" : "From" ?></div>
+                <div class="route-val"><?= $_SESSION["language"] == "id" ? "Balai Yasa" : "Maintenance bay" ?></div>
             </div>
             <div class="route-arrow">→</div>
             <div class="route-col">
-                <div class="route-label">Tujuan</div>
-                <div class="route-val" id="route-to">Pilih di peta</div>
+                <div class="route-label"><?= $_SESSION["language"] == "id" ?  "Tujuan" : "Destination" ?></div>
+                <div class="route-val" id="route-to"><?= $_SESSION["language"] == "id" ? "Pilih di peta" : "Choose from the map" ?></div>
             </div>
         </div>
 
@@ -65,12 +65,12 @@ if ($stmt) {
 
         <!-- Info stasiun terpilih -->
         <div class="info-box">
-            <p>Ketuk stasiun di peta untuk memilih tujuan</p>
+            <p><?= $_SESSION["language"] == "id" ? "Ketuk stasiun di peta untuk memilih tujuan" : "Tap on station to pick destination" ?></p>
             <div class="selected-stop">
                 <div class="stop-dot"></div>
                 <div>
-                    <div class="stop-name" id="stop-name">Belum dipilih</div>
-                    <div class="stop-hint" id="stop-hint">Tap marker di peta</div>
+                    <div class="stop-name" id="stop-name"><?= $_SESSION["language"] == "id" ? "Belum dipilih" : "Not chosen yet" ?></div>
+                    <div class="stop-hint" id="stop-hint"><?= $_SESSION["language"] == "id" ? "Tap marker di peta" : "Tap the marker on the map" ?></div>
                 </div>
             </div>
         </div>
@@ -83,40 +83,40 @@ if ($stmt) {
                 </svg>
             </div>
             <div class="loco-info">
-                <div class="loco-label">Lokomotif dipilih</div>
+                <div class="loco-label"><?= $_SESSION["language"] == "id" ? "Lokomotif dipilih" : "Chosen Locomotive" ?></div>
                 <div class="loco-model"><?= $model ?> <span class="loco-kode">(<?= $kode ?>)</span></div>
             </div>
         </div>
 
         <!-- Pilih Masinis -->
         <div class="driver-select-box">
-            <label for="driver-select" class="driver-label">Masinis</label>
+            <label for="driver-select" class="driver-label"><?= $_SESSION["language"] == "id" ? "Masinis" : "Driver" ?></label>
             <select id="driver-select" class="driver-select">
-                <option value="0">Pilih masinis...</option>
+                <option value="0"><?= $_SESSION["language"] == "id" ? "Pilih masinis..." : "Chose a driver..." ?></option>
             </select>
             <div class="driver-current" id="driver-current">
-                Masinis saat ini: <strong><?= $driver_name ?></strong>
+                <?= $_SESSION["language"] == "id" ? "Masinis saatt ini: " : "Current driver: " ?><strong><?= $driver_name ?></strong>
             </div>
         </div>
 
         <!-- Tombol Kirim -->
         <div class="btn-wrap">
-            <button class="btn-kirim" id="btn-kirim" disabled onclick="bukaModal()">Kirim Lokomotif</button>
-            <p class="hint-txt">Masinis akan menerima notifikasi panggilan setelah dikirim</p>
+            <button class="btn-kirim" id="btn-kirim" disabled onclick="bukaModal()"><?= $_SESSION["language"] == "id" ? "Kirim Lokomotif" : "Send a Locomotive" ?></button>
+            <p class="hint-txt"><?= $_SESSION["language"] == "id" ? "Masinis akan menerima notifikasi panggilan setelah dikirim" : "Driver will receive a notification that a call has been sent" ?></p>
         </div>
     </div>
 
     <!-- Modal Konfirmasi -->
     <div class="modal-overlay" id="modal" onclick="tutupJikaLuar(event)">
         <div class="modal-sheet">
-            <p class="modal-title">Konfirmasi Pengiriman</p>
+            <p class="modal-title"><?= $_SESSION["language"] == "id" ? "Konfirmasi Pengiriman" : "Sending confirmation" ?></p>
             <p class="modal-desc">
-                Kirim lokomotif <strong><?= $model ?></strong> ke <strong id="modal-tujuan">-</strong>?<br>
-                Masinis <strong id="modal-driver">-</strong> akan mendapat notifikasi panggilan.
+                <?= $_SESSION["language"] == "id" ? "Kirim lokomotif" : "Send a Locomotive " ?><strong><?= $model ?></strong> <?= $_SESSION["language"] == "id" ? "ke" : "to" ?> <strong id="modal-tujuan">-</strong>?<br>
+                <?= $_SESSION["language"] == "id" ? "Masinis" : "Driver" ?><strong id="modal-driver">-</strong> <?= $_SESSION["language"] == "id" ? "akan mendapatkan notifikasi panggilan" : "Will receive a call notification" ?>
             </p>
             <div class="modal-actions">
-                <button class="btn-batal" onclick="tutupModal()">Batal</button>
-                <button class="btn-ya" onclick="kirimSekarang()">Ya, Kirim</button>
+                <button class="btn-batal" onclick="tutupModal()"><?= $_SESSION["language"] == "id" ? "Batal" : "Cancel" ?></button>
+                <button class="btn-ya" onclick="kirimSekarang()"><?= $_SESSION["language"] == "id" ? "Ya, Kirim" : "Yes, Send" ?></button>
             </div>
         </div>
     </div>

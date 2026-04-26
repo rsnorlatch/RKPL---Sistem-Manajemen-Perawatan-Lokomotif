@@ -1,3 +1,4 @@
+<?php session_start() ?>
 <!DOCTYPE html>
 <html lang="id">
 
@@ -19,7 +20,7 @@
           <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
         </svg>
       </a>
-      <h1>kirim lokomotif</h1>
+      <h1><?= $_SESSION["language"] == "id" ? "Kirim lokomotif" : "Send a locotmoive" ?></h1>
     </div>
 
     <div class="page-body">
@@ -43,7 +44,7 @@
           <svg viewBox="0 0 24 24">
             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
           </svg>
-          <p>Belum ada data lokomotif.</p>
+          <p><?= $_SESSION["language"] == "id" ? "Belum ada data lokomotif." : "No locomotive data yet." ?></p>
         </div>
       <?php else: ?>
 
@@ -61,7 +62,7 @@
               </div>
               <a class="btn-atur"
                 href="kirim_lokomotif.php?loco_id=<?= $loco['id'] ?>&model=<?= urlencode($label) ?>&kode=<?= urlencode($code) ?>">
-                pilih
+                <?= $_SESSION["language"] == "id" ? "Pilih" : "Pick" ?>
               </a>
             </div>
           <?php endforeach; ?>
