@@ -68,18 +68,15 @@ $ui = $lang === 'en' ? [
   <title>Tampilan – LMS PT KAI</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../styling_feature/pengaturan.css" />
+  <link rel="stylesheet" href="../styling_feature/style_dark.css"/>
 
-  <!-- FIX 1: Apply dark SEBELUM CSS render, cegah flash putih -->
-  <script>if ('<?= $theme ?>' === 'night') document.documentElement.classList.add('dark-init');</script>
+  <script>if ('<?= $theme ?>' === 'night') document.documentElement.classList.add('dark');</script>
   <style>
-    /* Prevent flash: sembunyikan body sampai JS siap */
     .dark-init body { background: #121212 !important; }
   </style>
 </head>
 
-<body>
-
-  <!-- FIX 2: Apply class dark ke body segera -->
+<body class="<?= $theme === 'night' ? 'dark' : '' ?>">
   <script>
     (function() {
       if ('<?= $theme ?>' === 'night') document.body.classList.add('dark');
@@ -140,7 +137,6 @@ $ui = $lang === 'en' ? [
   </div>
 
   <script>
-    // FIX 3: Live preview — saat user klik opsi, langsung update tampilan + class active
     document.querySelectorAll('.radio-row').forEach(function(row) {
       row.addEventListener('click', function() {
         var selected = this.dataset.theme; // "day" atau "night"

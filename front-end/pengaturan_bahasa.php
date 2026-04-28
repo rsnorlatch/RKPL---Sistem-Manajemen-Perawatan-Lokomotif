@@ -1,13 +1,6 @@
 <?php
-// FILE   : front-end/pengaturan_bahasa.php
-// CSS    : styling_feature/pengaturan.css
-// BACKEND: src/feature/setting/endpoint/save_language.php
-//          src/feature/setting/GetCurrentLanguageHandler.php
-//          src/feature/setting/LanguageVariant.php
-
-/* header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0"); */
-/* header("Pragma: no-cache"); */
-/* header("Expires: 0"); */
+session_start();
+$theme = $_SESSION['theme'] ?? 'day';
 ?>
 
 <!DOCTYPE html>
@@ -19,9 +12,11 @@
   <title>Bahasa – LMS PT KAI</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../styling_feature/pengaturan.css" />
+  <link rel="stylesheet" href="../styling_feature/style_dark.css"/>
 </head>
 
 <body>
+<script>if ('<?= $theme ?>' === 'night') document.body.classList.add('dark');</script>
   <?php
 
   use lms\feature\setting\GetCurrentLanguageHandler;
@@ -34,7 +29,7 @@
 
   require_once __DIR__ . "/../vendor/autoload.php";
 
-  session_start();
+  $theme = $_SESSION['theme'] ?? 'day';
   if (empty($_SESSION['is_logged_in'])) {
     header('Location: login.php');
     exit;

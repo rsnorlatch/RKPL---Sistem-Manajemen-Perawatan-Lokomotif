@@ -1,5 +1,6 @@
 <?php
 session_start();
+$theme = $_SESSION['theme'] ?? 'day';
 require_once __DIR__ . '/../src/db/lms.php';
 
 $calls = [];
@@ -32,9 +33,11 @@ if (isset($_SESSION['user_id'])) {
     <title>Notifikasi – LMS PT KAI</title>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../styling_feature/panggilan.css">
+  <link rel="stylesheet" href="../styling_feature/style_dark.css"/>
 </head>
 
 <body>
+<script>if ('<?= $theme ?>' === 'night') document.body.classList.add('dark');</script>
     <div class="shell">
         <div class="topbar">
             <a href="dashboard_masinis.php" class="back-btn">

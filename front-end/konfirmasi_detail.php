@@ -7,10 +7,13 @@
   <title>Konfirmasi Detail – LMS PT KAI</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../styling_feature/panggilan.css" />
+  <link rel="stylesheet" href="../styling_feature/style_dark.css"/>
 </head>
 
 <body>
-  <?php session_start(); ?>
+<script>if ('<?= $theme ?>' === 'night') document.body.classList.add('dark');</script>
+  <?php session_start();
+$theme = $_SESSION['theme'] ?? 'day'; ?>
 
   <div class="shell">
 

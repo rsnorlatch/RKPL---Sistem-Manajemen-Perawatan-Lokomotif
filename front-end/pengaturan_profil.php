@@ -1,8 +1,8 @@
 <?php
-header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
-header("Pragma: no-cache");
-header("Expires: 0");
+session_start();
+$theme = $_SESSION['theme'] ?? 'day';
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 
@@ -12,11 +12,13 @@ header("Expires: 0");
   <title>Atur Profil – LMS PT KAI</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../styling_feature/pengaturan.css" />
+  <link rel="stylesheet" href="../styling_feature/style_dark.css"/>
 </head>
 
 <body>
+<script>if ('<?= $theme ?>' === 'night') document.body.classList.add('dark');</script>
   <?php
-  session_start();
+$theme = $_SESSION['theme'] ?? 'day';
   if (empty($_SESSION['is_logged_in'])) {
     header('Location: login.php');
     exit;

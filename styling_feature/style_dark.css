@@ -1,56 +1,229 @@
-body.dark {
-  background: #121212;
-  color: #e0e0e0;
-}
+/* style_dark.css — global dark mode, aktif saat <body class="dark"> */
 
-body.dark .shell {
+body.dark { 
+  background: #121212 !important; 
+  color: #e0e0e0;
+ }
+
+body.dark .shell { 
+  background: #1e1e1e !important;
+   box-shadow: 0 20px 56px rgba(0,0,0,.6);
+   }
+
+/* Topbar & Header */
+body.dark .topbar, body.dark .header { 
+  background: #0d47a1 !important;
+ }
+
+body.dark .topbar h1, body.dark .header h1, body.dark .back-btn { 
+  color: #fff;
+ }
+
+/* Page body & menu */
+body.dark .page-body { 
   background: #1e1e1e;
-  box-shadow: 0 20px 56px rgba(0,0,0,.6);
+ }
+body.dark .menu-item span { 
+  color: #e0e0e0;
+ }
+
+/* Cards */
+body.dark .card, body.dark .cal-card, body.dark .detail-card, body.dark .loco-card {
+  background: #2a2a2a !important; border-color: #444 !important;
 }
 
-body.dark .topbar {
-  background: #0d47a1;
+/* Inputs */
+body.dark .card input, body.dark .field-group input, body.dark .tolak-area, body.dark .driver-select {
+  background: #333 !important; border-color: #555 !important; color: #e0e0e0 !important;
 }
 
-body.dark .topbar h1,
-body.dark .back-btn { color: #fff; }
-
-body.dark .msg.success {
-  background: #1b5e20;
-  color: #c8e6c9;
+body.dark .card input::placeholder, body.dark .field-group input::placeholder,
+body.dark .tolak-area::placeholder { 
+  color: #666 !important; 
+}
+body.dark .card input:focus, body.dark .field-group input:focus {
+  background: #3a3a3a !important; border-color: #64b5f6 !important;
 }
 
-body.dark .msg.error {
-  background: #b71c1c;
-  color: #ffcdd2;
-}
+/* List */
+body.dark .list-area { 
+  background: #111 !important;
+ }
 
-body.dark .call-item,
-body.dark .notif-card,
-body.dark .info-box,
-body.dark .loco-box,
-body.dark .driver-select-box {
-  background: #2a2a2a;
-  border-color: #444;
+body.dark .list-item, body.dark .list-placeholder { 
+  background: #2a2a2a !important;
+ }
+
+body.dark .item-name { 
   color: #e0e0e0;
 }
+body.dark .item-sub  { 
+  color: #9e9e9e;
+ }
 
-body.dark .call-label,
-body.dark .notif-msg,
-body.dark .stop-name,
-body.dark .loco-model { color: #e0e0e0; }
+/* Loco card */
+body.dark .loco-info .loco-name { 
+  color: #e0e0e0;
+ }
+body.dark .loco-info .loco-code { 
+  color: #9e9e9e;
+ }
 
-body.dark .empty-state { color: #999; }
-body.dark .empty-state svg { fill: #666; }
+/* Call items */
+body.dark .call-item { 
+  background: #2a2a2a !important; 
+  border-color: #444 !important;
+ }
 
-body.dark .day-cell { color: #ccc; }
-body.dark .day-cell.today { background: #0d47a1; }
-body.dark .day-cell.selected { background: #f97316; }
+body.dark .call-label { 
+  color: #e0e0e0;
+ }
+body.dark .call-label small { 
+  color: #9e9e9e !important;
+ }
 
-body.dark .btn-kirim,
-body.dark .btn-ya,
-body.dark .btn-tolak,
-body.dark .btn-confirm,
-body.dark .btn-save {
-  opacity: 0.9;
+/* Notifikasi */
+body.dark .notif-card { 
+  background: #2a2a2a !important;
+ }
+
+body.dark .notif-card::after { 
+  background: #444; 
 }
+body.dark .notif-msg { 
+  color: #e0e0e0;
+ }
+body.dark .notif-time { 
+  color: #616161;
+ }
+
+/* Kirim lokomotif boxes */
+body.dark .info-box, body.dark .loco-box, body.dark .driver-select-box {
+  background: #2a2a2a !important; border-color: #444 !important;
+}
+body.dark .route-strip { 
+  background: #2a2a2a !important; 
+  border-color: #444 !important;
+ }
+body.dark .route-val { 
+  color: #e0e0e0;
+ }
+body.dark .route-label {
+   color: #9e9e9e;
+  }
+body.dark .stop-name {
+   color: #e0e0e0;
+   }
+body.dark .stop-hint { 
+  color: #9e9e9e;
+}
+body.dark .loco-model { 
+  color: #e0e0e0; 
+}
+body.dark .loco-label { 
+  color: #bbb; 
+}
+body.dark .hint-txt { 
+  color: #616161; 
+}
+
+/* Modal */
+body.dark .modal-sheet { 
+  background: #2a2a2a !important; 
+}
+body.dark .modal-title { 
+  color: #e0e0e0; 
+}
+body.dark .modal-desc  { 
+  color: #9e9e9e; 
+}
+body.dark .modal-desc strong { 
+  color: #e0e0e0; 
+}
+body.dark .btn-batal { 
+  background: #333 !important; 
+  color: #e0e0e0 !important; 
+}
+
+/* Kalender */
+body.dark .month-label { 
+  color: #e0e0e0; 
+}
+body.dark .nav-btn { 
+  color: #e0e0e0; 
+}
+body.dark .nav-btn:hover { 
+  background: #333; 
+}
+body.dark .day-headers span {
+   color: #555;
+   }
+body.dark .day-cell { 
+  color: #ccc; 
+}
+body.dark .day-cell:not(.other-month):hover { 
+  background: #1a2e42;
+ }
+body.dark .day-cell.today { 
+  color: #64b5f6; 
+}
+body.dark .day-cell.other-month { 
+  color: #444; 
+}
+body.dark .day-cell.start-selected { 
+  background: #3a1f00;
+  border-color: #FF7043; 
+  color: #ffab91;
+ }
+body.dark .day-cell.end-selected   { 
+  background: #4a2800; 
+  border-color: #FF7043; 
+  color: #ffccbc;
+ }
+body.dark p[style*="color:#666"] { 
+  color: #9e9e9e !important;
+ }
+
+/* Pengaturan menu rows */
+body.dark .menu-row { background: #2a2a2a !important; border-color: #444 !important; color: #e0e0e0; }
+body.dark .menu-row:hover { background: #333 !important; }
+body.dark .row-icon svg { fill: #e0e0e0; }
+body.dark .row-arrow svg { fill: #616161; }
+body.dark .section-hint { color: #9e9e9e; }
+body.dark .section-title { color: #e0e0e0; }
+body.dark .field-group label { color: #9e9e9e; }
+body.dark .edit-label { color: #90caf9; }
+
+/* Radio rows */
+body.dark .radio-row { background: #2a2a2a !important; border-color: #444 !important; }
+body.dark .radio-row.active { border-color: #64b5f6 !important; background: #1a2e42 !important; }
+body.dark .radio-row span { color: #e0e0e0; }
+body.dark .hint-text { color: #9e9e9e; }
+body.dark .radio-dot { border-color: #555; }
+body.dark .radio-row.active .radio-dot { border-color: #64b5f6; background: #64b5f6; }
+
+/* Dropdown */
+body.dark .dropdown { background: #2a2a2a !important; box-shadow: 0 6px 20px rgba(0,0,0,.5); }
+body.dark .dropdown-item, body.dark .dropdown form button { color: #e0e0e0 !important; }
+body.dark .dropdown-item:hover, body.dark .dropdown form button:hover { background: #333 !important; }
+body.dark .dropdown-item.del, body.dark .dropdown form:last-child button { color: #ef9a9a !important; }
+body.dark .dropdown-item.del:hover { background: #3e1515 !important; }
+body.dark .menu-btn { color: #666; }
+body.dark .menu-btn:hover { background: #333; }
+
+/* Empty state */
+body.dark .empty-state { color: #616161; }
+body.dark .empty-state svg { fill: #616161; }
+
+/* Detail */
+body.dark .detail-key { color: #9e9e9e; }
+body.dark .detail-val { color: #e0e0e0; }
+
+/* Tolak / kendala */
+body.dark .tolak-label { color: #e0e0e0; }
+body.dark .tolak-area { background: #2a2a2a !important; color: #e0e0e0 !important; }
+body.dark .tolak-area:focus { background: #333 !important; }
+
+/* Messages */
+body.dark .msg.success { background: #1b3a1f !important; color: #81c784 !important; }
+body.dark .msg.error   { background: #3e1515 !important; color: #ef9a9a !important; }

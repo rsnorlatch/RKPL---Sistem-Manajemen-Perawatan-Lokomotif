@@ -1,5 +1,6 @@
 <?php
 session_start();
+$theme = $_SESSION['theme'] ?? 'day';
 $loco_id      = isset($_GET['loco_id']) ? (int)$_GET['loco_id']           : 0;
 $model        = isset($_GET['model'])   ? htmlspecialchars($_GET['model']) : 'Lokomotif';
 $kode         = isset($_GET['kode'])    ? htmlspecialchars($_GET['kode'])  : 'LK-' . $loco_id;
@@ -70,9 +71,11 @@ if ($mode === 'end') {
   <title>Jadwal Perawatan – LMS PT KAI</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../styling_feature/atur_jadwal.css" />
+  <link rel="stylesheet" href="../styling_feature/style_dark.css"/>
 </head>
 
 <body>
+<script>if ('<?= $theme ?>' === 'night') document.body.classList.add('dark');</script>
   <div class="shell">
     <div class="topbar">
       <a href="jadwal.php" class="back-btn">

@@ -1,31 +1,33 @@
-<!DOCTYPE html>
-<html lang="id">
-
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pengaturan – LMS PT KAI</title>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../styling_feature/pengaturan.css" />
-</head>
-
-<body>
-
-  <?php
+ <?php
   header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
   header("Pragma: no-cache");
   header("Expires: 0");
   session_start();
+$theme = $_SESSION['theme'] ?? 'day';
 
   $back_link = isset($_SESSION["user_is_driver"]) ? "dashboard_masinis.php"
     : (isset($_SESSION["user_is_maintainer"]) ? "dashboard_timbalaiyasa.php"
       : "dashboard_kantorpusat.php");
   ?>
 
+<!DOCTYPE html>
+<html lang="id">
+ 
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pengaturan – LMS PT KAI</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styling_feature/pengaturan.css" />
+  <link rel="stylesheet" href="../styling_feature/style_dark.css"/>
+</head>
+ 
+<body>
+<script>if ('<?= $theme ?>' === 'night') document.body.classList.add('dark');</script>
   <div class="shell">
-
+ 
     <!-- Top Bar -->
-
+ 
     <div class="topbar">
       <a href="<?= $back_link ?>" class="back-btn">
         <svg viewBox="0 0 24 24">
@@ -38,7 +40,6 @@
         </svg>
       </div>
       <h1>
-
         <?php if ($_SESSION["language"] == "id"): ?>
           Pengaturan
         <?php elseif ($_SESSION["language"] == "en"): ?>
@@ -46,9 +47,9 @@
         <?php endif; ?>
       </h1>
     </div>
-
+ 
     <div class="page-body">
-
+ 
       <?php if (isset($_GET['status'])): ?>
         <?php if ($_GET['status'] === 'saved'): ?>
           <p class="msg success">
@@ -68,9 +69,9 @@
           </p>
         <?php endif; ?>
       <?php endif; ?>
-
+ 
       <div class="menu-list">
-
+ 
         <!-- Atur Profil -->
         <a href="pengaturan_profil.php" class="menu-row">
           <div class="row-icon">
@@ -91,7 +92,7 @@
             </svg>
           </div>
         </a>
-
+ 
         <!-- Kredensial & Keamanan -->
         <a href="pengaturan_kredensial.php" class="menu-row">
           <div class="row-icon">
@@ -105,7 +106,6 @@
             <?php elseif ($_SESSION["language"] == "en"): ?>
               Credentials &amp; Security
             <?php endif; ?>
-
           </span>
           <div class="row-arrow">
             <svg viewBox="0 0 24 24">
@@ -113,7 +113,7 @@
             </svg>
           </div>
         </a>
-
+ 
         <!-- Tampilan -->
         <a href="pengaturan_tampilan.php" class="menu-row">
           <div class="row-icon">
@@ -127,7 +127,6 @@
             <?php elseif ($_SESSION["language"] == "en"): ?>
               Display
             <?php endif; ?>
-
           </span>
           <div class="row-arrow">
             <svg viewBox="0 0 24 24">
@@ -135,7 +134,7 @@
             </svg>
           </div>
         </a>
-
+ 
         <!-- Bahasa -->
         <a href="pengaturan_bahasa.php" class="menu-row">
           <div class="row-icon">
@@ -156,11 +155,12 @@
             </svg>
           </div>
         </a>
-
+ 
       </div>
     </div>
   </div>
-
+ 
 </body>
-
+ 
 </html>
+ 

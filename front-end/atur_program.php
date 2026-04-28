@@ -3,6 +3,7 @@ require_once __DIR__ . "/../vendor/autoload.php";
 require_once __DIR__ . "/../src/db/lms.php";
 
 session_start();
+$theme = $_SESSION['theme'] ?? 'day';
 
 ?>
 
@@ -15,9 +16,11 @@ session_start();
   <title>Atur Program Perawatan – LMS PT KAI</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../styling_feature/atur_program.css" />
+  <link rel="stylesheet" href="../styling_feature/style_dark.css"/>
 </head>
 
 <body>
+<script>if ('<?= $theme ?>' === 'night') document.body.classList.add('dark');</script>
 
   <div class="shell">
 
