@@ -92,7 +92,7 @@ $theme = $_SESSION['theme'] ?? 'day';
       <p class="section-hint"><?= $ui['hint'] ?></p>
 
       <form action="../src/feature/setting/endpoint/save_language.php" method="POST">
-        <div class="radio-list">
+        <div class="radio-list" id="radio-list">
 
           <label class="radio-row <?= $lang === 'id' ? 'active' : '' ?>">
             <span>Indonesia</span>
@@ -109,7 +109,15 @@ $theme = $_SESSION['theme'] ?? 'day';
         </div>
         <button type="submit" class="btn-save"><?= $ui['btn_save'] ?></button>
       </form>
-
+      <script>
+        document.getElementById('radio-list').addEventListener('change', function() {
+          const selectedRadio = this.querySelector('input[name="lang"]:checked');
+          if (selectedRadio) {
+            document.querySelector('.radio-row.active').classList.remove('active');
+            selectedRadio.parentElement.classList.add('active');
+          }
+        });
+      </script>
     </div>
   </div>
 </body>
