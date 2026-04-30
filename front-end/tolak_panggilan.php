@@ -50,34 +50,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tolak Panggilan – LMS PT KAI</title>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../styling_feature/panggilan.css">
-  <link rel="stylesheet" href="../styling_feature/style_dark.css"/>
+    <link rel="stylesheet" href="../styling_feature/style_dark.css" />
 </head>
+
 <body>
-<script>if ('<?= $theme ?>' === 'night') document.body.classList.add('dark');</script>
-<div class="shell">
-    <div class="topbar">
-        <a href="panggilan.php" class="back-btn">
-            <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
-        </a>
-        <h1>Tolak Panggilan</h1>
+    <script>
+        if ('<?= $theme ?>' === 'night') document.body.classList.add('dark');
+    </script>
+    <div class="shell">
+        <div class="topbar">
+            <a href="panggilan.php" class="back-btn">
+                <svg viewBox="0 0 24 24">
+                    <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
+                </svg>
+            </a>
+            <h1>Tolak Panggilan</h1>
+        </div>
+        <div class="page-body page-body--tolak">
+            <?php if (isset($_GET['status']) && $_GET['status'] === 'empty_reason'): ?>
+                <p class="msg error">Alasan penolakan tidak boleh kosong.</p>
+            <?php endif; ?>
+            <div>
+                <label class="tolak-label">Tuliskan alasan penolakan</label>
+                <textarea name="reason" class="tolak-area" placeholder="Tulis kendala yang dihadapi..." form="form-kendala" required></textarea>
+            </div>
+            <form id="form-kendala" action="../src/feature/communication/endpoint/reject_call.php" method="POST">
+                <input type="hidden" name="call_id" value="<?= $call_id ?>">
+                <button type="submit" class="btn-tolak">Tolak</button>
+            </form>
+        </div>
     </div>
-    <div class="page-body page-body--tolak">
-        <?php if (isset($_GET['status']) && $_GET['status'] === 'empty_reason'): ?>
-            <p class="msg error">Alasan penolakan tidak boleh kosong.</p>
-        <?php endif; ?>
-        <p class="tolak-label">Tuliskan alasan penolakan</p>
-        <form method="POST">
-            <input type="hidden" name="call_id" value="<?= $call_id ?>">
-            <textarea name="reason" class="tolak-area" placeholder="Tulis alasan di sini..." required></textarea>
-            <button type="submit" class="btn-tolak">Tolak</button>
-        </form>
-    </div>
-</div>
 </body>
+
 </html>
